@@ -2,7 +2,7 @@
  "what-software-and-applications-are": [
   {
    "url": "/__l5e/assets-v1/4497b668-efd5-4e73-84c5-239326bc81cb/what-software-and-applications-are-1.jpg",
-   "caption": "",
+   "caption": "Every app on this phone is software: instructions a computer follows to do a job for someone",
    "hero": true
   },
   {
@@ -19,7 +19,7 @@
  "different-types-of-applications": [
   {
    "url": "/__l5e/assets-v1/01e50490-8a96-437d-a2e5-90275cdbc4ac/different-types-of-applications-1.jpg",
-   "caption": "",
+   "caption": "The same software can reach people on a laptop, a tablet and a phone, each with different strengths",
    "hero": true
   },
   {
@@ -36,7 +36,7 @@
  "from-a-problem-to-application-requirements": [
   {
    "url": "/__l5e/assets-v1/c32b9a06-3634-4352-b553-d4c99da6fa5d/from-a-problem-to-application-requirements-1.jpg",
-   "caption": "",
+   "caption": "Requirements start as scattered ideas; your job is to turn them into a clear, agreed list",
    "hero": true
   },
   {
@@ -53,7 +53,7 @@
  "the-software-development-lifecycle": [
   {
    "url": "/__l5e/assets-v1/ecc57d5b-b891-49e4-bdf8-711874ea04ce/the-software-development-lifecycle-1.jpg",
-   "caption": "",
+   "caption": "Building software is a team activity that moves through planning, building, testing and release",
    "hero": true
   },
   {
@@ -70,57 +70,42 @@
  "turning-requirements-into-a-design": [
   {
    "url": "/__l5e/assets-v1/212fc051-d424-4b29-8072-848e53c7d500/turning-requirements-into-a-design-1.jpg",
-   "caption": "",
+   "caption": "Design is where requirements become sketches of screens, parts and how they connect",
    "hero": true
-  },
-  {
-   "url": "/__l5e/assets-v1/726dfeee-0e7c-4809-90e1-3737333c51df/turning-requirements-into-a-design-2.jpg",
-   "caption": "",
-   "hero": false
   }
  ],
  "application-architecture-and-boundaries": [
   {
    "url": "/__l5e/assets-v1/ecd6ae9a-77b1-4897-a0db-6f3b96fb6d4c/application-architecture-and-boundaries-1.jpg",
-   "caption": "",
+   "caption": "Like a steel frame, architecture is the structure that holds everything else up",
    "hero": true
   }
  ],
  "choosing-languages-frameworks-and-services": [
   {
    "url": "/__l5e/assets-v1/45ad3b46-613e-4a32-9378-f9e069da7729/choosing-languages-frameworks-and-services-1.jpg",
-   "caption": "",
+   "caption": "Languages, frameworks and services are tools: pick the box that fits the job",
    "hero": true
-  },
-  {
-   "url": "/__l5e/assets-v1/dc750153-dd93-42ba-8334-687ac917f77d/choosing-languages-frameworks-and-services-2.jpg",
-   "caption": "",
-   "hero": false
   }
  ],
  "designing-data-and-integrations": [
   {
    "url": "/__l5e/assets-v1/3e6a890c-d79a-4e71-85a7-d41423f8fc55/designing-data-and-integrations-1.jpg",
-   "caption": "",
+   "caption": "Data flows between parts of a system like water through pipes, and every joint is an integration",
    "hero": true
-  },
-  {
-   "url": "/__l5e/assets-v1/04868e50-c5aa-4ed7-9cef-2c77d1727abf/designing-data-and-integrations-2.jpg",
-   "caption": "",
-   "hero": false
   }
  ],
  "designing-for-quality-and-future-change": [
   {
    "url": "/__l5e/assets-v1/d6f3859d-4312-4a4d-a402-452c9944d37a/designing-for-quality-and-future-change-1.jpg",
-   "caption": "",
+   "caption": "Quality and future change are decided while the frame is still going up",
    "hero": true
   }
  ],
  "understanding-ai-coding-tools": [
   {
    "url": "/__l5e/assets-v1/b4d93519-2684-4fd1-b410-eb2c6df4fc58/understanding-ai-coding-tools-1.jpg",
-   "caption": "",
+   "caption": "AI coding tools are powerful helpers, but a human still decides what they should do",
    "hero": true
   },
   {
@@ -132,28 +117,28 @@
  "preparing-tasks-and-giving-ai-context": [
   {
    "url": "/__l5e/assets-v1/b0047c9a-9e32-4d9a-bfc5-2be4755558b6/preparing-tasks-and-giving-ai-context-1.jpg",
-   "caption": "",
+   "caption": "A well-prepared task is a clear list: what to build, what to leave alone, how to check it",
    "hero": true
   }
  ],
  "building-features-in-small-increments": [
   {
    "url": "/__l5e/assets-v1/7dc618e6-d31d-4f8b-b9b7-f30fcd581562/building-features-in-small-increments-1.jpg",
-   "caption": "",
+   "caption": "Big features are built from many small pieces, added one at a time",
    "hero": true
   }
  ],
  "understanding-and-reviewing-generated-code": [
   {
    "url": "/__l5e/assets-v1/47cf6408-35c5-48f8-83d1-3410c5e21c79/understanding-and-reviewing-generated-code-1.jpg",
-   "caption": "",
+   "caption": "Read generated code closely before you accept it",
    "hero": true
   }
  ],
  "testing-and-verifying-behaviour": [
   {
    "url": "/__l5e/assets-v1/349b8896-0ac3-4c1b-ad6d-1b637898f5ed/testing-and-verifying-behaviour-1.jpg",
-   "caption": "",
+   "caption": "Tests are small, careful experiments that prove the software behaves as expected",
    "hero": true
   },
   {
@@ -165,33 +150,28 @@
  "debugging-and-refining-with-ai": [
   {
    "url": "/__l5e/assets-v1/a8b56f44-f1a6-4996-a32c-bf4cd6def274/debugging-and-refining-with-ai-1.jpg",
-   "caption": "",
+   "caption": "Debugging means finding the bug, understanding why it is there and removing it",
    "hero": true
   }
  ],
  "understanding-deployment-and-hosting": [
   {
    "url": "/__l5e/assets-v1/582fb947-71b3-43ad-9c0f-babdeaaaef1a/understanding-deployment-and-hosting-1.jpg",
-   "caption": "",
+   "caption": "Hosting means renting space on computers in a data centre that run your app all day",
    "hero": true
-  },
-  {
-   "url": "/__l5e/assets-v1/ef17f59e-7751-4440-a23b-5061633df0d7/understanding-deployment-and-hosting-2.jpg",
-   "caption": "",
-   "hero": false
   }
  ],
  "preparing-and-releasing-an-application": [
   {
    "url": "/__l5e/assets-v1/f34101da-fe9d-4165-8c0d-2acf3e66c593/preparing-and-releasing-an-application-1.jpg",
-   "caption": "",
+   "caption": "A release checklist makes sure nothing important is forgotten before going live",
    "hero": true
   }
  ],
  "observing-an-application-in-production": [
   {
    "url": "/__l5e/assets-v1/7a9046ca-078d-46e4-b5f0-2c3b20189d8f/observing-an-application-in-production-1.jpg",
-   "caption": "",
+   "caption": "Monitoring is your control room: it shows how the app is doing in production",
    "hero": true
   },
   {
@@ -203,26 +183,26 @@
  "protecting-data-and-recovering-from-failure": [
   {
    "url": "/__l5e/assets-v1/c7c2778c-8aee-4c4a-aaa8-07056bc5d370/protecting-data-and-recovering-from-failure-1.jpg",
-   "caption": "",
+   "caption": "Backups and recovery plans are a lifebuoy for when things go wrong",
    "hero": true
   }
  ],
  "maintaining-and-evolving-the-application": [
   {
    "url": "/__l5e/assets-v1/fe008865-e920-493f-a540-da7cbb3fa9f8/maintaining-and-evolving-the-application-1.jpg",
-   "caption": "",
+   "caption": "Maintenance is steady care: trimming, fixing and improving the app over time",
    "hero": true
   }
  ],
  "programming-foundations": [
   {
    "url": "/__l5e/assets-v1/0a1b79e5-88cd-4080-beaa-53fa96235e62/programming-foundations-1.jpg",
-   "caption": "",
+   "caption": "Code is text written in a programming language that a computer can run",
    "hero": true
   },
   {
    "url": "/__l5e/assets-v1/ab568c2e-9290-4a06-a2e3-ae530bb6dda8/programming-foundations-2.jpg",
-   "caption": "",
+   "caption": "Under the hood, programs are made of many moving parts working together",
    "hero": false
   },
   {
@@ -234,13 +214,8 @@
  "the-frontend-and-user-interface": [
   {
    "url": "/__l5e/assets-v1/958d0984-f181-4dcf-872e-6bf85ac3da64/the-frontend-and-user-interface-1.jpg",
-   "caption": "",
+   "caption": "The frontend begins as sketches of the screens people will use",
    "hero": true
-  },
-  {
-   "url": "/__l5e/assets-v1/f1ca7454-e042-4a3a-8ec1-7a6ab773dc00/the-frontend-and-user-interface-2.jpg",
-   "caption": "",
-   "hero": false
   },
   {
    "url": "/__l5e/assets-v1/a20a9856-03bb-4d4a-9224-11083b1f0961/the-frontend-and-user-interface-3.jpg",
@@ -251,24 +226,24 @@
  "the-backend-and-application-logic": [
   {
    "url": "/__l5e/assets-v1/fce86aa9-28c8-4543-bbc4-f6a109b300a6/the-backend-and-application-logic-1.jpg",
-   "caption": "",
+   "caption": "The backend is the kitchen: it does the work customers never see",
    "hero": true
   },
   {
    "url": "/__l5e/assets-v1/389d95b8-1255-4fc1-a1bd-bf7358515bf9/the-backend-and-application-logic-2.jpg",
-   "caption": "",
+   "caption": "Backend code runs on servers like these, often in a data centre",
    "hero": false
   }
  ],
  "networks-http-and-apis": [
   {
    "url": "/__l5e/assets-v1/44f3593f-ac47-4341-8978-ea6d12173d91/networks-http-and-apis-1.jpg",
-   "caption": "",
+   "caption": "Networks are the cables and machines that carry requests between computers",
    "hero": true
   },
   {
    "url": "/__l5e/assets-v1/56298d64-7fd0-4b37-ac87-d67b8494bab9/networks-http-and-apis-2.jpg",
-   "caption": "",
+   "caption": "HTTP requests are like letters: an address, a few headers and a message inside",
    "hero": false
   },
   {
@@ -285,12 +260,12 @@
  "databases-and-persistent-storage": [
   {
    "url": "/__l5e/assets-v1/3339e5b0-e7f6-4e2b-9855-a394a1404555/databases-and-persistent-storage-1.jpg",
-   "caption": "",
+   "caption": "A database stores information in an organised way so it can be found again",
    "hero": true
   },
   {
    "url": "/__l5e/assets-v1/bd348c85-ca81-4b16-b67f-1400e5dd0727/databases-and-persistent-storage-2.jpg",
-   "caption": "",
+   "caption": "Much of everyday work is reading and updating rows of stored data",
    "hero": false
   },
   {
@@ -302,43 +277,33 @@
  "modelling-and-working-with-data": [
   {
    "url": "/__l5e/assets-v1/a719066d-332b-4113-8f66-9c0510f0aaba/modelling-and-working-with-data-1.jpg",
-   "caption": "",
+   "caption": "Modelling data means deciding what things exist and how they relate before you build",
    "hero": true
   }
  ],
  "users-authentication-and-permissions": [
   {
    "url": "/__l5e/assets-v1/feab89f2-1015-4d3d-ae59-83d9cdad6c4e/users-authentication-and-permissions-1.jpg",
-   "caption": "",
+   "caption": "Authentication and permissions lock data so only the right people can reach it",
    "hero": true
   },
   {
    "url": "/__l5e/assets-v1/354d72f9-eb7f-4c41-bb6a-65b47c06375e/users-authentication-and-permissions-2.jpg",
    "caption": "A passport authenticates you: it proves who you are",
    "hero": false
-  },
-  {
-   "url": "/__l5e/assets-v1/6e77fca7-26f3-4afd-85d4-67231879220f/users-authentication-and-permissions-3.jpg",
-   "caption": "",
-   "hero": false
-  },
-  {
-   "url": "/__l5e/assets-v1/659f00a3-5c6a-4f2c-801d-4b3214a39bf5/users-authentication-and-permissions-4.jpg",
-   "caption": "",
-   "hero": false
   }
  ],
  "following-an-action-through-the-application": [
   {
    "url": "/__l5e/assets-v1/af1ee04f-f24c-4d2d-ad34-2d918d5dc75a/following-an-action-through-the-application-1.jpg",
-   "caption": "",
+   "caption": "Following one action from click to database and back is like watching a race from start to finish",
    "hero": true
   }
  ],
  "files-folders-and-project-structure": [
   {
    "url": "/__l5e/assets-v1/2b78c128-8f0e-4d76-a989-c8326657bdc0/files-folders-and-project-structure-1.jpg",
-   "caption": "",
+   "caption": "Folders and files are labelled boxes that keep a project organised",
    "hero": true
   },
   {
@@ -350,7 +315,7 @@
  "repositories-and-where-they-live": [
   {
    "url": "/__l5e/assets-v1/945d0691-0d60-4f3e-91c8-c9c963660422/repositories-and-where-they-live-1.jpg",
-   "caption": "",
+   "caption": "A repository keeps every version of a project, like the rings of a tree record each year",
    "hero": true
   },
   {
@@ -362,19 +327,14 @@
  "working-with-git-and-other-contributors": [
   {
    "url": "/__l5e/assets-v1/e2990f24-fd2d-49b0-8eee-f2f4807d8fd6/working-with-git-and-other-contributors-1.jpg",
-   "caption": "",
+   "caption": "Working with Git means many people changing the same code safely",
    "hero": true
-  },
-  {
-   "url": "/__l5e/assets-v1/12a00247-3ca3-47bf-bc89-143e0eb2671e/working-with-git-and-other-contributors-2.jpg",
-   "caption": "",
-   "hero": false
   }
  ],
  "development-environments-and-dependencies": [
   {
    "url": "/__l5e/assets-v1/89b1ebb5-4af1-492a-b268-49aad16fe948/development-environments-and-dependencies-1.jpg",
-   "caption": "",
+   "caption": "A development environment is your workbench: the tools and parts you need, laid out ready",
    "hero": true
   },
   {
@@ -386,14 +346,14 @@
  "configuration-environment-variables-and-secrets": [
   {
    "url": "/__l5e/assets-v1/8065100d-e1e5-4bb8-a6af-4002baa2df34/configuration-environment-variables-and-secrets-1.jpg",
-   "caption": "",
+   "caption": "Secrets such as passwords and keys belong in a vault, never in your code",
    "hero": true
   }
  ],
  "reading-and-documenting-a-project": [
   {
    "url": "/__l5e/assets-v1/9e82cbee-8f7f-4b39-a11b-63dc3fe3673d/reading-and-documenting-a-project-1.jpg",
-   "caption": "",
+   "caption": "Good documentation is what lets the next person read and understand a project",
    "hero": true
   },
   {
