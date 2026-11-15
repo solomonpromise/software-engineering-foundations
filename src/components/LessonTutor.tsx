@@ -1,7 +1,9 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { MessageCircleQuestion, RotateCcw, X } from "lucide-react";
+import { MessageCircleQuestion, RotateCcw, X, Settings } from "lucide-react";
+import { getGrokKey, useGrokKey } from "@/lib/tutorKey";
+import { TutorSettings } from "@/components/TutorSettings";
 import { Conversation, ConversationContent, ConversationEmptyState, ConversationScrollButton } from "@/components/ai-elements/conversation";
 import { Message, MessageContent, MessageResponse } from "@/components/ai-elements/message";
 import { PromptInput, PromptInputBody, PromptInputFooter, PromptInputSubmit, PromptInputTextarea } from "@/components/ai-elements/prompt-input";
@@ -10,7 +12,7 @@ import { Shimmer } from "@/components/ai-elements/shimmer";
 const key = (slug: string) => `tutor:${slug}`;
 
 function TutorChat({ slug, title }: { slug: string; title: string }) {
-  const transport = useMemo(() => new DefaultChatTransport({ api: "/api/tutor", body: { slug } }), [slug]);
+  const transport = useMemo(() => new DefaultChatTransport({ api: "/api/tutor", body: () => ({ slug, grokKey: getGrokKey() || undefined }) }), [slug]);
   const [error, setError] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -19,7 +21,7 @@ function TutorChat({ slug, title }: { slug: string; title: string }) {
     transport,
     onError: (e) => {
       const m = e.message || "";
-      setError(/429/.test(m) ? "Too many questions at once — wait a moment and try again." : /402/.test(m) ? "The assistant is out of AI credits right now." : "Something went wrong. Please try again.");
+      setError(/key/i.test(m) ? m : /429/.test(m) ? "Too many questions at once — wait a moment and try again." : /402/.test(m) ? "The assistant is out of AI credits right now." : "Something went wrong. Please try again.");
     },
   });
 
@@ -91,6 +93,8 @@ function TutorChat({ slug, title }: { slug: string; title: string }) {
 
 export function LessonTutor({ slug, title }: { slug: string; title: string }) {
   const [open, setOpen] = useState(false);
+  const [settings, setSettings] = useState(false);
+  const grokKey = useGrokKey();
   return (
     <>
       <button onClick={() => setOpen(true)} aria-label="Ask about this lesson" title="Ask about this lesson" className="fixed bottom-6 right-6 z-30 flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition hover:-translate-y-0.5">
@@ -104,8 +108,13 @@ export function LessonTutor({ slug, title }: { slug: string; title: string }) {
                 <p className="text-xs font-bold uppercase tracking-widest text-accent">Lesson helper</p>
                 <p className="font-serif text-lg leading-tight">{title}</p>
               </div>
-              <button onClick={() => setOpen(false)} aria-label="Close"><X /></button>
+              <div className="flex items-center gap-3">
+                <button onClick={() => setSettings((v) => !v)} aria-label="Tutor settings" title="Tutor settings" className="text-muted-foreground hover:text-foreground"><Settings className="size-5" /></button>
+                <button onClick={() => setOpen(false)} aria-label="Close"><X /></button>
+              </div>
             </header>
+            {settings && <div className="border-b border-border bg-secondary/40 p-4"><TutorSettings onDone={() => setSettings(false)} /></div>}
+            <p className="border-b border-border px-4 py-1.5 text-xs text-muted-foreground">{grokKey ? "Answering with your Grok key" : "Answering with the course AI"}</p>
             <div className="min-h-0 flex-1"><TutorChat key={slug} slug={slug} title={title} /></div>
           </aside>
         </div>
