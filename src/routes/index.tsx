@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle2, Circle, BookOpen } from "lucide-react";
+import { useProgress, resetProgress } from "@/lib/progress";
 import { parts, chapters } from "@/content/lessons";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
@@ -19,6 +20,10 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const first = chapters[0];
+  const { done, last } = useProgress();
+  const doneSet = new Set(done);
+  const resume = chapters.find((c) => c.slug === last && !doneSet.has(c.slug)) ?? chapters.find((c) => !doneSet.has(c.slug));
+  const started = done.length > 0 || !!last;
   return (
     <div className="min-h-screen">
       <SiteHeader />
@@ -38,6 +43,17 @@ function Home() {
           </Link>
         )}
         </div>
+        {started && resume && (
+          <Link to="/learn/$slug" params={{ slug: resume.slug }} className="group mt-12 flex max-w-2xl items-center gap-5 rounded-2xl border border-border bg-card p-5 shadow-sm transition hover:border-primary">
+            <BookOpen className="size-8 shrink-0 text-accent" />
+            <div className="flex-1">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">Continue reading · {done.length} of {chapters.length} done</p>
+              <p className="mt-1 font-serif text-xl group-hover:text-primary">Lesson {resume.number}: {resume.title}</p>
+              <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-accent" style={{ width: `${(done.length / chapters.length) * 100}%` }} /></div>
+            </div>
+            <ArrowRight className="size-5 transition group-hover:translate-x-1" />
+          </Link>
+        )}
       </section>
 
       <section id="curriculum" className="border-t border-border bg-card">
@@ -58,17 +74,20 @@ function Home() {
                     {p.chapters.map((c) => (
                       <li key={c.slug}>
                         <Link to="/learn/$slug" params={{ slug: c.slug }} className="group flex items-baseline gap-4 py-3">
-                          <span className="w-8 font-mono text-xs text-muted-foreground">{String(c.number).padStart(2, "0")}</span>
+                          {doneSet.has(c.slug) ? <CheckCircle2 className="size-4 shrink-0 translate-y-0.5 text-accent" aria-label="Finished" /> : <Circle className="size-4 shrink-0 translate-y-0.5 text-border" />}
+                          <span className="w-6 font-mono text-xs text-muted-foreground">{String(c.number).padStart(2, "0")}</span>
                           <span className="flex-1 font-medium group-hover:text-primary">{c.title}</span>
                           <ArrowRight className="size-4 opacity-0 transition group-hover:opacity-100" />
                         </Link>
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-3 text-sm"><span className="font-semibold text-accent">Project:</span> {p.project.title}</p>
+                  <p className="mt-3 text-xs text-muted-foreground">{p.chapters.filter((c) => doneSet.has(c.slug)).length} of {p.chapters.length} finished</p>
+                  <p className="mt-1 text-sm"><span className="font-semibold text-accent">Project:</span> {p.project.title}</p>
                 </div>
               </div>
             ))}
+            {done.length > 0 && <button onClick={() => confirm("Clear all your reading progress?") && resetProgress()} className="text-sm text-muted-foreground underline">Reset my progress</button>}
             {parts.length === 0 && <p className="text-muted-foreground">Lessons are being prepared…</p>}
           </div>
         </div>
