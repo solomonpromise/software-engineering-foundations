@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { markDone, setLast, useProgress } from "@/lib/progress";
 import { findChapter } from "@/content/lessons";
+import { lessonRepo, linkHref } from "@/content/taskboard";
+import { projectSlug } from "./projects.$slug";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 import { figuresFor } from "@/content/extras";
 import { FigureBlock } from "@/components/Prose";
@@ -142,7 +144,13 @@ function Lesson() {
 
         <div className="mt-12 space-y-6">
           <Box tone="key" label="Key idea"><p className="font-serif text-xl">{c.keyIdea}</p></Box>
-          <Box tone="taskboard" label="In Taskboard"><p>{c.taskboard}</p></Box>
+          <Box tone="taskboard" label="In Taskboard"><p>{c.taskboard}</p>
+            {lessonRepo[c.number] && <div className="mt-3 border-t border-border pt-3 text-base">
+              <p className="text-sm text-muted-foreground">See it in the real code: {lessonRepo[c.number]!.note}</p>
+              <div className="mt-2 flex flex-wrap gap-2">{lessonRepo[c.number]!.links.map((l) => <a key={l.label + l.path} href={linkHref(l)} target="_blank" rel="noopener noreferrer" className="rounded-full border border-border bg-card px-3 py-1 font-mono text-xs hover:border-primary hover:text-primary">{l.label || "repository"} ↗</a>)}</div>
+            </div>}
+            {projectFor && <p className="mt-3 text-sm">This lesson is used in <Link to="/projects/$slug" params={{ slug: projectSlug(c.part.number) }} className="font-semibold text-primary underline">Project {c.part.number}: {c.part.project.title}</Link>.</p>}
+          </Box>
           <Box tone="walk" label={`Walkthrough · ${c.walkthrough.title}`}>
             <ol className="list-decimal space-y-2 pl-5">{c.walkthrough.steps.map((s) => <li key={s}>{s}</li>)}</ol>
           </Box>
