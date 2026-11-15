@@ -51,6 +51,11 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-brass: var(--brass);
+  --color-header: var(--header);
+  --color-header-foreground: var(--header-foreground);
+  --color-header-muted: var(--header-muted);
+  --color-header-border: var(--header-border);
+  --color-header-accent: var(--header-accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
@@ -110,6 +115,12 @@
   --sidebar-border: oklch(0.36 0.04 160);
   --sidebar-ring: oklch(0.72 0.11 78);
   --brass: oklch(0.72 0.11 78);
+  --header: oklch(0.26 0.05 158);
+  --header-foreground: oklch(0.96 0.012 90);
+  --header-muted: oklch(0.76 0.03 120);
+  --header-border: oklch(0.42 0.045 158);
+  --header-accent: oklch(0.72 0.11 78);
+  --shadow-header: 0 10px 30px -18px oklch(0.18 0.04 160 / 0.55);
   --shadow-page: 0 1px 2px oklch(0.2 0.03 255 / 0.08), 0 20px 50px -20px oklch(0.2 0.03 255 / 0.35);
 }
 
@@ -125,6 +136,12 @@
 }
 
 @layer components {
+  .site-header {
+    background: var(--header);
+    color: var(--header-foreground);
+    border-bottom: 2px solid var(--header-accent);
+    box-shadow: var(--shadow-header);
+  }
   .lesson-prose { font-size: 1.3rem; line-height: 1.7; }
   .lesson-prose p, .callout p, .page-sheet p { text-align: justify; hyphens: auto; text-wrap: pretty; }
   body { font-size: 1.125rem; }
@@ -158,6 +175,8 @@ html[data-theme="sepia"] {
   --primary: oklch(0.38 0.06 45); --primary-foreground: oklch(0.97 0.015 82);
   --secondary: oklch(0.91 0.03 78); --muted: oklch(0.93 0.025 80); --muted-foreground: oklch(0.45 0.035 55);
   --accent: oklch(0.5 0.11 50); --border: oklch(0.87 0.03 78); --input: oklch(0.87 0.03 78); --brass: oklch(0.66 0.11 70);
+  --header: oklch(0.3 0.045 55); --header-foreground: oklch(0.96 0.02 82); --header-muted: oklch(0.79 0.03 75);
+  --header-border: oklch(0.46 0.05 55); --header-accent: oklch(0.72 0.11 70);
 }
 html[data-theme="night"] {
   --background: oklch(0.2 0.015 160); --card: oklch(0.24 0.018 160); --popover: oklch(0.24 0.018 160);
@@ -166,6 +185,9 @@ html[data-theme="night"] {
   --secondary: oklch(0.3 0.02 160); --secondary-foreground: oklch(0.92 0.012 95); --muted: oklch(0.27 0.018 160); --muted-foreground: oklch(0.72 0.02 120);
   --accent: oklch(0.78 0.11 78); --accent-foreground: oklch(0.2 0.015 160); --border: oklch(0.34 0.02 160); --input: oklch(0.34 0.02 160); --brass: oklch(0.76 0.11 78);
   --sidebar: oklch(0.15 0.015 160);
+  --header: oklch(0.13 0.02 160); --header-foreground: oklch(0.94 0.012 90); --header-muted: oklch(0.72 0.02 120);
+  --header-border: oklch(0.32 0.02 160); --header-accent: oklch(0.78 0.11 78);
+  --shadow-header: 0 10px 30px -18px oklch(0 0 0 / 0.7);
   color-scheme: dark;
 }
 html[data-theme="contrast"] {
@@ -174,6 +196,8 @@ html[data-theme="contrast"] {
   --primary: oklch(0.25 0.06 155); --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.93 0 0); --muted: oklch(0.95 0 0); --muted-foreground: oklch(0.25 0 0);
   --accent: oklch(0.42 0.1 60); --border: oklch(0.45 0 0); --input: oklch(0.45 0 0); --brass: oklch(0.45 0.1 65);
+  --header: oklch(0 0 0); --header-foreground: oklch(1 0 0); --header-muted: oklch(0.92 0 0);
+  --header-border: oklch(0.4 0 0); --header-accent: oklch(0.86 0.16 92);
 }
 html[data-theme="night"] .callout-taskboard, html[data-theme="night"] .callout-mistake, html[data-theme="night"] .callout-ai { background: var(--card); border-color: var(--border); }
 html[data-theme="night"] .callout-taskboard .callout-label, html[data-theme="night"] .callout-mistake .callout-label, html[data-theme="night"] .callout-ai .callout-label { color: var(--accent); }
