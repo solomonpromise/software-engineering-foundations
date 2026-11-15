@@ -79,16 +79,16 @@ export const TOTAL_PAGES = 262;
 export const parts: Part[] = (() => {
   const out: Part[] = [];
   for (const line of raw.trim().split("\n")) {
-    const [label, title, p] = line.split("|");
+    const [label = "", title = "", p = "1"] = line.split("|");
     const page = Number(p);
     if (/^(P\d|BEFORE|A–F)$/.test(label)) out.push({ label, title, page, entries: [] });
-    else out[out.length - 1].entries.push({ label, title, page });
+    else out[out.length - 1]!.entries.push({ label, title, page });
   }
   return out;
 })();
 
 export function sectionFor(page: number) {
-  let cur: { part: Part; entry?: Entry } = { part: parts[0] };
+  let cur: { part: Part; entry?: Entry } = { part: parts[0]! };
   for (const part of parts) {
     if (page >= part.page) cur = { part };
     for (const e of part.entries) if (page >= e.page && page >= part.page) cur = { part, entry: e };

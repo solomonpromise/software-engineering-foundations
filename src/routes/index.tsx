@@ -9,8 +9,8 @@ const PdfPage = lazy(() => import("@/components/PdfPage"));
 
 export const Route = createFileRoute("/")({
   validateSearch: (s: Record<string, unknown>) => {
-    const n = Number(s.page);
-    return { page: Number.isFinite(n) && n >= 1 && n <= TOTAL_PAGES ? Math.floor(n) : 1 };
+    const n = Number(s["page"]);
+    return { page: Number.isFinite(n) && n >= 1 && n <= TOTAL_PAGES ? Math.floor(n) : undefined } as { page?: number };
   },
   head: () => ({
     meta: [
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Reader() {
-  const { page } = Route.useSearch();
+  const page = Route.useSearch().page ?? 1;
   const navigate = useNavigate({ from: "/" });
   const [open, setOpen] = useState(false);
   const stage = useRef<HTMLDivElement>(null);
