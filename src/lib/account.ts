@@ -17,23 +17,25 @@ export function useUser() {
 /** Keeps the signed-in learner's progress in their account, merged with this browser's. */
 export function useProgressSync() {
   const { user } = useUser();
+  const userId = user?.id;
   useEffect(() => {
-    if (!user) return;
+    if (!userId) return;
     let alive = true; let timer: ReturnType<typeof setTimeout> | undefined; let unsub = () => {};
+    const persist = async () => {
+      await supabase.from("learner_progress").upsert({ user_id: userId, data: getProgress() as never, updated_at: new Date().toISOString() });
+    };
     const save = () => {
       clearTimeout(timer);
-      timer = setTimeout(() => {
-        void supabase.from("learner_progress").upsert({ user_id: user.id, data: getProgress() as never, updated_at: new Date().toISOString() });
-      }, 600);
+      timer = setTimeout(() => { void persist(); }, 600);
     };
     void (async () => {
-      const { data, error } = await supabase.from("learner_progress").select("data").eq("user_id", user.id).maybeSingle();
+      const { data, error } = await supabase.from("learner_progress").select("data").eq("user_id", userId).maybeSingle();
       if (!alive || error) return;
       const remote = (data?.data ?? { done: [] }) as Progress;
       replaceProgress(mergeProgress(getProgress(), { ...remote, done: remote.done ?? [] }));
-      save();
       unsub = subscribeProgress(save);
+      await persist();
     })();
     return () => { alive = false; clearTimeout(timer); unsub(); };
-  }, [user]);
+  }, [userId]);
 }
