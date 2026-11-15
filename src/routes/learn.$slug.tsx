@@ -10,6 +10,7 @@ import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 import { figuresFor } from "@/content/extras";
 import { FigureBlock } from "@/components/Prose";
 import { LessonTutor } from "@/components/LessonTutor";
+import { canFinish, gotCount, type Verdict } from "@/lib/quiz";
 
 export const Route = createFileRoute("/learn/$slug")({
   loader: ({ params }) => {
@@ -46,13 +47,25 @@ function Box({ tone, label, children }: { tone: string; label: string; children:
   );
 }
 
-function Check({ q, a }: { q: string; a: string }) {
+function Check({ n, q, a, verdict, onVerdict }: { n: number; q: string; a: string; verdict?: Verdict; onVerdict: (v: Verdict) => void }) {
   const [open, setOpen] = useState(false);
+  const tone = verdict === "got" ? "border-accent/60" : verdict === "not" ? "border-destructive/40" : "border-border";
   return (
-    <li className="rounded-lg border border-border bg-card p-4">
-      <p className="font-medium">{q}</p>
+    <li className={`rounded-lg border bg-card p-4 ${tone}`}>
+      <p className="font-medium"><span className="mr-2 text-sm text-muted-foreground">Q{n}.</span>{q}</p>
+      <p className="mt-1 text-xs text-muted-foreground">Answer it in your head or on paper first, then compare.</p>
       <button onClick={() => setOpen(!open)} className="mt-2 text-sm font-semibold text-primary">{open ? "Hide answer" : "Show answer"}</button>
-      {open && <p className="mt-2 text-muted-foreground">{a}</p>}
+      {open && (
+        <>
+          <p className="mt-2 text-muted-foreground">{a}</p>
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+            <span className="text-muted-foreground">Did you get it?</span>
+            <button onClick={() => onVerdict("got")} aria-pressed={verdict === "got"} className={`rounded-full border px-3 py-1 ${verdict === "got" ? "border-accent bg-accent text-accent-foreground" : "border-border"}`}>Yes, I got it</button>
+            <button onClick={() => onVerdict("not")} aria-pressed={verdict === "not"} className={`rounded-full border px-3 py-1 ${verdict === "not" ? "border-destructive bg-destructive/10 text-destructive" : "border-border"}`}>Not yet</button>
+          </div>
+          {verdict === "not" && <p className="mt-2 text-xs text-muted-foreground">Re-read the section above, or ask the lesson helper (bottom right) to explain it another way.</p>}
+        </>
+      )}
     </li>
   );
 }
@@ -64,6 +77,9 @@ function Lesson() {
   const inline = figs.filter((f) => !f.hero);
   const { done } = useProgress();
   const isDone = done.includes(c.slug);
+  const [verdicts, setVerdicts] = useState<Record<number, Verdict>>({});
+  useEffect(() => setVerdicts({}), [c.slug]);
+  const passed = canFinish(verdicts, c.check.length);
   const navigate = useNavigate();
   const [scroll, setScroll] = useState(0);
   const [active, setActive] = useState(0);
@@ -163,7 +179,7 @@ function Lesson() {
         </div>
 
         <h2 id="check" className="mt-14 scroll-mt-24 font-serif text-3xl">Check your understanding</h2>
-        <ul className="mt-6 space-y-3">{c.check.map((x) => <Check key={x.q} {...x} />)}</ul>
+        <ul className="mt-6 space-y-3">{c.check.map((x, i) => <Check key={x.q} n={i + 1} {...x} verdict={verdicts[i]} onVerdict={(v) => setVerdicts((p) => ({ ...p, [i]: v }))} />)}</ul>
 
         <div className="mt-14 flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-8 text-center">
           {isDone ? (
@@ -178,8 +194,8 @@ function Lesson() {
           ) : (
             <>
               <p className="font-serif text-2xl">Done with this lesson?</p>
-              <p className="text-sm text-muted-foreground">Mark it finished to track your progress. It's saved in this browser.</p>
-              <button onClick={() => { markDone(c.slug); }} className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground"><CheckCircle2 className="size-4" /> Mark as finished</button>
+              <p className="text-sm text-muted-foreground">{passed ? "You've answered every question. Mark it finished to track your progress." : `Answer the questions above first: ${gotCount(verdicts)} of ${c.check.length} got it.`}</p>
+              <button disabled={!passed} onClick={() => { markDone(c.slug); }} className="disabled:cursor-not-allowed disabled:opacity-50 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground"><CheckCircle2 className="size-4" /> Mark as finished</button>
             </>
           )}
         </div>
