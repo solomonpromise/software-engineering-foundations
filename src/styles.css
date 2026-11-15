@@ -204,3 +204,28 @@ html[data-theme="night"] .callout-taskboard .callout-label, html[data-theme="nig
 html[data-size="small"] { font-size: 93.75%; }
 html[data-size="large"] { font-size: 112.5%; }
 html[data-size="xlarge"] { font-size: 125%; }
+
+/* Keyboard, motion and print accessibility. */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+@media print {
+  @page { margin: 18mm; }
+  .site-header, footer, .lesson-page .fixed, .lesson-page aside { display: none !important; }
+  .lesson-page article { max-width: none !important; padding: 0 !important; }
+  .lesson-page .lesson-prose { font-size: 12pt; line-height: 1.55; }
+  .lesson-page .lesson-prose p { text-align: left; orphans: 3; widows: 3; }
+  .lesson-page h1, .lesson-page h2, .lesson-page h3 { break-after: avoid; }
+  .lesson-page figure, .lesson-page pre, .lesson-page .callout { break-inside: avoid; }
+  .lesson-page img { max-height: 110mm; object-fit: contain; }
+  .lesson-page a { color: inherit; text-decoration: none; }
+}

@@ -116,7 +116,7 @@ function Lesson() {
   }, [prev, next]);
 
   return (
-    <div className="min-h-screen">
+    <div className="lesson-page min-h-screen">
       <SiteHeader />
       <div className="fixed inset-x-0 top-0 z-40 h-1 bg-transparent" aria-hidden>
         <div className="h-full bg-brass transition-[width] duration-150" style={{ width: `${scroll * 100}%` }} />

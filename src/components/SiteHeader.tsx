@@ -48,6 +48,7 @@ export function SiteHeader() {
               <Link
                 key={l.label}
                 {...(rest as any)}
+                aria-current={active ? "page" : undefined}
                 className={`rounded-full px-3.5 py-2 text-sm transition-colors ${
                   active
                     ? "bg-header-accent/20 text-header-foreground"

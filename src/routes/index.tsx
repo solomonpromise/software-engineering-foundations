@@ -56,6 +56,8 @@ function Home() {
         </div>
       </section>
 
+      <ContinueLearning />
+
       <section className="mx-auto max-w-6xl px-5 py-20">
         <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent">What you'll understand</p>
         <h2 className="mt-3 max-w-2xl font-serif text-4xl">Six ideas every builder needs before trusting AI with their product.</h2>

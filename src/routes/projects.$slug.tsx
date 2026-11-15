@@ -31,7 +31,7 @@ function ProjectPage() {
   const { partNumber } = Route.useLoaderData();
   const part = parts.find((p) => p.number === partNumber)!;
   const x = extras[String(partNumber)]!;
-  const { steps, done } = useProgress();
+  const { steps, done, assessments } = useProgress();
   const doneLessons = new Set(done);
   const byNum = (n: number) => chapters.find((c) => c.number === n);
   const readyCount = part.chapters.filter((c) => doneLessons.has(c.slug)).length;

@@ -7,6 +7,12 @@ import { useUser } from "@/lib/account";
 export function AccountButton() {
   const { user, ready } = useUser();
   const [open, setOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    setIsAdmin(false);
+    if (!user) return;
+    void supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin").maybeSingle().then(({ data }) => setIsAdmin(Boolean(data)));
+  }, [user]);
   if (!ready) return <span className="size-9" />;
   if (!user) return <Link to="/auth" className="rounded-full border border-header-accent/45 px-3 py-1.5 text-sm text-header-foreground hover:bg-header-accent/15">Sign in</Link>;
   return (
