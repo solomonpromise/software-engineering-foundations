@@ -73,6 +73,11 @@ function ProjectPage() {
           <a href={REPO} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs text-primary-foreground">Whole repository<ExternalLink className="size-3" /></a>
         </div>
 
+        <Link to="/taskboard" className="mt-6 flex items-center justify-between gap-4 rounded-xl border border-brass bg-secondary/50 p-4 hover:bg-secondary">
+          <span><span className="block font-semibold">Try Taskboard in your browser</span><span className="text-sm text-muted-foreground">A working demo with labels showing which lesson explains each part.</span></span>
+          <ArrowRight className="size-5 shrink-0 text-primary" />
+        </Link>
+
         <h2 className="mt-12 font-serif text-3xl">Set up</h2>
         <ol className="mt-4 list-decimal space-y-2 pl-6">{x.setup.map((s) => <li key={s}>{s}</li>)}</ol>
 
