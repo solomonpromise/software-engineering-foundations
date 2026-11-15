@@ -113,8 +113,8 @@ export function LessonTutor({ slug, title }: { slug: string; title: string }) {
                 <button onClick={() => setOpen(false)} aria-label="Close"><X /></button>
               </div>
             </header>
-            {settings && <div className="border-b border-border bg-secondary/40 p-4"><TutorSettings onDone={() => setSettings(false)} /></div>}
-            <p className="border-b border-border px-4 py-1.5 text-xs text-muted-foreground">{grokKey ? "Answering with your Grok key" : "Answering with the course AI"}</p>
+            {(settings || !grokKey) && <div className="border-b border-border bg-secondary/40 p-4"><TutorSettings onDone={() => setSettings(false)} /></div>}
+            <p className="border-b border-border px-4 py-1.5 text-xs text-muted-foreground">{grokKey ? "Answering with your Grok key" : "Add your Grok key above to start asking questions"}</p>
             <div className="min-h-0 flex-1"><TutorChat key={slug} slug={slug} title={title} /></div>
           </aside>
         </div>

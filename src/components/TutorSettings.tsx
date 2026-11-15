@@ -22,7 +22,7 @@ export function TutorSettings({ onDone }: { onDone?: () => void }) {
           <button className="rounded-md bg-primary px-3 py-2 font-semibold text-primary-foreground">Save</button>
         </form>
       )}
-      {!saved && <p className="text-xs text-muted-foreground">No key? The tutor uses the course's built-in AI instead.</p>}
+      {!saved && <p className="text-xs text-muted-foreground">The lesson helper needs a key to answer. It's free to get one.</p>}
     </div>
   );
 }
