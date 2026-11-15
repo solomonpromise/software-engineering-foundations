@@ -15,6 +15,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { useProgressSync } from "../lib/account";
 import { supabase } from "@/integrations/supabase/client";
+import { registerOfflineReading } from "../lib/pwa";
 
 function NotFoundComponent() {
   return (

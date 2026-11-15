@@ -5,7 +5,8 @@ import { REPO, repoUrl } from "@/content/taskboard";
 import { ExternalLink } from "lucide-react";
 import projects from "@/content/projects.json";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
-import { useProgress, toggleStep } from "@/lib/progress";
+import { useProgress, toggleStep, toggleAssessment } from "@/lib/progress";
+import { projectAssessments } from "@/content/assessments";
 
 type Extra = { slug: string; stepLessons: number[][]; repo: string[]; time: string; deliverable: string; setup: string[]; code: { title: string; lang: string; body: string }[] };
 const extras = projects as Record<string, Extra>;

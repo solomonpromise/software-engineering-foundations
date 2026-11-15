@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { UserRound, LogOut, Award } from "lucide-react";
-import { useState } from "react";
+import { UserRound, LogOut, Award, MessageSquareText } from "lucide-react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUser } from "@/lib/account";
 

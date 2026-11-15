@@ -6,6 +6,7 @@ const conceptIcons = [AppWindow, Workflow, ClipboardList, Network, Bot, Rocket];
 import { useProgress } from "@/lib/progress";
 import { parts, chapters } from "@/content/lessons";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
+import { ContinueLearning } from "@/components/ContinueLearning";
 
 export const Route = createFileRoute("/")({
   head: () => ({

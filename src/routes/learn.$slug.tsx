@@ -11,6 +11,9 @@ import { figuresFor } from "@/content/extras";
 import { FigureBlock } from "@/components/Prose";
 import { LessonTutor } from "@/components/LessonTutor";
 import { canFinish, gotCount, type Verdict } from "@/lib/quiz";
+import { LessonTools } from "@/components/LessonTools";
+import { PracticeExercise } from "@/components/PracticeExercise";
+import { LessonFeedback } from "@/components/LessonFeedback";
 
 export const Route = createFileRoute("/learn/$slug")({
   loader: ({ params }) => {

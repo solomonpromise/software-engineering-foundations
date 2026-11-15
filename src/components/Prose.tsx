@@ -31,10 +31,11 @@ export function SectionBlock({ s }: { s: XSection }) {
   );
 }
 
-export function FigureBlock({ url, caption }: { url: string; caption: string }) {
+export function FigureBlock({ url, caption, context }: { url: string; caption: string; context?: string }) {
+  const alt = caption ? `${caption}${context ? `. Illustration for the lesson ${context}` : ""}` : `Illustration for ${context ?? "this lesson"}`;
   return (
     <figure className="my-10">
-      <img src={url} alt={caption || "Lesson illustration"} loading="lazy" className="w-full rounded-lg" />
+      <img src={url} alt={alt} loading="lazy" className="w-full rounded-lg" />
       {caption && <figcaption className="mt-2 text-sm text-muted-foreground">{caption}</figcaption>}
     </figure>
   );
