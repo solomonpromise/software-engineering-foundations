@@ -1,7 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { introPages } from "@/content/extras";
-import { chapters } from "@/content/lessons";
+import { chapters, parts } from "@/content/lessons";
+import { Flag, Check } from "lucide-react";
+import { useProgress } from "@/lib/progress";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 import { SectionBlock } from "@/components/Prose";
 
@@ -33,7 +35,7 @@ function IntroView() {
           ))}
         </nav>
         <h1 className="mt-8 font-serif text-4xl md:text-5xl">{page.title}</h1>
-        <div className="lesson-prose mt-6">{page.sections.map((s) => <SectionBlock key={s.heading} s={s} />)}</div>
+        {page.slug === "roadmap" ? <Roadmap sections={page.sections} /> : <div className="lesson-prose mt-6">{page.sections.map((s) => <SectionBlock key={s.heading} s={s} />)}</div>}
         <div className="mt-14 border-t border-border pt-8">
           {next ? (
             <Link to="/start/$slug" params={{ slug: next.slug }} className="inline-flex items-center gap-2 font-semibold text-primary">Next: {next.title} <ArrowRight className="size-4" /></Link>
@@ -43,6 +45,48 @@ function IntroView() {
         </div>
       </article>
       <SiteFooter />
+    </div>
+  );
+}
+
+function Roadmap({ sections }: { sections: { heading: string; paragraphs?: string[] }[] }) {
+  const { done } = useProgress();
+  const doneSet = new Set(done);
+  const closing = sections.find((s) => !s.heading.startsWith("Part"));
+  return (
+    <div className="mt-8">
+      <p className="text-lg text-muted-foreground">Six stages take you from an idea to a live, maintained product. Each stage builds on the one before and ends with a project.</p>
+      <ol className="relative mt-12 space-y-10 border-l-2 border-border pl-10">
+        {parts.map((p) => {
+          const sec = sections.find((s) => s.heading.startsWith(`Part ${p.number}`));
+          const [about, outcome] = sec?.paragraphs ?? [];
+          const n = p.chapters.filter((c) => doneSet.has(c.slug)).length;
+          const complete = n === p.chapters.length;
+          return (
+            <li key={p.number} className="relative">
+              <span className={`absolute -left-[3.2rem] top-0 flex size-10 items-center justify-center rounded-full border-2 font-serif text-lg ${complete ? "border-primary bg-primary text-primary-foreground" : "border-brass bg-background text-accent"}`}>
+                {complete ? <Check className="size-5" /> : p.number}
+              </span>
+              <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Part {p.number} · Lessons {p.chapters[0]?.number}–{p.chapters[p.chapters.length - 1]?.number}</p>
+                  <p className="text-xs text-muted-foreground">{n} of {p.chapters.length} finished</p>
+                </div>
+                <h2 className="mt-2 font-serif text-2xl">{p.title}</h2>
+                <p className="mt-1 italic text-muted-foreground">{p.question}</p>
+                {about && <p className="mt-4">{about}</p>}
+                <div className="mt-3 h-1 overflow-hidden rounded-full bg-muted"><div className="h-full bg-brass" style={{ width: `${(n / p.chapters.length) * 100}%` }} /></div>
+                <div className="mt-5 flex gap-3 rounded-lg bg-secondary/60 p-4">
+                  <Flag className="mt-1 size-4 shrink-0 text-accent" />
+                  <div><p className="font-semibold">Project: {p.project.title}</p>{outcome && <p className="text-sm text-muted-foreground">{outcome.replace(/^Practical outcome:\s*/, "")}</p>}</div>
+                </div>
+                {p.chapters[0] && <Link to="/learn/$slug" params={{ slug: p.chapters[0].slug }} className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:gap-3">Start part {p.number} <ArrowRight className="size-4" /></Link>}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+      {closing && <div className="mt-12 rounded-xl bg-primary p-6 text-primary-foreground"><h2 className="font-serif text-2xl">{closing.heading}</h2>{closing.paragraphs?.map((t) => <p key={t} className="mt-2 text-primary-foreground/85">{t}</p>)}</div>}
     </div>
   );
 }

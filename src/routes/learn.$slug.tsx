@@ -114,7 +114,7 @@ function Lesson() {
         <p className="mt-8 text-xs text-muted-foreground">Tip: use ← → keys to move between lessons.</p>
       </aside>
       <article className="mx-auto min-w-0 max-w-3xl flex-1 py-16">
-        <Link to="/" hash="curriculum" className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Part {c.part.number} · {c.part.title}</Link>
+        <Link to="/curriculum" hash={`part-${c.part.number}`} className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Part {c.part.number} · {c.part.title}</Link>
         {hero && (
           <figure className="mt-6">
             <img src={hero.url} alt={hero.caption || c.title} className="aspect-[21/9] w-full rounded-xl object-cover" />
