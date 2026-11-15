@@ -1,0 +1,405 @@
+{
+ "what-software-and-applications-are": [
+  {
+   "url": "/__l5e/assets-v1/4497b668-efd5-4e73-84c5-239326bc81cb/what-software-and-applications-are-1.jpg",
+   "caption": "What Software and Applications Are",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/07f9a08e-5d2f-431a-b3ed-b97f577a6414/what-software-and-applications-are-2.jpg",
+   "caption": "Each feature is a vertical slice through the interface, the logic and the data",
+   "hero": false
+  },
+  {
+   "url": "/__l5e/assets-v1/7eeac47d-f3b6-4b95-8685-e6858a07264f/what-software-and-applications-are-3.jpg",
+   "caption": "Left: the processor and memory live on circuit boards like this one, doing the work while the power is on",
+   "hero": false
+  }
+ ],
+ "different-types-of-applications": [
+  {
+   "url": "/__l5e/assets-v1/01e50490-8a96-437d-a2e5-90275cdbc4ac/different-types-of-applications-1.jpg",
+   "caption": "Different Types of Applications",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/16b4e3e0-ff8c-42f9-b1e6-1efac10e5a0d/different-types-of-applications-2.jpg",
+   "caption": "A mobile app installed on the device can use phone features such as location and notifications, and must be updated through an app store",
+   "hero": false
+  },
+  {
+   "url": "/__l5e/assets-v1/ccf89b81-cf21-4ea2-9826-adbc9e50f99f/different-types-of-applications-3.jpg",
+   "caption": "A command-line program at work: no buttons or windows, just text commands and text output",
+   "hero": false
+  }
+ ],
+ "from-a-problem-to-application-requirements": [
+  {
+   "url": "/__l5e/assets-v1/c32b9a06-3634-4352-b553-d4c99da6fa5d/from-a-problem-to-application-requirements-1.jpg",
+   "caption": "Requirements flow from a real problem to criteria you can check",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/f986e21b-2537-460a-807d-5af8ac67cdf5/from-a-problem-to-application-requirements-2.jpg",
+   "caption": "The best requirements start with a conversation",
+   "hero": false
+  },
+  {
+   "url": "/__l5e/assets-v1/bc808281-ae3e-4c35-a13e-2a691bfdfbe9/from-a-problem-to-application-requirements-3.jpg",
+   "caption": "Teams often map journeys with sticky notes: one note per step, arranged left to right, so missing steps and unnecessary features are easy",
+   "hero": false
+  }
+ ],
+ "the-software-development-lifecycle": [
+  {
+   "url": "/__l5e/assets-v1/ecc57d5b-b891-49e4-bdf8-711874ea04ce/the-software-development-lifecycle-1.jpg",
+   "caption": "The Software Development Lifecycle",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/20a1fa63-e599-40fe-995b-c5fa227463f0/the-software-development-lifecycle-2.jpg",
+   "caption": "On a team, the lifecycle is shared between many people",
+   "hero": false
+  },
+  {
+   "url": "/__l5e/assets-v1/97eca7a8-a6dd-4563-a60e-0982383e6051/the-software-development-lifecycle-3.jpg",
+   "caption": "Some people read screens through a braille display or a screen reader rather than by sight",
+   "hero": false
+  }
+ ],
+ "turning-requirements-into-a-design": [
+  {
+   "url": "/__l5e/assets-v1/212fc051-d424-4b29-8072-848e53c7d500/turning-requirements-into-a-design-1.jpg",
+   "caption": "Turning Requirements into a Design",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/726dfeee-0e7c-4809-90e1-3737333c51df/turning-requirements-into-a-design-2.jpg",
+   "caption": "A one-page design",
+   "hero": false
+  }
+ ],
+ "application-architecture-and-boundaries": [
+  {
+   "url": "/__l5e/assets-v1/ecd6ae9a-77b1-4897-a0db-6f3b96fb6d4c/application-architecture-and-boundaries-1.jpg",
+   "caption": "Application Architecture and Boundaries",
+   "hero": true
+  }
+ ],
+ "choosing-languages-frameworks-and-services": [
+  {
+   "url": "/__l5e/assets-v1/45ad3b46-613e-4a32-9378-f9e069da7729/choosing-languages-frameworks-and-services-1.jpg",
+   "caption": "Choosing Languages, Frameworks and Services",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/dc750153-dd93-42ba-8334-687ac917f77d/choosing-languages-frameworks-and-services-2.jpg",
+   "caption": "Use services for utility capabilities; spend your effort where it differentiates",
+   "hero": false
+  }
+ ],
+ "designing-data-and-integrations": [
+  {
+   "url": "/__l5e/assets-v1/3e6a890c-d79a-4e71-85a7-d41423f8fc55/designing-data-and-integrations-1.jpg",
+   "caption": "Designing Data and Integrations",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/04868e50-c5aa-4ed7-9cef-2c77d1727abf/designing-data-and-integrations-2.jpg",
+   "caption": "Handling a webhook safely: verify it, process each event once, respond quickly, and expect repeats",
+   "hero": false
+  }
+ ],
+ "designing-for-quality-and-future-change": [
+  {
+   "url": "/__l5e/assets-v1/d6f3859d-4312-4a4d-a402-452c9944d37a/designing-for-quality-and-future-change-1.jpg",
+   "caption": "Designing for Quality and Future Change",
+   "hero": true
+  }
+ ],
+ "understanding-ai-coding-tools": [
+  {
+   "url": "/__l5e/assets-v1/b4d93519-2684-4fd1-b410-eb2c6df4fc58/understanding-ai-coding-tools-1.jpg",
+   "caption": "Understanding AI Coding Tools",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/04591168-3b32-4654-884f-7be021bd8e0d/understanding-ai-coding-tools-2.jpg",
+   "caption": "A coding-agent session, annotated",
+   "hero": false
+  }
+ ],
+ "preparing-tasks-and-giving-ai-context": [
+  {
+   "url": "/__l5e/assets-v1/b0047c9a-9e32-4d9a-bfc5-2be4755558b6/preparing-tasks-and-giving-ai-context-1.jpg",
+   "caption": "Preparing Tasks and Giving AI Context",
+   "hero": true
+  }
+ ],
+ "building-features-in-small-increments": [
+  {
+   "url": "/__l5e/assets-v1/7dc618e6-d31d-4f8b-b9b7-f30fcd581562/building-features-in-small-increments-1.jpg",
+   "caption": "Building Features in Small Increments",
+   "hero": true
+  }
+ ],
+ "understanding-and-reviewing-generated-code": [
+  {
+   "url": "/__l5e/assets-v1/47cf6408-35c5-48f8-83d1-3410c5e21c79/understanding-and-reviewing-generated-code-1.jpg",
+   "caption": "Understanding and Reviewing Generated Code",
+   "hero": true
+  }
+ ],
+ "testing-and-verifying-behaviour": [
+  {
+   "url": "/__l5e/assets-v1/349b8896-0ac3-4c1b-ad6d-1b637898f5ed/testing-and-verifying-behaviour-1.jpg",
+   "caption": "Testing and Verifying Behaviour",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/cf2f54ac-f51a-41be-93d3-ea55948ec87e/testing-and-verifying-behaviour-2.jpg",
+   "caption": "Acceptance criteria turned into tests, and a test run that catches a regression",
+   "hero": false
+  }
+ ],
+ "debugging-and-refining-with-ai": [
+  {
+   "url": "/__l5e/assets-v1/a8b56f44-f1a6-4996-a32c-bf4cd6def274/debugging-and-refining-with-ai-1.jpg",
+   "caption": "Debugging and Refining with AI",
+   "hero": true
+  }
+ ],
+ "understanding-deployment-and-hosting": [
+  {
+   "url": "/__l5e/assets-v1/582fb947-71b3-43ad-9c0f-babdeaaaef1a/understanding-deployment-and-hosting-1.jpg",
+   "caption": "Understanding Deployment and Hosting",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/ef17f59e-7751-4440-a23b-5061633df0d7/understanding-deployment-and-hosting-2.jpg",
+   "caption": "Where Taskboard's parts live in production",
+   "hero": false
+  }
+ ],
+ "preparing-and-releasing-an-application": [
+  {
+   "url": "/__l5e/assets-v1/f34101da-fe9d-4165-8c0d-2acf3e66c593/preparing-and-releasing-an-application-1.jpg",
+   "caption": "Preparing and Releasing an Application",
+   "hero": true
+  }
+ ],
+ "observing-an-application-in-production": [
+  {
+   "url": "/__l5e/assets-v1/7a9046ca-078d-46e4-b5f0-2c3b20189d8f/observing-an-application-in-production-1.jpg",
+   "caption": "Observing an Application in Production",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/d13da168-ef88-49e2-b8c3-70e8300580e9/observing-an-application-in-production-2.jpg",
+   "caption": "A production monitoring dashboard during an incident",
+   "hero": false
+  }
+ ],
+ "protecting-data-and-recovering-from-failure": [
+  {
+   "url": "/__l5e/assets-v1/c7c2778c-8aee-4c4a-aaa8-07056bc5d370/protecting-data-and-recovering-from-failure-1.jpg",
+   "caption": "Protecting Data and Recovering from Failure",
+   "hero": true
+  }
+ ],
+ "maintaining-and-evolving-the-application": [
+  {
+   "url": "/__l5e/assets-v1/fe008865-e920-493f-a540-da7cbb3fa9f8/maintaining-and-evolving-the-application-1.jpg",
+   "caption": "Maintaining and Evolving the Application",
+   "hero": true
+  }
+ ],
+ "programming-foundations": [
+  {
+   "url": "/__l5e/assets-v1/0a1b79e5-88cd-4080-beaa-53fa96235e62/programming-foundations-1.jpg",
+   "caption": "Programming Foundations",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/ab568c2e-9290-4a06-a2e3-ae530bb6dda8/programming-foundations-2.jpg",
+   "caption": "Think of the runtime as an engine",
+   "hero": false
+  },
+  {
+   "url": "/__l5e/assets-v1/dc29244c-0e3c-44b7-93c9-469ebb69c2f6/programming-foundations-3.jpg",
+   "caption": "A code editor showing a small Python module, the project's files, and a failing test in the terminal",
+   "hero": false
+  }
+ ],
+ "the-frontend-and-user-interface": [
+  {
+   "url": "/__l5e/assets-v1/958d0984-f181-4dcf-872e-6bf85ac3da64/the-frontend-and-user-interface-1.jpg",
+   "caption": "The Frontend and User Interface",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/f1ca7454-e042-4a3a-8ec1-7a6ab773dc00/the-frontend-and-user-interface-2.jpg",
+   "caption": "The anatomy of Taskboard's \"My tasks\" screen",
+   "hero": false
+  },
+  {
+   "url": "/__l5e/assets-v1/a20a9856-03bb-4d4a-9224-11083b1f0961/the-frontend-and-user-interface-3.jpg",
+   "caption": "The frontend is where people meet your software",
+   "hero": false
+  }
+ ],
+ "the-backend-and-application-logic": [
+  {
+   "url": "/__l5e/assets-v1/fce86aa9-28c8-4543-bbc4-f6a109b300a6/the-backend-and-application-logic-1.jpg",
+   "caption": "The Backend and Application Logic",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/389d95b8-1255-4fc1-a1bd-bf7358515bf9/the-backend-and-application-logic-2.jpg",
+   "caption": "The typical backend pipeline",
+   "hero": false
+  }
+ ],
+ "networks-http-and-apis": [
+  {
+   "url": "/__l5e/assets-v1/44f3593f-ac47-4341-8978-ea6d12173d91/networks-http-and-apis-1.jpg",
+   "caption": "Networks, HTTP and APIs",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/56298d64-7fd0-4b37-ac87-d67b8494bab9/networks-http-and-apis-2.jpg",
+   "caption": "An HTTP message is like a letter: an address and a purpose on the outside (method, path, headers), and contents inside (the body)",
+   "hero": false
+  },
+  {
+   "url": "/__l5e/assets-v1/419637b1-8167-487e-9f7d-4b719b852c97/networks-http-and-apis-3.jpg",
+   "caption": "An API works like a waiter: you place an order in an agreed format, the kitchen does the work, and you get a result back without ever enteri",
+   "hero": false
+  },
+  {
+   "url": "/__l5e/assets-v1/489ddcd5-5770-48bd-8431-bec7634b045c/networks-http-and-apis-4.jpg",
+   "caption": "The browser's Network panel, the single most useful tool for seeing what the frontend and backend actually say to each other",
+   "hero": false
+  }
+ ],
+ "databases-and-persistent-storage": [
+  {
+   "url": "/__l5e/assets-v1/3339e5b0-e7f6-4e2b-9855-a394a1404555/databases-and-persistent-storage-1.jpg",
+   "caption": "Databases and Persistent Storage",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/bd348c85-ca81-4b16-b67f-1400e5dd0727/databases-and-persistent-storage-2.jpg",
+   "caption": "Two related tables",
+   "hero": false
+  },
+  {
+   "url": "/__l5e/assets-v1/2a226a13-c7fc-42e0-b1b8-a3f077210cbd/databases-and-persistent-storage-3.jpg",
+   "caption": "Looking inside Taskboard's database with a database viewer",
+   "hero": false
+  }
+ ],
+ "modelling-and-working-with-data": [
+  {
+   "url": "/__l5e/assets-v1/a719066d-332b-4113-8f66-9c0510f0aaba/modelling-and-working-with-data-1.jpg",
+   "caption": "Modelling and Working with Data",
+   "hero": true
+  }
+ ],
+ "users-authentication-and-permissions": [
+  {
+   "url": "/__l5e/assets-v1/feab89f2-1015-4d3d-ae59-83d9cdad6c4e/users-authentication-and-permissions-1.jpg",
+   "caption": "Users, Authentication and Permissions",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/354d72f9-eb7f-4c41-bb6a-65b47c06375e/users-authentication-and-permissions-2.jpg",
+   "caption": "A passport authenticates you: it proves who you are",
+   "hero": false
+  },
+  {
+   "url": "/__l5e/assets-v1/6e77fca7-26f3-4afd-85d4-67231879220f/users-authentication-and-permissions-3.jpg",
+   "caption": "Taskboard's sign-in screen",
+   "hero": false
+  },
+  {
+   "url": "/__l5e/assets-v1/659f00a3-5c6a-4f2c-801d-4b3214a39bf5/users-authentication-and-permissions-4.jpg",
+   "caption": "Taskboard's sign-in screen",
+   "hero": false
+  }
+ ],
+ "following-an-action-through-the-application": [
+  {
+   "url": "/__l5e/assets-v1/af1ee04f-f24c-4d2d-ad34-2d918d5dc75a/following-an-action-through-the-application-1.jpg",
+   "caption": "Following an Action Through the Application",
+   "hero": true
+  }
+ ],
+ "files-folders-and-project-structure": [
+  {
+   "url": "/__l5e/assets-v1/2b78c128-8f0e-4d76-a989-c8326657bdc0/files-folders-and-project-structure-1.jpg",
+   "caption": "shows Taskboard's project, simplified",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/c7ca526d-7a8d-4b60-bf21-1fbb51c28fe9/files-folders-and-project-structure-2.jpg",
+   "caption": "The anatomy of Taskboard's project folder",
+   "hero": false
+  }
+ ],
+ "repositories-and-where-they-live": [
+  {
+   "url": "/__l5e/assets-v1/945d0691-0d60-4f3e-91c8-c9c963660422/repositories-and-where-they-live-1.jpg",
+   "caption": "Repositories and Where They Live",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/9fb9f54a-6481-43e4-81d5-0b2b0a72357d/repositories-and-where-they-live-2.jpg",
+   "caption": "A repository's home page on a typical code-hosting service",
+   "hero": false
+  }
+ ],
+ "working-with-git-and-other-contributors": [
+  {
+   "url": "/__l5e/assets-v1/e2990f24-fd2d-49b0-8eee-f2f4807d8fd6/working-with-git-and-other-contributors-1.jpg",
+   "caption": "Working with Git and Other Contributors",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/12a00247-3ca3-47bf-bc89-143e0eb2671e/working-with-git-and-other-contributors-2.jpg",
+   "caption": "A pull request",
+   "hero": false
+  }
+ ],
+ "development-environments-and-dependencies": [
+  {
+   "url": "/__l5e/assets-v1/89b1ebb5-4af1-492a-b268-49aad16fe948/development-environments-and-dependencies-1.jpg",
+   "caption": "Development Environments and Dependencies",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/05c78356-76c8-4539-92d1-6cb0ca384807/development-environments-and-dependencies-2.jpg",
+   "caption": "A project manifest beside a terminal session that installs its dependencies and starts the development server",
+   "hero": false
+  }
+ ],
+ "configuration-environment-variables-and-secrets": [
+  {
+   "url": "/__l5e/assets-v1/8065100d-e1e5-4bb8-a6af-4002baa2df34/configuration-environment-variables-and-secrets-1.jpg",
+   "caption": "Configuration, Environment Variables and Secrets",
+   "hero": true
+  }
+ ],
+ "reading-and-documenting-a-project": [
+  {
+   "url": "/__l5e/assets-v1/9e82cbee-8f7f-4b39-a11b-63dc3fe3673d/reading-and-documenting-a-project-1.jpg",
+   "caption": "Reading and Documenting a Project",
+   "hero": true
+  },
+  {
+   "url": "/__l5e/assets-v1/c49bca5f-50b1-4c79-887c-8e0629607af4/reading-and-documenting-a-project-2.jpg",
+   "caption": "Taskboard's README",
+   "hero": false
+  }
+ ]
+}
