@@ -1,6 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { markDone, setLast, useProgress } from "@/lib/progress";
 import { findChapter } from "@/content/lessons";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 import { figuresFor } from "@/content/extras";
@@ -58,19 +60,78 @@ function Lesson() {
   const figs = figuresFor(c.slug);
   const hero = figs.find((f) => f.hero);
   const inline = figs.filter((f) => !f.hero);
+  const { done } = useProgress();
+  const isDone = done.includes(c.slug);
+  const navigate = useNavigate();
+  const [scroll, setScroll] = useState(0);
+  const [active, setActive] = useState(0);
+  const words = JSON.stringify(c).split(/\s+/).length;
+  const minutes = Math.max(3, Math.round(words / 220));
+  const ids = c.sections.map((_, i) => `s${i + 1}`);
+
+  useEffect(() => { setLast(c.slug); }, [c.slug]);
+  useEffect(() => {
+    const on = () => {
+      const h = document.documentElement;
+      const pct = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
+      setScroll(pct);
+      let a = 0;
+      ids.forEach((id, i) => { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top < 160) a = i; });
+      setActive(a);
+    };
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, [c.slug]);
+  useEffect(() => {
+    const k = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement;
+      if (t.closest("input, textarea, [contenteditable]") || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key === "ArrowRight" && next) navigate({ to: "/learn/$slug", params: { slug: next.slug } });
+      if (e.key === "ArrowLeft" && prev) navigate({ to: "/learn/$slug", params: { slug: prev.slug } });
+    };
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, [prev, next]);
+
   return (
     <div className="min-h-screen">
       <SiteHeader />
-      <article className="mx-auto max-w-3xl px-5 py-16">
+      <div className="fixed inset-x-0 top-0 z-40 h-1 bg-transparent" aria-hidden>
+        <div className="h-full bg-accent transition-[width] duration-150" style={{ width: `${scroll * 100}%` }} />
+      </div>
+      <div className="mx-auto flex max-w-6xl gap-10 px-5">
+      <aside className="sticky top-24 hidden h-[calc(100vh-7rem)] w-56 shrink-0 overflow-y-auto py-16 text-sm lg:block">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">In this lesson</p>
+        <ol className="mt-4 space-y-1 border-l border-border">
+          {c.sections.map((s, i) => (
+            <li key={s.heading}>
+              <a href={`#${ids[i]}`} className={`-ml-px block border-l-2 py-1.5 pl-3 leading-snug transition ${active === i ? "border-accent font-medium text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"}`}>{s.heading}</a>
+            </li>
+          ))}
+          <li><a href="#check" className="-ml-px block border-l-2 border-transparent py-1.5 pl-3 text-muted-foreground hover:text-foreground">Check your understanding</a></li>
+        </ol>
+        <p className="mt-8 text-xs text-muted-foreground">Tip: use ← → keys to move between lessons.</p>
+      </aside>
+      <article className="mx-auto min-w-0 max-w-3xl flex-1 py-16">
         <Link to="/" hash="curriculum" className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Part {c.part.number} · {c.part.title}</Link>
-        {hero && <img src={hero.url} alt={c.title} className="mt-6 aspect-[21/9] w-full rounded-xl object-cover" />}
+        {hero && (
+          <figure className="mt-6">
+            <img src={hero.url} alt={hero.caption || c.title} className="aspect-[21/9] w-full rounded-xl object-cover" />
+            {hero.caption && <figcaption className="mt-2 text-sm text-muted-foreground">{hero.caption}</figcaption>}
+          </figure>
+        )}
         <p className="mt-6 font-serif text-7xl text-primary/20">{String(c.number).padStart(2, "0")}</p>
         <h1 className="font-serif text-4xl leading-tight md:text-5xl">{c.title}</h1>
+        <p className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5"><Clock className="size-4" /> About {minutes} min read</span>
+          {isDone && <span className="inline-flex items-center gap-1.5 font-medium text-accent"><CheckCircle2 className="size-4" /> Finished</span>}
+        </p>
         <p className="mt-6 border-l-4 border-accent pl-5 font-serif text-xl italic">{c.question}</p>
 
         <div className="lesson-prose mt-10">
           {c.sections.map((s, si) => (
-            <section key={s.heading}>
+            <section key={s.heading} id={ids[si]} className="scroll-mt-24">
               {inline[si - 1] && si > 0 && <FigureBlock {...inline[si - 1]!} />}
               <h2>{s.heading}</h2>
               {s.paragraphs.map((p, i) => <Para key={i} text={p} />)}
@@ -92,10 +153,29 @@ function Lesson() {
           <Box tone="walk" label="Try it yourself"><ol className="list-decimal space-y-2 pl-5">{c.tryIt.map((t) => <li key={t}>{t}</li>)}</ol></Box>
         </div>
 
-        <h2 className="mt-14 font-serif text-3xl">Check your understanding</h2>
+        <h2 id="check" className="mt-14 scroll-mt-24 font-serif text-3xl">Check your understanding</h2>
         <ul className="mt-6 space-y-3">{c.check.map((x) => <Check key={x.q} {...x} />)}</ul>
 
-        <nav className="mt-16 grid gap-4 border-t border-border pt-8 sm:grid-cols-2">
+        <div className="mt-14 flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-8 text-center">
+          {isDone ? (
+            <>
+              <CheckCircle2 className="size-10 text-accent" />
+              <p className="font-serif text-2xl">Lesson finished. Nice work.</p>
+              <div className="flex flex-wrap justify-center gap-3">
+                {next && <Link to="/learn/$slug" params={{ slug: next.slug }} className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground">Next lesson <ArrowRight className="size-4" /></Link>}
+                <button onClick={() => markDone(c.slug, false)} className="text-sm text-muted-foreground underline">Mark as not finished</button>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="font-serif text-2xl">Done with this lesson?</p>
+              <p className="text-sm text-muted-foreground">Mark it finished to track your progress. It's saved in this browser.</p>
+              <button onClick={() => { markDone(c.slug); }} className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground"><CheckCircle2 className="size-4" /> Mark as finished</button>
+            </>
+          )}
+        </div>
+
+        <nav className="mt-10 grid gap-4 border-t border-border pt-8 sm:grid-cols-2">
           {prev ? (
             <Link to="/learn/$slug" params={{ slug: prev.slug }} className="group rounded-lg border border-border p-4 hover:border-primary">
               <span className="flex items-center gap-1 text-xs text-muted-foreground"><ArrowLeft className="size-3" /> Previous</span>
@@ -110,6 +190,7 @@ function Lesson() {
           )}
         </nav>
       </article>
+      </div>
       <LessonTutor slug={c.slug} title={c.title} />
       <SiteFooter />
     </div>
