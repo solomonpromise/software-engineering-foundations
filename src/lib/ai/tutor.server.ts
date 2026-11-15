@@ -1,7 +1,6 @@
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { findChapter } from "@/content/lessons";
-import { createResponsesCall } from "./responses.server";
 
 function lessonContext(slug: string) {
   const r = findChapter(slug);
@@ -29,7 +28,8 @@ export async function handleTutor(request: Request) {
   const lesson = lessonContext(slug);
   if (!lesson) return Response.json({ error: "Lesson not found" }, { status: 404 });
   const grokKey = typeof payload.grokKey === "string" ? payload.grokKey.trim() : "";
-  if (grokKey && (grokKey.length < 20 || grokKey.length > 300)) return Response.json({ error: "That Grok key doesn't look right." }, { status: 400 });
+  if (!grokKey) return Response.json({ error: "Add your free Grok API key in tutor settings to use the lesson helper." }, { status: 401 });
+  if ((grokKey.length < 20 || grokKey.length > 300)) return Response.json({ error: "That Grok key doesn't look right." }, { status: 400 });
 
   const instructions = `You are a patient tutor for "Software Foundations", a free course for people who build apps with AI but have no software engineering background.
 Answer questions about the lesson below. Rules:
@@ -57,8 +57,5 @@ ${lesson}`;
       },
     });
   }
-  const apiKey = process.env["LOVABLE_API_KEY"];
-  if (!apiKey) return Response.json({ error: "The lesson assistant isn't configured yet." }, { status: 500 });
-  const call = createResponsesCall(request, { baseURL: "https://ai.gateway.lovable.dev/v1", apiKey, model: "openai/gpt-6-astra" }, modelMessages, instructions);
-  return call.response();
+  return Response.json({ error: "Add your free Grok API key in tutor settings to use the lesson helper." }, { status: 401 });
 }

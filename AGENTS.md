@@ -29,4 +29,4 @@ use the editor.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
 - Learner progress lives in localStorage (src/lib/progress.ts) and, when signed in, is merged (union) into public.learner_progress by useProgressSync in __root — local-first so the site works without an account.
-- The lesson tutor uses the learner's own xAI key when they set one (sent per request, never stored server-side), else the AI Gateway — keeps cost off the course owner.
+- The lesson tutor works only with the learner's own xAI key (sent per request, never stored server-side); /api/tutor rejects requests without one — owner chose no shared AI cost.
