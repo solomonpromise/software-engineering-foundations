@@ -41,7 +41,7 @@ function TutorChat({ slug, title }: { slug: string; title: string }) {
 
   const busy = status === "submitted" || status === "streaming";
   const suggestions = ["Explain this lesson like I'm new to it", "Give me a real-world example", "How does this show up in Taskboard?"];
-  const ask = (text: string) => { if (!text.trim() || busy) return; setError(null); void sendMessage({ text }); };
+  const ask = (text: string) => { if (!text.trim() || busy) return; if (!getGrokKey()) { setError("Add your free Grok API key (gear icon above) to use the lesson helper."); return; } setError(null); void sendMessage({ text }); };
 
   return (
     <div className="flex h-full flex-col">
