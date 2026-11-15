@@ -3,8 +3,6 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { AppearanceMenu } from "@/components/AppearanceMenu";
 import { LogoMark } from "@/components/Logo";
-import { useProgress } from "@/lib/progress";
-import { chapters } from "@/content/lessons";
 
 const links = [
   { to: "/start/$slug", params: { slug: "about" }, label: "Start here", match: "/start" },
@@ -13,19 +11,6 @@ const links = [
   { to: "/glossary", label: "Glossary", match: "/glossary" },
   { to: "/taskboard", label: "Taskboard", match: "/taskboard" },
 ] as const;
-
-export function ProgressRing({ size = 28 }: { size?: number }) {
-  const { done } = useProgress();
-  const pct = chapters.length ? done.length / chapters.length : 0;
-  const r = size / 2 - 3, c = 2 * Math.PI * r;
-  return (
-    <svg width={size} height={size} className="-rotate-90" aria-hidden>
-      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="currentColor" strokeWidth="3" className="text-header-foreground/25" />
-      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"
-        strokeDasharray={c} strokeDashoffset={c * (1 - pct)} className="text-header-accent transition-all duration-700" />
-    </svg>
-  );
-}
 
 function Wordmark() {
   return (
@@ -45,7 +30,6 @@ function Wordmark() {
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
-  const { done } = useProgress();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isActive = (m: string) => pathname === m || pathname.startsWith(m + "/");
   return (
@@ -70,13 +54,6 @@ export function SiteHeader() {
               </Link>
             );
           })}
-          <Link
-            to="/curriculum"
-            title="Your progress"
-            className="ml-3 flex items-center gap-2 rounded-full border border-header-accent/45 bg-header-accent/10 py-1 pl-1 pr-3 transition-colors hover:border-header-accent"
-          >
-            <ProgressRing /> <span className="text-sm font-medium">{done.length}/{chapters.length}</span>
-          </Link>
           <AppearanceMenu />
         </nav>
         <div className="flex items-center gap-3 md:hidden">
