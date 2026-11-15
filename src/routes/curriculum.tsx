@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, CheckCircle2, Circle } from "lucide-react";
+import { ArrowRight, Check, Flag } from "lucide-react";
 import { useProgress, resetProgress } from "@/lib/progress";
-import { parts } from "@/content/lessons";
+import { parts, chapters } from "@/content/lessons";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
 export const Route = createFileRoute("/curriculum")({
@@ -19,46 +19,58 @@ export const Route = createFileRoute("/curriculum")({
 });
 
 function Curriculum() {
-  const { done } = useProgress();
+  const { done, last } = useProgress();
   const doneSet = new Set(done);
+  const total = chapters.length;
   return (
     <div className="min-h-screen">
       <SiteHeader />
-      <section>
-        <div className="mx-auto max-w-6xl px-5 py-20">
-          <h1 className="font-serif text-5xl">The curriculum</h1>
-          <p className="mt-2 text-muted-foreground">Six parts. Each answers one big question and ends with a hands-on project.</p>
-          <div className="mt-12 space-y-14">
-            {parts.map((p) => (
-              <div key={p.number} id={`part-${p.number}`} className="scroll-mt-24 grid gap-6 md:grid-cols-[260px_1fr]">
-                <div>
-                  <p className="font-serif text-6xl text-accent">0{p.number}</p>
-                  <h3 className="mt-2 font-serif text-2xl">{p.title}</h3>
-                  <p className="mt-2 text-sm italic text-muted-foreground">{p.question}</p>
+      <section className="mx-auto max-w-3xl px-5 py-16">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">{done.length} of {total} lessons finished</p>
+        <h1 className="mt-3 font-serif text-5xl">The curriculum</h1>
+        <p className="mt-3 text-lg text-muted-foreground">Six parts, {total} lessons. Each part answers one big question and ends with a hands-on project.</p>
+        <div className="mt-5 h-1.5 overflow-hidden rounded-full bg-muted"><div className="h-full bg-brass" style={{ width: `${(done.length / total) * 100}%` }} /></div>
+        <div className="mt-14 space-y-16">
+          {parts.map((p) => {
+            const n = p.chapters.filter((c) => doneSet.has(c.slug)).length;
+            return (
+              <div key={p.number} id={`part-${p.number}`} className="scroll-mt-24">
+                <div className="flex items-end justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Part {p.number}</p>
+                    <h2 className="mt-1 font-serif text-3xl">{p.title}</h2>
+                    <p className="mt-1 italic text-muted-foreground">{p.question}</p>
+                  </div>
+                  <p className="shrink-0 text-sm text-muted-foreground">{n}/{p.chapters.length}</p>
                 </div>
-                <div>
-                  <p className="text-muted-foreground">{p.intro}</p>
-                  <ul className="mt-5 divide-y divide-border border-y border-border">
-                    {p.chapters.map((c) => (
-                      <li key={c.slug}>
-                        <Link to="/learn/$slug" params={{ slug: c.slug }} className="group flex items-baseline gap-4 py-3">
-                          {doneSet.has(c.slug) ? <CheckCircle2 className="size-4 shrink-0 translate-y-0.5 text-accent" aria-label="Finished" /> : <Circle className="size-4 shrink-0 translate-y-0.5 text-muted-foreground/60" />}
-                          <span className="w-6 font-mono text-xs text-muted-foreground">{String(c.number).padStart(2, "0")}</span>
-                          <span className="flex-1 font-medium group-hover:text-primary">{c.title}</span>
-                          <ArrowRight className="size-4 opacity-0 transition group-hover:opacity-100" />
+                <ol className="relative mt-8 space-y-4 border-l-2 border-border pl-9">
+                  {p.chapters.map((c) => {
+                    const fin = doneSet.has(c.slug);
+                    return (
+                      <li key={c.slug} className="relative">
+                        <span className={`absolute -left-[3.05rem] top-4 flex size-8 items-center justify-center rounded-full border-2 text-sm ${fin ? "border-primary bg-primary text-primary-foreground" : "border-brass bg-background text-accent"}`}>
+                          {fin ? <Check className="size-4" /> : c.number}
+                        </span>
+                        <Link to="/learn/$slug" params={{ slug: c.slug }} className="group flex items-center gap-4 rounded-xl border border-border bg-card p-4 shadow-sm transition hover:border-primary">
+                          <div className="flex-1">
+                            <p className="text-xs text-muted-foreground">Lesson {c.number} · {fin ? "Finished" : c.slug === last ? "In progress" : "Not started"}</p>
+                            <p className="font-serif text-xl group-hover:text-primary">{c.title}</p>
+                          </div>
+                          <span className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-primary">{fin ? "Review" : c.slug === last ? "Continue" : "Start"} <ArrowRight className="size-4 transition group-hover:translate-x-1" /></span>
                         </Link>
                       </li>
-                    ))}
-                  </ul>
-                  <p className="mt-3 text-xs text-muted-foreground">{p.chapters.filter((c) => doneSet.has(c.slug)).length} of {p.chapters.length} finished</p>
-                  <p className="mt-1 text-sm"><span className="font-semibold text-accent">Project:</span> {p.project.title}</p>
-                </div>
+                    );
+                  })}
+                  <li className="relative">
+                    <span className="absolute -left-[3.05rem] top-3 flex size-8 items-center justify-center rounded-full border-2 border-brass bg-brass text-primary"><Flag className="size-4" /></span>
+                    <div className="rounded-xl bg-secondary/60 p-4"><p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Part project</p><p className="font-semibold">{p.project.title}</p></div>
+                  </li>
+                </ol>
               </div>
-            ))}
-            {done.length > 0 && <button onClick={() => confirm("Clear all your reading progress?") && resetProgress()} className="text-sm text-muted-foreground underline">Reset my progress</button>}
-            {parts.length === 0 && <p className="text-muted-foreground">Lessons are being prepared…</p>}
-          </div>
+            );
+          })}
         </div>
+        {done.length > 0 && <button onClick={() => confirm("Clear all your reading progress?") && resetProgress()} className="mt-12 text-sm text-muted-foreground underline">Reset my progress</button>}
       </section>
       <SiteFooter />
     </div>
