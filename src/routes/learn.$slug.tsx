@@ -47,7 +47,7 @@ function Box({ tone, label, children }: { tone: string; label: string; children:
   );
 }
 
-function Check({ n, q, a, verdict, onVerdict }: { n: number; q: string; a: string; verdict?: Verdict; onVerdict: (v: Verdict) => void }) {
+function Check({ n, q, a, verdict, onVerdict }: { n: number; q: string; a: string; verdict?: Verdict | undefined; onVerdict: (v: Verdict) => void }) {
   const [open, setOpen] = useState(false);
   const tone = verdict === "got" ? "border-accent/60" : verdict === "not" ? "border-destructive/40" : "border-border";
   return (
