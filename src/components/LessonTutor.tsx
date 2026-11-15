@@ -93,8 +93,8 @@ export function LessonTutor({ slug, title }: { slug: string; title: string }) {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <button onClick={() => setOpen(true)} className="fixed bottom-6 right-6 z-30 flex items-center gap-2 rounded-full bg-primary px-5 py-3 font-semibold text-primary-foreground shadow-lg transition hover:-translate-y-0.5">
-        <MessageCircleQuestion className="size-5" /> Ask about this lesson
+      <button onClick={() => setOpen(true)} aria-label="Ask about this lesson" title="Ask about this lesson" className="fixed bottom-6 right-6 z-30 flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition hover:-translate-y-0.5">
+        <MessageCircleQuestion className="size-6" />
       </button>
       {open && (
         <div className="fixed inset-0 z-40 flex justify-end bg-foreground/30" onClick={() => setOpen(false)}>

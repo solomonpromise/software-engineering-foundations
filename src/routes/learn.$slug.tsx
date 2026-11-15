@@ -121,7 +121,7 @@ function Lesson() {
             {hero.caption && <figcaption className="mt-2 text-sm text-muted-foreground">{hero.caption}</figcaption>}
           </figure>
         )}
-        <p className="mt-6 font-serif text-7xl text-primary/20">{String(c.number).padStart(2, "0")}</p>
+        <p className="mt-6 font-serif text-7xl text-primary/40">{String(c.number).padStart(2, "0")}</p>
         <h1 className="font-serif text-4xl leading-tight md:text-5xl">{c.title}</h1>
         <p className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
           <span className="inline-flex items-center gap-1.5"><Clock className="size-4" /> About {minutes} min read</span>

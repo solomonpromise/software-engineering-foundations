@@ -74,7 +74,7 @@ function Home() {
                     {p.chapters.map((c) => (
                       <li key={c.slug}>
                         <Link to="/learn/$slug" params={{ slug: c.slug }} className="group flex items-baseline gap-4 py-3">
-                          {doneSet.has(c.slug) ? <CheckCircle2 className="size-4 shrink-0 translate-y-0.5 text-accent" aria-label="Finished" /> : <Circle className="size-4 shrink-0 translate-y-0.5 text-border" />}
+                          {doneSet.has(c.slug) ? <CheckCircle2 className="size-4 shrink-0 translate-y-0.5 text-accent" aria-label="Finished" /> : <Circle className="size-4 shrink-0 translate-y-0.5 text-muted-foreground/60" />}
                           <span className="w-6 font-mono text-xs text-muted-foreground">{String(c.number).padStart(2, "0")}</span>
                           <span className="flex-1 font-medium group-hover:text-primary">{c.title}</span>
                           <ArrowRight className="size-4 opacity-0 transition group-hover:opacity-100" />
