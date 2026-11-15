@@ -138,7 +138,7 @@ function Lesson() {
         <Link to="/curriculum" hash={`part-${c.part.number}`} className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Part {c.part.number} · {c.part.title}</Link>
         {hero && (
           <figure className="mt-6">
-            <img src={hero.url} alt={hero.caption || c.title} className="aspect-[21/9] w-full rounded-xl object-cover" />
+            <img src={hero.url} alt={hero.caption ? `${hero.caption}. Illustration for the lesson ${c.title}` : `Illustration for ${c.title}`} className="aspect-[21/9] w-full rounded-xl object-cover" />
             {hero.caption && <figcaption className="mt-2 text-sm text-muted-foreground">{hero.caption}</figcaption>}
           </figure>
         )}
@@ -179,7 +179,7 @@ function Lesson() {
             <Box tone="mistake" label="Common mistakes"><ul className="list-disc space-y-2 pl-5">{c.mistakes.map((m) => <li key={m}>{m}</li>)}</ul></Box>
             <Box tone="ai" label="When AI gets it wrong"><ul className="list-disc space-y-2 pl-5">{c.aiMistakes.map((m) => <li key={m}>{m}</li>)}</ul></Box>
           </div>
-          <Box tone="walk" label="Try it yourself"><ol className="list-decimal space-y-2 pl-5">{c.tryIt.map((t) => <li key={t}>{t}</li>)}</ol></Box>
+          <PracticeExercise chapter={c} />
         </div>
 
         <h2 id="check" className="mt-14 scroll-mt-24 font-serif text-3xl">Check your understanding</h2>
@@ -203,6 +203,8 @@ function Lesson() {
             </>
           )}
         </div>
+
+        <LessonFeedback slug={c.slug} title={c.title} />
 
         <nav className="mt-10 grid gap-4 border-t border-border pt-8 sm:grid-cols-2">
           {prev ? (
