@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
+import { appearanceBootScript } from "../lib/appearance";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -83,12 +84,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Software Foundations for Vibe Coders" },
       { name: "description", content: "Read Software Foundations for Vibe Coders online." },
-      { name: "author", content: "Lovable" },
+      { name: "author", content: "Solomon Promise" },
       { property: "og:title", content: "Software Foundations for Vibe Coders" },
       { property: "og:description", content: "Read Software Foundations for Vibe Coders online." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -108,8 +108,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: appearanceBootScript }} />
         <HeadContent />
       </head>
       <body>
