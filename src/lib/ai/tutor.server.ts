@@ -1,4 +1,5 @@
-import { convertToModelMessages, type UIMessage } from "ai";
+import { convertToModelMessages, streamText, type UIMessage } from "ai";
+import { createOpenAI } from "@ai-sdk/openai";
 import { findChapter } from "@/content/lessons";
 import { createResponsesCall } from "./responses.server";
 
@@ -21,14 +22,14 @@ When AI gets it wrong: ${c.aiMistakes.join("; ")}`;
 }
 
 export async function handleTutor(request: Request) {
-  let payload: { messages?: UIMessage[]; slug?: string };
+  let payload: { messages?: UIMessage[]; slug?: string; grokKey?: unknown };
   try { payload = await request.json(); } catch { return Response.json({ error: "Invalid request" }, { status: 400 }); }
   const { messages, slug } = payload;
   if (!Array.isArray(messages) || typeof slug !== "string") return Response.json({ error: "Invalid request" }, { status: 400 });
   const lesson = lessonContext(slug);
   if (!lesson) return Response.json({ error: "Lesson not found" }, { status: 404 });
-  const apiKey = process.env["LOVABLE_API_KEY"];
-  if (!apiKey) return Response.json({ error: "The lesson assistant isn't configured yet." }, { status: 500 });
+  const grokKey = typeof payload.grokKey === "string" ? payload.grokKey.trim() : "";
+  if (grokKey && (grokKey.length < 20 || grokKey.length > 300)) return Response.json({ error: "That Grok key doesn't look right." }, { status: 400 });
 
   const instructions = `You are a patient tutor for "Software Foundations", a free course for people who build apps with AI but have no software engineering background.
 Answer questions about the lesson below. Rules:
@@ -41,6 +42,23 @@ Answer questions about the lesson below. Rules:
 LESSON CONTENT:
 ${lesson}`;
 
-  const call = createResponsesCall(request, { baseURL: "https://ai.gateway.lovable.dev/v1", apiKey, model: "openai/gpt-6-astra" }, await convertToModelMessages(messages), instructions);
+  const modelMessages = await convertToModelMessages(messages);
+  if (grokKey) {
+    // Learner's own xAI key: used for this request only, never stored or logged.
+    const xai = createOpenAI({ baseURL: "https://api.x.ai/v1", apiKey: grokKey });
+    const result = streamText({ model: xai.chat("grok-4-fast-non-reasoning"), system: instructions, messages: modelMessages, abortSignal: request.signal });
+    return result.toUIMessageStreamResponse({
+      onError: (e) => {
+        const x = e as { message?: string; statusCode?: number; responseBody?: string };
+        const m = `${x?.statusCode ?? ""} ${x?.message ?? String(e)} ${x?.responseBody ?? ""}`;
+        if (/401|403|invalid|incorrect|api key/i.test(m)) return "Your Grok key was rejected. Check it in tutor settings.";
+        if (/429|rate|credit|quota/i.test(m)) return "Your Grok key has hit its limit — wait a bit or check your xAI credits.";
+        return "Grok couldn't answer just now. Please try again.";
+      },
+    });
+  }
+  const apiKey = process.env["LOVABLE_API_KEY"];
+  if (!apiKey) return Response.json({ error: "The lesson assistant isn't configured yet." }, { status: 500 });
+  const call = createResponsesCall(request, { baseURL: "https://ai.gateway.lovable.dev/v1", apiKey, model: "openai/gpt-6-astra" }, modelMessages, instructions);
   return call.response();
 }

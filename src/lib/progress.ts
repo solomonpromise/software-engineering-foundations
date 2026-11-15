@@ -29,6 +29,16 @@ export function toggleStep(project: string, i: number) {
   if (cur.has(i)) cur.delete(i); else cur.add(i);
   write({ ...p, steps: { ...(p.steps ?? {}), [project]: [...cur] } });
 }
+/** Union of two progress records: nothing finished on either side is ever lost. */
+export function mergeProgress(a: Progress, b: Progress): Progress {
+  const steps: Record<string, number[]> = {};
+  for (const src of [a.steps ?? {}, b.steps ?? {}]) for (const [k, v] of Object.entries(src)) steps[k] = [...new Set([...(steps[k] ?? []), ...v])].sort((x, y) => x - y);
+  const last = a.last ?? b.last;
+  return { done: [...new Set([...a.done, ...b.done])], ...(last ? { last } : {}), steps };
+}
+export function getProgress() { return read(); }
+export function replaceProgress(p: Progress) { write(p); }
+export function subscribeProgress(f: () => void) { subs.add(f); return () => { subs.delete(f); }; }
 export function setLast(slug: string) { const p = read(); if (p.last !== slug) write({ ...p, last: slug }); }
 export function resetProgress() { write(EMPTY); }
 export function useProgress(): Progress {

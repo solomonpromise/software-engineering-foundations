@@ -2,6 +2,8 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { AppearanceMenu } from "@/components/AppearanceMenu";
+import { SiteSearch } from "@/components/SiteSearch";
+import { AccountButton } from "@/components/AccountButton";
 import logoAsset from "@/assets/course-logo.png.asset.json";
 
 const links = [
@@ -54,10 +56,14 @@ export function SiteHeader() {
               </Link>
             );
           })}
+          <SiteSearch hotkey />
           <AppearanceMenu />
+          <AccountButton />
         </nav>
         <div className="flex items-center gap-3 md:hidden">
+          <SiteSearch />
           <AppearanceMenu />
+          <AccountButton />
           <button
             className="flex size-9 items-center justify-center rounded-full border border-header-accent/45 text-header-foreground hover:bg-header-accent/15 md:hidden"
             onClick={() => setOpen(!open)}
