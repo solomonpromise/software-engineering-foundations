@@ -1,11 +1,13 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, Clock, Flag } from "lucide-react";
-import { parts } from "@/content/lessons";
+import { parts, chapters } from "@/content/lessons";
+import { REPO, repoUrl } from "@/content/taskboard";
+import { ExternalLink } from "lucide-react";
 import projects from "@/content/projects.json";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 import { useProgress, toggleStep } from "@/lib/progress";
 
-type Extra = { slug: string; time: string; deliverable: string; setup: string[]; code: { title: string; lang: string; body: string }[] };
+type Extra = { slug: string; stepLessons: number[][]; repo: string[]; time: string; deliverable: string; setup: string[]; code: { title: string; lang: string; body: string }[] };
 const extras = projects as Record<string, Extra>;
 export const projectSlug = (n: number) => extras[String(n)]?.slug ?? `part-${n}`;
 
@@ -28,7 +30,10 @@ function ProjectPage() {
   const { partNumber } = Route.useLoaderData();
   const part = parts.find((p) => p.number === partNumber)!;
   const x = extras[String(partNumber)]!;
-  const { steps } = useProgress();
+  const { steps, done } = useProgress();
+  const doneLessons = new Set(done);
+  const byNum = (n: number) => chapters.find((c) => c.number === n);
+  const readyCount = part.chapters.filter((c) => doneLessons.has(c.slug)).length;
   const doneSteps = new Set(steps?.[x.slug] ?? []);
   const total = part.project.steps.length;
   const prev = parts.find((p) => p.number === partNumber - 1);
@@ -50,6 +55,24 @@ function ProjectPage() {
           <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted"><div className="h-full bg-brass transition-all" style={{ width: `${(doneSteps.size / total) * 100}%` }} /></div>
         </div>
 
+        <h2 className="mt-12 font-serif text-3xl">Lessons to read first</h2>
+        <p className="mt-2 text-muted-foreground">{readyCount === part.chapters.length ? "You've finished every lesson this project uses." : `You've finished ${readyCount} of ${part.chapters.length}. Each step below shows which lesson it relies on.`}</p>
+        <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+          {part.chapters.map((c) => (
+            <li key={c.slug}><Link to="/learn/$slug" params={{ slug: c.slug }} className="flex items-center gap-3 rounded-lg border border-border bg-card px-3 py-2 hover:border-primary">
+              <span className={`flex size-6 shrink-0 items-center justify-center rounded-full text-xs ${doneLessons.has(c.slug) ? "bg-primary text-primary-foreground" : "border border-brass text-accent"}`}>{doneLessons.has(c.slug) ? <Check className="size-3.5" /> : c.number}</span>
+              <span className="text-sm">{c.title}</span>
+            </Link></li>
+          ))}
+        </ul>
+
+        <h2 className="mt-12 font-serif text-3xl">Compare with Taskboard</h2>
+        <p className="mt-2 text-muted-foreground">The finished example app already contains this project's result. Open these files after you've tried it yourself.</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {x.repo.map((r) => <a key={r} href={repoUrl(r)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 font-mono text-xs hover:border-primary">{r}<ExternalLink className="size-3" /></a>)}
+          <a href={REPO} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs text-primary-foreground">Whole repository<ExternalLink className="size-3" /></a>
+        </div>
+
         <h2 className="mt-12 font-serif text-3xl">Set up</h2>
         <ol className="mt-4 list-decimal space-y-2 pl-6">{x.setup.map((s) => <li key={s}>{s}</li>)}</ol>
 
@@ -66,6 +89,10 @@ function ProjectPage() {
                   <input type="checkbox" checked={on} onChange={() => toggleStep(x.slug, i)} className="mt-1.5 size-4 accent-[var(--primary)]" />
                   <span className={on ? "text-muted-foreground line-through" : ""}>{s}</span>
                 </label>
+                <div className="mt-1.5 flex flex-wrap gap-1.5 pl-1 text-xs text-muted-foreground">
+                  <span>Uses:</span>
+                  {(x.stepLessons[i] ?? []).map((n) => { const c = byNum(n); return c && <Link key={n} to="/learn/$slug" params={{ slug: c.slug }} className={`rounded-full border px-2 py-0.5 hover:border-primary hover:text-primary ${doneLessons.has(c.slug) ? "border-primary/40 bg-secondary" : "border-border"}`}>{doneLessons.has(c.slug) ? "✓ " : ""}Lesson {n}: {c.title}</Link>; })}
+                </div>
               </li>
             );
           })}
