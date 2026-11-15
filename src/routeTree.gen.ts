@@ -14,6 +14,7 @@ import { Route as BibliographyRouteImport } from './routes/bibliography'
 import { Route as CurriculumRouteImport } from './routes/curriculum'
 import { Route as GlossaryRouteImport } from './routes/glossary'
 import { Route as ReferenceRouteImport } from './routes/reference'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TaskboardRouteImport } from './routes/taskboard'
 import { Route as ApiTutorRouteImport } from './routes/api/tutor'
 import { Route as LearnSlugRouteImport } from './routes/learn.$slug'
@@ -44,6 +45,11 @@ const GlossaryRoute = GlossaryRouteImport.update({
 const ReferenceRoute = ReferenceRouteImport.update({
   id: '/reference',
   path: '/reference',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TaskboardRoute = TaskboardRouteImport.update({
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/taskboard': typeof TaskboardRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/taskboard': typeof TaskboardRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/taskboard': typeof TaskboardRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/curriculum'
     | '/glossary'
     | '/reference'
+    | '/sitemap.xml'
     | '/taskboard'
     | '/api/tutor'
     | '/learn/$slug'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/curriculum'
     | '/glossary'
     | '/reference'
+    | '/sitemap.xml'
     | '/taskboard'
     | '/api/tutor'
     | '/learn/$slug'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/curriculum'
     | '/glossary'
     | '/reference'
+    | '/sitemap.xml'
     | '/taskboard'
     | '/api/tutor'
     | '/learn/$slug'
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   CurriculumRoute: typeof CurriculumRoute
   GlossaryRoute: typeof GlossaryRoute
   ReferenceRoute: typeof ReferenceRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TaskboardRoute: typeof TaskboardRoute
   ApiTutorRoute: typeof ApiTutorRoute
   LearnSlugRoute: typeof LearnSlugRoute
@@ -208,6 +221,13 @@ declare module '@tanstack/react-router' {
       path: '/reference'
       fullPath: '/reference'
       preLoaderRoute: typeof ReferenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/taskboard': {
@@ -261,6 +281,7 @@ const rootRouteChildren: RootRouteChildren = {
   CurriculumRoute: CurriculumRoute,
   GlossaryRoute: GlossaryRoute,
   ReferenceRoute: ReferenceRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TaskboardRoute: TaskboardRoute,
   ApiTutorRoute: ApiTutorRoute,
   LearnSlugRoute: LearnSlugRoute,

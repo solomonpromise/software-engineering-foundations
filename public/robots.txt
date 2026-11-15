@@ -12,3 +12,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://softwareengineeringfoundations.lovable.app/sitemap.xml
