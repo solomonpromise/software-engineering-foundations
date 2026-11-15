@@ -14,7 +14,8 @@ export function ContinueLearning() {
     return count > 0 && count < p.project.steps.length;
   });
   const noteCount = Object.values(notes ?? {}).filter((n) => n.trim()).length;
-  if (!resume && !activeProject && !saved.length) return null;
+  const started = done.length > 0 || Boolean(last) || (bookmarks ?? []).length > 0 || noteCount > 0 || Object.keys(steps ?? {}).length > 0;
+  if (!started || (!resume && !activeProject && !saved.length)) return null;
   return (
     <section aria-labelledby="continue-learning" className="mx-auto max-w-6xl px-5 pt-12">
       <div className="rounded-2xl border border-brass/50 bg-card p-6 shadow-sm md:p-8">
