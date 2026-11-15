@@ -4,7 +4,7 @@
 - [x] Lesson quizzes (self-check gate)
 - [x] Tidy-ups (PDF removed, share image, new hero photo)
 - [x] Phone check
-- [x] Accounts + synced progress (signed-in sync not tested end-to-end)
+- [x] Accounts + synced progress (verified across fresh browser sessions)
 - [x] Certificate
 - [x] About the creator page (/about) with portrait, links and bio
 
