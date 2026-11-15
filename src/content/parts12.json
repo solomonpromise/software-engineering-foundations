@@ -1,0 +1,1274 @@
+{
+  "parts": [
+    {
+      "number": 1,
+      "title": "Understanding Software Applications",
+      "question": "What should we build, who needs it, and what work will building it require?",
+      "intro": "Before asking an AI assistant for code, learn to describe the thing you want people to use. This part helps you connect a real problem to a manageable application, then see the work beyond its screens.",
+      "project": {
+        "title": "Create a clear application brief",
+        "summary": "Make a short planning document that another person could use without guessing your intentions. Describe the users, their difficulty, the smallest helpful version, and evidence that it works. Ask an AI assistant to point out unanswered questions rather than build anything yet.",
+        "steps": [
+          "Name a specific group of users and explain their problem and present workaround.",
+          "Describe the application in one sentence and choose a type, explaining the trade-off.",
+          "Write one short user journey and identify the essential features that support it.",
+          "Separate first-version features from explicitly postponed ideas.",
+          "Write three user stories with testable acceptance criteria, including an invalid input and a permission failure.",
+          "Record measurable quality expectations, constraints, assumptions, and unresolved questions.",
+          "Plan a small build-test-feedback loop and review the brief for contradictions."
+        ]
+      },
+      "glossary": [
+        {
+          "term": "Software",
+          "definition": "Computer instructions and the information used with them."
+        },
+        {
+          "term": "Program",
+          "definition": "A particular set of instructions that can be executed."
+        },
+        {
+          "term": "Process",
+          "definition": "A running instance of a program."
+        },
+        {
+          "term": "Application",
+          "definition": "Software arranged to help someone accomplish a purpose."
+        },
+        {
+          "term": "System",
+          "definition": "Applications, infrastructure, information, people, and procedures working together."
+        },
+        {
+          "term": "Feature",
+          "definition": "A capability that helps a user achieve a specific result."
+        },
+        {
+          "term": "CPU",
+          "definition": "The processor that carries out machine instructions."
+        },
+        {
+          "term": "RAM",
+          "definition": "Fast working memory used while programs execute."
+        },
+        {
+          "term": "Persistent storage",
+          "definition": "Storage intended to retain information beyond the current execution."
+        },
+        {
+          "term": "Network",
+          "definition": "Connections through which computers exchange information."
+        },
+        {
+          "term": "Web application",
+          "definition": "An application accessed through a browser."
+        },
+        {
+          "term": "API",
+          "definition": "A defined way for software to request another component’s capabilities."
+        },
+        {
+          "term": "User journey",
+          "definition": "A sequence of actions leading to a user’s goal."
+        },
+        {
+          "term": "User story",
+          "definition": "A short account of who needs a capability and why."
+        },
+        {
+          "term": "Acceptance criteria",
+          "definition": "Observable conditions used to judge whether behaviour is delivered."
+        },
+        {
+          "term": "Quality requirement",
+          "definition": "An expectation about how well the application must work."
+        },
+        {
+          "term": "Constraint",
+          "definition": "A boundary the solution must respect."
+        },
+        {
+          "term": "Assumption",
+          "definition": "An unconfirmed belief used in planning."
+        },
+        {
+          "term": "Scope",
+          "definition": "The work included in a particular effort or release."
+        },
+        {
+          "term": "Minimum useful version",
+          "definition": "The smallest coherent release that solves a real problem."
+        },
+        {
+          "term": "SDLC",
+          "definition": "The recurring work of planning, design, implementation, testing, release, and maintenance."
+        },
+        {
+          "term": "Accessibility",
+          "definition": "Making software usable through different abilities and interaction methods."
+        }
+      ],
+      "chapters": [
+        {
+          "number": 1,
+          "slug": "what-software-and-applications-are",
+          "title": "What Software and Applications Are",
+          "question": "When you ask an AI assistant for an application, what pieces should you expect it to create?",
+          "summary": "An application is more than the screen someone clicks. Its instructions, information, and computing resources must work together to deliver complete features.",
+          "sections": [
+            {
+              "heading": "Four useful names",
+              "paragraphs": [
+                "Software is the broad name for computer instructions and the information used with them. A program is a particular collection of instructions that can run. Once a program is executing, the operating system manages that running instance as a process. You can launch two processes from the same program, just as you can open the same document in two separate windows.",
+                "An application puts software to work for a person's purpose, such as organising appointments. It may contain several cooperating programs. A system is the larger arrangement around it: applications, computers, networks, records, people, and procedures. A booking system therefore includes more than a booking app; it may also include staff who resolve cancellations. These names describe different viewpoints, not competing labels."
+              ]
+            },
+            {
+              "heading": "The interface is only the visible part",
+              "paragraphs": [
+                "A screen gives someone a way to communicate with software, but it cannot show everything happening underneath. A task form may depend on another program to check rules and a database to remember the result. Those pieces can run in different places. Closing the screen does not necessarily stop the programs serving other users.",
+                "This matters when reviewing AI-generated work. A convincing page can be a demonstration with invented records rather than a working application. Ask where each action goes, which rules are applied, and how the result is kept. You do not need the implementation vocabulary immediately; you do need to distinguish a useful-looking surface from a complete capability."
+              ]
+            },
+            {
+              "heading": "Instructions operate on data",
+              "paragraphs": [
+                "Instructions specify what happens and in what order. For a new task, the sequence might check the submitted title, associate the task with the signed-in person, save it, and report the result. Computers do not fill in missing product decisions with human common sense. An unspecified rule is a decision somebody, including an AI tool, will make for you.",
+                "Data is the information those instructions use. A title typed into a form is input data; a stored task is saved data; a count of unfinished tasks is derived data. The same information can move through several forms. Notice which pieces come from the person and which the application must determine itself, especially ownership and calculated values."
+              ]
+            },
+            {
+              "heading": "The resources that make execution possible",
+              "paragraphs": [
+                "A processor, often called a CPU, performs the low-level work. Memory, or RAM, provides fast working space while programs operate. Persistent storage keeps information beyond the current execution. A network allows programs on separate computers to exchange messages. Even a small feature needs these resources somewhere, although a hosting provider may operate many of them for you.",
+                "These resources have different jobs and limits. A busy processor can delay calculations; too little memory can stop a program; a broken network can prevent a save. Persistent storage does not mean indestructible storage: disks and services can fail, so important information still needs appropriate protection and backups. Knowing the categories helps you ask more precise questions about failures."
+              ]
+            },
+            {
+              "heading": "Temporary state is not a saved record",
+              "paragraphs": [
+                "Imagine writing a shopping list on a reusable board and then wiping it. That resembles information kept only in working memory. A browser page may display a task held in a JavaScript variable, yet lose it as soon as the page reloads. Server memory has a similar limitation when the server process stops or restarts.",
+                "Saving information durably is a separate operation. Some browser storage survives reloads, but remains tied to that browser and can be cleared. A server-side database can provide a shared, persistent record accessible from different devices. To check a save, do more than watch a row appear: reload, sign in again, or read the record from another device."
+              ]
+            },
+            {
+              "heading": "Build complete feature slices",
+              "paragraphs": [
+                "A feature is a useful capability, such as completing a task. It normally crosses several layers: a control on the screen, instructions that enforce rules, and a stored change. Treat those layers as one slice of useful behaviour. A checkbox with no saved effect is not a completed feature, even when its animation looks polished.",
+                "Building one slice at a time gives you something meaningful to test. First make one task save correctly through every layer; then expand the application. This is usually easier to assess than generating every screen before connecting any of them. Include the failure path in the slice, because people need to know whether an action actually succeeded."
+              ]
+            }
+          ],
+          "keyIdea": "A feature is complete only when its interface, rules, and saved data work together.",
+          "taskboard": "Taskboard includes accounts, task creation, editing, deletion, due dates, completion, and an ordered personal task list. Its browser interface communicates with backend instructions, while a database retains accounts and tasks. Each visible action must connect these pieces rather than merely change the page.",
+          "walkthrough": {
+            "title": "Follow one completion checkbox",
+            "steps": [
+              "Tick an unfinished task and show that the action is waiting.",
+              "Send the task identifier and requested change to the backend.",
+              "Check the session and whether the task belongs to that person.",
+              "Save the new completion value in persistent storage.",
+              "Report success or failure, then reload to confirm the saved outcome."
+            ]
+          },
+          "mistakes": [
+            "Calling a feature finished because its button responds visually.",
+            "Confusing a temporary list on screen with durable, shared storage."
+          ],
+          "aiMistakes": [
+            "AI may generate sample arrays instead of persistence; reload the page and inspect where records are stored.",
+            "AI may omit ownership checks; use two test accounts and attempt the same change from the wrong one."
+          ],
+          "tryIt": [
+            "Choose a familiar app and list five features, then name the interface action, rule, and stored information behind each.",
+            "Create a record in a demo, refresh it, and explain what that does and does not prove about storage."
+          ],
+          "check": [
+            {
+              "q": "How does an application differ from a program?",
+              "a": "An application serves a user goal and may coordinate several runnable programs."
+            },
+            {
+              "q": "Why can a task disappear after a refresh?",
+              "a": "It may have existed only in page memory rather than being saved and loaded again."
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "slug": "different-types-of-applications",
+          "title": "Different Types of Applications",
+          "question": "Which kind of application best fits your users rather than simply being easiest for a tool to generate?",
+          "summary": "Application types differ in where they execute, how people obtain updates, and which device capabilities they can use. Choose from user needs and operating responsibilities, including software that has no screen.",
+          "sections": [
+            {
+              "heading": "Browser-based applications",
+              "paragraphs": [
+                "A web application opens at an address in a browser. People usually need no separate installation, and the same service can reach phones, tablets, and laptops. Deploying a new frontend makes it available when users next load the updated version, although caching and already-open pages can affect timing. This makes web applications a practical starting point for many small products.",
+                "The browser also creates boundaries. Access to hardware and background activity varies by browser and operating system. A web application often depends on a connection for its main work. Do not assume that fitting a page onto a phone gives it every ability of an installed phone app. Check the particular feature on the actual devices your users have."
+              ]
+            },
+            {
+              "heading": "Installed mobile and desktop applications",
+              "paragraphs": [
+                "Mobile apps are installed on phones or tablets, often through an app store. Native development uses tools tailored to one platform, while cross-platform frameworks share more code between platforms. Either approach can still require platform-specific testing and adjustments. Device integration, notifications, and offline behaviour may favour mobile development, but store submission and update distribution add work.",
+                "Desktop applications run on computers such as Windows PCs or Macs. They can suit large files, extensive keyboard work, or intensive local processing. Some package web technologies inside a desktop shell. Installation does not remove maintenance: you may support several operating systems and multiple old versions at once. Unlike a centrally hosted service, you cannot assume everyone installs an update immediately."
+              ]
+            },
+            {
+              "heading": "Command lines and invisible software",
+              "paragraphs": [
+                "A command-line application receives typed instructions in a terminal and returns text or files. It can be excellent for repeatable technical work and automation, even though it offers no buttons. The best interface depends on the audience: a developer may prefer one short command, whereas an occasional nontechnical user may need a guided form and visible choices.",
+                "Other software works without direct interaction. Background services handle ongoing or deferred work; scheduled jobs start at specified times; automation scripts connect repetitive steps across systems. An API gives other software a defined way to use a capability. These categories can overlap. A daily reminder may be started by a schedule, processed by a worker, and delivered through an email provider's API."
+              ]
+            },
+            {
+              "heading": "Where it runs and who operates it",
+              "paragraphs": [
+                "Installed software executes on a user's device, while hosted software runs on computers operated for the service. Many applications combine both: a browser displays the interface and a hosted backend stores records. A cloud service is still software running on physical computers; the phrase describes an operating arrangement, not freedom from resource limits or responsibility.",
+                "Offline and local-first designs prioritise work that can continue without a connection. That can be valuable, but synchronising later introduces questions about conflicting edits, lost devices, and duplicate actions. Decide which actions must work offline and what happens on reconnection. Merely saving the application's files on a phone does not make all its data and operations available offline."
+              ]
+            },
+            {
+              "heading": "Progressive web applications and practical trade-offs",
+              "paragraphs": [
+                "A progressive web application, or PWA, adds selected app-like abilities to a web application. A service worker can keep application resources available and help support offline behaviour. On supported platforms, people may add it to their home screen. These possibilities are useful, but installation, notifications, and background features are not identical across every browser and device.",
+                "Compare options using the actual requirements: audience, distribution, hardware access, connection quality, performance, development effort, updates, and ongoing cost. A simple hosted app can reduce first-version complexity, while introducing hosting and network dependence. An installed app can improve local capabilities, while increasing release work. Write down what you gain and give up rather than declaring one type universally superior."
+              ]
+            },
+            {
+              "heading": "Keep trust boundaries visible",
+              "paragraphs": [
+                "Code and information shipped to a person's device can be inspected. A secret embedded in a web bundle or installed client is not protected merely because the interface does not show it. Credentials for privileged external services belong on a backend you control. That backend must also enforce important permissions, regardless of which kind of client calls it.",
+                "Separating reusable rules and data behind an API can make later expansion easier. A web interface and a future mobile interface can ask the same backend to create tasks. This does not mean you must build every interface now. Choose the smallest arrangement that meets present needs, while avoiding shortcuts that would expose secrets or make another client impossible to support safely."
+              ]
+            }
+          ],
+          "keyIdea": "Choose an application type by its users, environment, and maintenance demands, not by fashion.",
+          "taskboard": "Taskboard starts as a responsive web application because people need their task list on different devices without installation. Its shared backend keeps rules and records consistent. Reliable offline editing and app-store distribution are deliberately separate decisions rather than assumed benefits.",
+          "walkthrough": {
+            "title": "Choose a first home for Taskboard",
+            "steps": [
+              "Describe users switching between a work laptop and a personal phone.",
+              "Check whether their essential actions require specialist hardware or reliable offline operation.",
+              "Compare a responsive web app with mobile and desktop alternatives.",
+              "Choose a web first version and record its connection requirement.",
+              "Place private credentials and enforceable rules on the backend, allowing future clients to reuse them."
+            ]
+          },
+          "mistakes": [
+            "Picking mobile because the word app sounds like a phone product.",
+            "Promising offline support without planning synchronisation or conflicts."
+          ],
+          "aiMistakes": [
+            "AI may embed an API secret in downloadable client code; inspect configuration and built-client usage.",
+            "AI may promise unsupported PWA capabilities; test the exact platform before accepting the design."
+          ],
+          "tryIt": [
+            "Compare two application types for a local fieldworker who often has no signal.",
+            "Identify one background service and one scheduled job in a product you use."
+          ],
+          "check": [
+            {
+              "q": "Is a scheduled job the same as a screen?",
+              "a": "No; it is work triggered by a timetable and may have no user interface."
+            },
+            {
+              "q": "Why are hosted updates simpler to distribute?",
+              "a": "The operator can change the central service rather than depend on every user updating an installation."
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "slug": "from-a-problem-to-application-requirements",
+          "title": "From a Problem to Application Requirements",
+          "question": "How can you make sure a polished application solves something people actually need?",
+          "summary": "Requirements turn an appealing idea into explicit decisions about users, behaviour, quality, and scope. A small useful release needs clear completion criteria, not merely a long feature list.",
+          "sections": [
+            {
+              "heading": "Begin with people and their workaround",
+              "paragraphs": [
+                "Choose a recognisable group of users rather than everybody. Ask what they are trying to accomplish, what interrupts them, and how they handle it today. Their existing solution may be paper, a spreadsheet, several messages, or memory. That workaround tells you what a new application must improve enough to justify learning and using it.",
+                "Write a problem statement before describing technology. For example, independent workers may miss small commitments because dates are scattered across notebooks and messages. This identifies people, difficulty, and consequence without assuming a calendar, chatbot, or social feed is required. Ask potential users about a recent real incident; specific experiences reveal more than asking whether they like your proposed idea."
+              ]
+            },
+            {
+              "heading": "Map a journey to an outcome",
+              "paragraphs": [
+                "A user journey is a short sequence of actions that reaches a goal. For planning tomorrow, someone might open their tasks, inspect upcoming dates, add a forgotten item, and finish knowing what matters next. Describe the journey in ordinary language. Avoid starting with a catalogue of screens, because a screen is useful only as part of someone's work.",
+                "Look for missing steps and unnecessary additions. If the journey requires seeing dates together, a create-task form alone is insufficient. If nothing involves collaboration, team invitations may not belong in the first version. Journeys also expose return visits and recovery: what happens when the person comes back later, has no tasks, or discovers a mistake in something already entered?"
+              ]
+            },
+            {
+              "heading": "Turn capabilities into purposeful stories",
+              "paragraphs": [
+                "A feature names something the application lets people do. A user story adds who needs it and why. You could write that a busy worker needs tasks ordered by due date so that the next commitment is easy to identify. The purpose helps resolve details without treating every design choice as equally important. Stories invite discussion; they are not automatically complete specifications.",
+                "Keep the user's goal separate from an implementation preference. A request for a particular button placement may conceal a need for faster repeated entry. Ask what result matters before committing to the layout. Connect each first-version feature to a journey or requirement. If you cannot explain whom it helps and how, it may be an attractive distraction rather than essential scope."
+              ]
+            },
+            {
+              "heading": "Make completion testable",
+              "paragraphs": [
+                "Acceptance criteria describe observable conditions that show a story is delivered. A useful pattern states the starting situation, the action, and the expected outcome. For date ordering, specify how undated tasks appear and what happens to equal dates. These details prevent different people, or an AI assistant, from implementing incompatible interpretations of the same sentence.",
+                "Include rejection and recovery as well as success. An empty title should receive a clear response and create no task. A person should not access another person's record. A failed save should not discard the entered text. Phrase criteria so somebody can demonstrate them with concrete examples. Words such as intuitive, fast, or secure need more detail before they can guide a meaningful check."
+              ]
+            },
+            {
+              "heading": "Record quality, limits, and uncertainty",
+              "paragraphs": [
+                "Functional requirements say what the application does. Quality requirements describe how well it must do it: for example, an explicit response-time target under stated conditions, keyboard operation, and private records. Security and accessibility belong here from the start. They influence design and testing rather than being optional decoration after feature work is finished.",
+                "Constraints are boundaries such as a fixed budget, supported devices, or an agreed technology. Assumptions are beliefs you are using without confirmation, such as users usually having a connection. Dependencies are things the plan relies on, such as an email service. Keep these categories visible: a fact, a limit, and a guess require different responses. Turn important unknowns into questions or small investigations."
+              ]
+            },
+            {
+              "heading": "Choose a minimum useful release",
+              "paragraphs": [
+                "A minimum useful version solves a small real problem from beginning to end. It is not a collection of half-connected controls. For task tracking, reliable personal records may matter more than comments, attachments, or elaborate themes. Remove whole nonessential capabilities rather than removing the validation, permissions, or persistence needed for essential capabilities to work responsibly.",
+                "Write both an included list and an excluded list. The second protects the first when new ideas arrive. Record why a feature is postponed so that deliberate scope does not look like an accidental omission. Review changes against the problem and acceptance criteria. Small scope is not lack of ambition; it creates a release you can evaluate with users before investing in assumptions that may be wrong."
+              ]
+            }
+          ],
+          "keyIdea": "Good requirements explain whose problem matters and make successful behaviour observable.",
+          "taskboard": "Taskboard gives people one dependable place for personal and work tasks. Its first version supports private task management with dates and a useful ordering, while postponing team collaboration and attachments. Its brief also states quality expectations and failure behaviour rather than leaving the AI to invent them.",
+          "walkthrough": {
+            "title": "Specify date ordering without guesswork",
+            "steps": [
+              "Name the user and explain why upcoming commitments are hard to track.",
+              "Describe opening the list and finding the next dated task.",
+              "Write a story connecting date order to that outcome.",
+              "Specify earliest dates first, undated items last, and a consistent policy for ties.",
+              "Add empty-list, invalid-date, and wrong-owner cases, then list what is out of scope."
+            ]
+          },
+          "mistakes": [
+            "Treating your own feature enthusiasm as evidence of a user problem.",
+            "Calling the first version minimal by omitting safeguards rather than optional features."
+          ],
+          "aiMistakes": [
+            "AI may expand scope with unrequested chat or collaboration; compare every proposal with the included list.",
+            "AI may invent unstated ordering rules; ask it to list assumptions and approve the decisions explicitly."
+          ],
+          "tryIt": [
+            "Interview someone about a recent frustrating task and write a solution-free problem statement.",
+            "Write three acceptance criteria for editing a task, including a failure and a permission boundary."
+          ],
+          "check": [
+            {
+              "q": "How do a story and its criteria differ?",
+              "a": "The story explains the desired capability and purpose; criteria specify checkable outcomes."
+            },
+            {
+              "q": "Why document excluded features?",
+              "a": "It prevents accidental scope expansion and preserves the reasoning behind the first release."
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "slug": "the-software-development-lifecycle",
+          "title": "The Software Development Lifecycle",
+          "question": "Why does building dependable software involve much more than producing code quickly?",
+          "summary": "Software development is a repeating cycle of decisions, implementation, evidence, and care. AI can accelerate parts of that cycle, but a human still owns the outcome.",
+          "sections": [
+            {
+              "heading": "Plan and design before implementation",
+              "paragraphs": [
+                "Planning identifies the problem, intended users, priorities, scope, and practical limits. It is where you decide which result deserves effort first. A plan does not have to predict every future detail. It should be clear enough to choose a small next piece and to recognise whether completing it actually helps the people you intend to serve.",
+                "Design works out how that piece should behave and fit into the application. It includes interaction choices, data shape, responsibilities, and important boundaries, not just colours. For creating a task, design might decide where validation occurs, how an owner is determined, and how a save failure appears. These decisions are cheaper to discuss before many files depend on an accidental choice."
+              ]
+            },
+            {
+              "heading": "Implement, test, and release",
+              "paragraphs": [
+                "Implementation turns the agreed behaviour into working code and configuration. With AI, much typing may be quick, but the result still needs review. Break work into understandable changes and connect them to requirements. A large generated change can hide unrelated decisions, making it difficult to know which part caused an error or whether essential rules were skipped.",
+                "Testing gathers evidence against expected behaviour. It includes normal use, boundaries, failures, and interactions between components. Release then makes a tested version available to its intended users. Releasing is not the same as saving a file: configuration, database changes, access, and the ability to recover from trouble may all matter. A local demonstration does not establish that the deployed version behaves correctly."
+              ]
+            },
+            {
+              "heading": "Maintain and learn from real use",
+              "paragraphs": [
+                "Maintenance includes fixing defects, updating dependencies, addressing security issues, and improving behaviour as needs change. An application remains your responsibility after its first release. People use unexpected data and devices, services fail, and libraries evolve. Plan for observing problems and supporting users instead of assuming a successful launch ends the project.",
+                "The stages form a loop. Feedback from testing can change a design; feedback from users can change the requirements. Smaller releases shorten the time between a decision and evidence about it. An older one-pass approach tries to finish each stage before the next, while iterative work revisits them. Iteration is not an excuse for no planning; it means planning with room to learn."
+              ]
+            },
+            {
+              "heading": "Working is only one dimension of good",
+              "paragraphs": [
+                "Correctness means the application follows its intended rules. Usability concerns whether people can understand and accomplish their work. Accessibility concerns whether people with different abilities and ways of interacting can participate. A feature may be correct when clicked with a mouse yet unusable through a keyboard or screen reader. These qualities need distinct checks.",
+                "Security protects accounts, data, and operations from misuse. Maintainability concerns how readily someone can understand and safely change the software later. A rushed solution may appear successful now while making the next change risky. Include quality expectations in the definition of done. You cannot prove that software is good solely by a screenshot, one happy-path test, or a confident explanation from its generator."
+              ]
+            },
+            {
+              "heading": "One person can hold several roles",
+              "paragraphs": [
+                "A product role decides what to build and why. A designer shapes interactions and structure. Developers implement behaviour. Testers investigate whether it meets expectations. Operations or reliability work keeps the released service running. Security responsibilities cut across these activities. Larger teams distribute the roles; an independent builder may switch between all of them in one afternoon.",
+                "The role names help you notice neglected work, not create unnecessary bureaucracy. Before release, ask which perspective you have not used. Have you prioritised like a product owner, tried the interface like a new user, checked failures like a tester, and considered recovery like an operator? AI assistance does not automatically supply these perspectives just because it produced many files."
+              ]
+            },
+            {
+              "heading": "Use AI inside a controlled loop",
+              "paragraphs": [
+                "Give an assistant a bounded goal, relevant context, and a way to judge success. Ask for a plan when a change crosses several components. After implementation, inspect the change, run appropriate checks, and compare the actual behaviour with acceptance criteria. Keep the human approval point clear, especially for releases and destructive data operations.",
+                "For a small task feature, the loop can be short: clarify one rule, choose its design, implement it, test examples, release carefully, and gather feedback. You need not write a massive document at every stage. You do need evidence. When an assistant says the work is complete, ask what was tested, what remains uncertain, and what will happen if the released change fails."
+              ]
+            }
+          ],
+          "keyIdea": "Software development is a continuing learning loop, and generating code completes only one part of it.",
+          "taskboard": "Taskboard can release a small complete slice, such as task creation, before adding extra capabilities. The builder writes its criteria, designs validation and storage, reviews implementation, tests success and failure, then observes real use. Feedback can send the next change back to planning rather than straight into more code.",
+          "walkthrough": {
+            "title": "Run one lifecycle loop",
+            "steps": [
+              "Plan a small task-creation improvement and record its purpose.",
+              "Design normal, invalid, and failed-save behaviour.",
+              "Implement the smallest coherent change and review its scope.",
+              "Test it against the criteria, including keyboard use and permissions.",
+              "Release with a recovery plan, gather feedback, and record the next learning."
+            ]
+          },
+          "mistakes": [
+            "Equating a completed implementation with a completed release.",
+            "Treating accessibility, security, or maintenance as somebody else’s future problem."
+          ],
+          "aiMistakes": [
+            "AI may announce completion after editing files without running checks; request the actual test results.",
+            "AI may remove a safeguard to make a demonstration pass; inspect the diff and repeat the failure case."
+          ],
+          "tryIt": [
+            "Map a recent application change onto all six stages and mark any missing work.",
+            "Write a definition of done that covers correctness, accessibility, security, and maintainability."
+          ],
+          "check": [
+            {
+              "q": "What are the six recurring stages?",
+              "a": "Planning, design, implementation, testing, release, and maintenance."
+            },
+            {
+              "q": "Who is accountable when a solo builder uses AI?",
+              "a": "The builder remains responsible for the choices, verification, and released behaviour."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Understanding How Applications Work",
+      "question": "What happens behind an interface when somebody uses an application?",
+      "intro": "Now follow information through the parts that make a feature work. You will learn to read small pieces of code, recognise trust boundaries, and investigate a real action using evidence.",
+      "project": {
+        "title": "Map and trace your application",
+        "summary": "Draw the main components and trace one complete action between them. Mark the rules, persistent writes, and failure paths so the drawing becomes a practical review and debugging tool.",
+        "steps": [
+          "Draw the user, browser frontend, backend, database, and external services.",
+          "Label connections with their protocols and the information they carry.",
+          "Trace task creation, sign-in, and retrieving tasks on a later visit.",
+          "Identify validation, session verification, ownership enforcement, and database constraints.",
+          "Capture one request in browser developer tools and compare it with the diagram.",
+          "Explain one failure at each boundary and how the user recovers.",
+          "Keep the diagram and traces with the application documentation and update them when behaviour changes."
+        ]
+      },
+      "glossary": [
+        {
+          "term": "Source code",
+          "definition": "Human-readable instructions written in a programming language."
+        },
+        {
+          "term": "Runtime",
+          "definition": "The execution environment that runs a program."
+        },
+        {
+          "term": "Variable",
+          "definition": "A name used to refer to a value."
+        },
+        {
+          "term": "Data type",
+          "definition": "A category of value that affects valid operations."
+        },
+        {
+          "term": "Function",
+          "definition": "A named unit of reusable instructions with inputs and possibly a result."
+        },
+        {
+          "term": "Module",
+          "definition": "A file or package that groups related code."
+        },
+        {
+          "term": "Exception",
+          "definition": "A reported problem arising during execution."
+        },
+        {
+          "term": "Promise",
+          "definition": "A JavaScript object representing an eventual success or failure."
+        },
+        {
+          "term": "State",
+          "definition": "Information currently used to determine application behaviour or display."
+        },
+        {
+          "term": "DOM",
+          "definition": "The browser’s object representation of a document."
+        },
+        {
+          "term": "Backend",
+          "definition": "Server-side software that applies rules and coordinates work."
+        },
+        {
+          "term": "Validation",
+          "definition": "Checking input against expected structure and allowed values."
+        },
+        {
+          "term": "HTTP",
+          "definition": "The request-response protocol commonly used on the web."
+        },
+        {
+          "term": "HTTPS",
+          "definition": "HTTP protected by an encrypted, authenticated transport connection."
+        },
+        {
+          "term": "DNS",
+          "definition": "The system that resolves domain names to network addresses."
+        },
+        {
+          "term": "Endpoint",
+          "definition": "A particular API operation exposed at a method and address."
+        },
+        {
+          "term": "JSON",
+          "definition": "A text format for structured information exchanged between programs."
+        },
+        {
+          "term": "Primary key",
+          "definition": "A value or combination uniquely identifying a table row."
+        },
+        {
+          "term": "Foreign key",
+          "definition": "A reference linking records to a key in another table."
+        },
+        {
+          "term": "CRUD",
+          "definition": "The basic operations of creating, reading, updating, and deleting records."
+        },
+        {
+          "term": "Transaction",
+          "definition": "A group of database changes committed or rolled back together."
+        },
+        {
+          "term": "Index",
+          "definition": "A database structure that speeds selected lookup or ordering operations."
+        },
+        {
+          "term": "Migration",
+          "definition": "A recorded change to database structure, sometimes including data changes."
+        },
+        {
+          "term": "Authentication",
+          "definition": "Checking proof of an account’s identity."
+        },
+        {
+          "term": "Authorisation",
+          "definition": "Deciding which actions an identity may perform."
+        },
+        {
+          "term": "Session",
+          "definition": "A server-managed record connecting later requests to an authenticated account."
+        },
+        {
+          "term": "CSRF",
+          "definition": "An attack that tries to trigger an authenticated browser action from another site."
+        },
+        {
+          "term": "Password hash",
+          "definition": "A one-way password-verification result created by an appropriate hashing algorithm."
+        },
+        {
+          "term": "Sequence diagram",
+          "definition": "A diagram showing participants and their messages in time order."
+        }
+      ],
+      "chapters": [
+        {
+          "number": 5,
+          "slug": "programming-foundations",
+          "title": "Programming Foundations",
+          "question": "How can reading a little code help you judge work that an AI assistant writes?",
+          "summary": "Most programs combine a small collection of recurring ideas. Learn to follow inputs, decisions, outputs, and failures rather than memorising a whole language.",
+          "sections": [
+            {
+              "heading": "Source text needs an execution environment",
+              "paragraphs": [
+                "Source code is text written according to a programming language's rules. Syntax concerns the valid arrangement of that text; semantics concerns what it means. A processor ultimately executes low-level instructions, so the source needs translation and an execution environment. A compiler can translate ahead of execution, while an interpreter or runtime performs much of the work as the program runs.",
+                "These categories are useful simplifications rather than absolute divisions. Modern engines may combine interpretation and compilation. The practical question is what runs this project: a browser, Node.js, Python, or another environment? Versions and configuration matter. If a snippet works on one machine and fails on another, compare environments before assuming the source text must be different."
+              ]
+            },
+            {
+              "heading": "Values, variables, and types",
+              "paragraphs": [
+                "A value is a piece of information; a variable gives you a name through which to use a value. Text is commonly called a string, whole numbers integers, fractional numbers floats, and true-or-false values booleans. A null-like value represents absence. A task can have a title and completion flag while having no due date yet.",
+                "Types affect operations. Adding two numbers differs from combining text. Form fields often deliver strings even when they contain digits, and a date-looking string is not automatically a date object. Be especially careful with time zones and money. When reading a calculation, ask which types enter it and where conversion or validation occurs. Many mysterious bugs become ordinary mismatches once you inspect the actual values."
+              ]
+            },
+            {
+              "heading": "Decisions, repetition, and reusable work",
+              "paragraphs": [
+                "Conditions choose a branch based on a test. A title check can reject an empty value or an excessive length before allowing a save. Loops repeat instructions over a collection, such as examining every task for overdue status. Follow one concrete example through a branch or loop instead of trying to understand an entire file in one glance.",
+                "Functions package related instructions under a name. Their parameters receive inputs, and a return value supplies a result. A function called is_overdue should make its rule easy to locate, including how it treats today and missing dates. Clear names reduce the amount you must remember. Ask whether a function only calculates a result or also changes records, sends messages, or produces another side effect."
+              ]
+            },
+            {
+              "heading": "Collections and organisation",
+              "paragraphs": [
+                "A list or array holds multiple items in order. A dictionary or object groups named fields, such as a task's identifier, title, date, and owner. A class describes a kind of object and can group its data with methods that operate on it. These are tools for representing related things, not evidence that more complicated structure is always better.",
+                "Modules place related code in separate files or packages. Libraries supply reusable code from elsewhere. Trace a function name to its definition or import to find out what it actually does. A sensible project might separate accounts, task rules, and email work. Consistency matters: several names for the same date field across modules make it much easier for both people and tools to connect the wrong values."
+              ]
+            },
+            {
+              "heading": "Inputs, errors, and useful evidence",
+              "paragraphs": [
+                "Programs receive input from users, files, databases, and other services. Those boundaries need care because information may be absent, malformed, oversized, or deliberately hostile. Outputs include visible content, saved records, messages, and API responses. Reading a function becomes easier when you first identify what enters and what leaves, then inspect the rules between them.",
+                "An exception reports a problem during execution. A stack trace shows relevant calls and locations, though its ordering depends on the environment. In a typical Python traceback, start with the final exception message and then locate the named source line. A type error involving text and a date suggests examining conversion at the input boundary. Do not make errors disappear with an empty catch block; that removes evidence without solving the cause."
+              ]
+            },
+            {
+              "heading": "Asynchronous work has more than one outcome",
+              "paragraphs": [
+                "Network and database operations can take noticeable time. Asynchronous code lets other work continue while a result is pending. In JavaScript a promise represents a result that will settle later, successfully or unsuccessfully. An async function can use await to pause its own continuation without simply freezing the entire page. The statements after await depend on how that waiting operation completes.",
+                "Plan success, failure, and cleanup. A try block can contain the awaited save, a catch block can explain failure while preserving input, and finally can clear the waiting indicator. Also consider what changed during the wait: the user may click again, navigate away, or issue another request. Missing await, stale results, and silent exceptions are common sources of behaviour that seems random in a quick demonstration."
+              ]
+            }
+          ],
+          "keyIdea": "Read unfamiliar code by identifying its inputs, outputs, decisions, and failure paths.",
+          "taskboard": "Taskboard represents each task with fields including an identifier, title, owner, completion value, and optional date. Functions hold rules such as sorting and overdue calculation. Its asynchronous save waits for the backend before reporting the confirmed result.",
+          "walkthrough": {
+            "title": "Read a task-ordering function",
+            "steps": [
+              "Locate its name, parameters, and return statement.",
+              "Identify the separation of dated and undated records.",
+              "Check the date comparison and the final position of undated tasks.",
+              "Trace an empty list, two equal dates, and a missing date.",
+              "Inspect errors and asynchronous calls rather than judging by the function name alone."
+            ]
+          },
+          "mistakes": [
+            "Skipping all generated code because you did not write it.",
+            "Assuming values from forms already have the required types."
+          ],
+          "aiMistakes": [
+            "AI may call a nonexistent helper; locate its implementation or documented export.",
+            "AI may forget await or swallow failures; simulate a rejected request and inspect the result."
+          ],
+          "tryIt": [
+            "Explain an overdue check for yesterday, today, tomorrow, and no date.",
+            "Read one traceback and identify both the exception and the relevant input type."
+          ],
+          "check": [
+            {
+              "q": "What does a runtime contribute?",
+              "a": "It supplies the environment that executes the code and influences supported behaviour."
+            },
+            {
+              "q": "Why inspect a function’s inputs first?",
+              "a": "Their types and meaning help explain the branches, result, and possible failures."
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "slug": "the-frontend-and-user-interface",
+          "title": "The Frontend and User Interface",
+          "question": "Why can an attractive generated screen still be difficult or impossible to use?",
+          "summary": "A frontend turns interactions and current information into an interface. Its quality depends on behaviour over time, including waiting, failure, and accessible operation.",
+          "sections": [
+            {
+              "heading": "Pages and reusable pieces",
+              "paragraphs": [
+                "A page or screen is a complete view for a particular purpose, such as signing in or viewing tasks. A component is a reusable interface piece, such as a button, task row, or date field. Forms collect input, while navigation connects views. These concepts help you describe structure without assuming every visible rectangle needs its own route or independent implementation.",
+                "Shared components support consistency. If the same task row is used in several lists, one correction can improve them together. Reuse also requires clear responsibilities: a row should receive the information and actions it needs rather than secretly reaching into unrelated parts of the application. Look for consistency in labels, feedback, and interaction, not merely identical colours."
+              ]
+            },
+            {
+              "heading": "Structure, presentation, and behaviour",
+              "paragraphs": [
+                "HTML describes the content and meaningful structure of a web page. CSS controls its visual presentation, including layout and responsive adjustments. JavaScript supplies programmable behaviour. Frontend frameworks can help produce and update these, but they do not eliminate the underlying browser model. A project written with a framework still needs sensible document structure, styling, and interaction rules.",
+                "The browser parses HTML into a document object model, or DOM: an in-memory representation of elements and their relationships. Styles influence layout and appearance. JavaScript can change the document, after which the browser updates what is drawn. Understanding this sequence helps distinguish a data problem from a rendering problem. The text on screen is an output of several steps, not the entire application."
+              ]
+            },
+            {
+              "heading": "Events change state",
+              "paragraphs": [
+                "An event is something that happens, such as typing, clicking, submitting, or receiving data. State is information the interface currently uses: an entered title, an open dialog, fetched tasks, or whether a request is pending. In a state-driven interface, changing this information causes the visible view to be updated. Avoid thinking of every visual change as an isolated manual edit.",
+                "Different state has different lifetimes. Unsaved form text may belong only to the current page, while saved tasks originate in persistent backend data. A browser's fetched copy can become stale. When an action changes a task, decide how the local view becomes consistent with the accepted backend result. Optimistic updates can feel quick, but need rollback or correction if the server rejects the action."
+              ]
+            },
+            {
+              "heading": "Design the states a screenshot cannot show",
+              "paragraphs": [
+                "Loading should make it clear that work is under way. An empty state should explain that there is no data yet and offer a useful next step. Success should confirm the completed action without unnecessary interruption. An error state should explain what the person can do next, not expose internal diagnostics or leave them wondering whether a save occurred.",
+                "These states are different from one another. An empty list while a request is loading can falsely suggest lost data. An endless spinner after failure traps the person. Preserve entered text when a save fails, clear the waiting state, and offer a safe retry where appropriate. Disable or otherwise guard repeated submissions while work is pending, while making the reason understandable to assistive technology."
+              ]
+            },
+            {
+              "heading": "Accessibility is working functionality",
+              "paragraphs": [
+                "Use real buttons for actions, links for navigation, and associated labels for form fields. Meaningful HTML gives browsers and assistive technologies useful information automatically. People may interact through keyboards, screen readers, magnification, voice input, or other tools. A control that only works with a pointer excludes users even if it looks like a familiar button.",
+                "Check keyboard reachability, visible focus, meaningful labels, readable contrast, and messages that do not rely on colour alone. Focus should move sensibly when dialogs open and close. Important feedback may need an accessible announcement. Accessibility is easier to build into components than to patch across many screens later. Automated checks help, but do not replace actually trying the journey without a mouse."
+              ]
+            },
+            {
+              "heading": "Evaluate behaviour on real journeys",
+              "paragraphs": [
+                "Review the interface as a sequence, not a gallery. Start with a new account and no tasks, create one, correct an error, wait through a slow request, and try again after a failure. Resize the page and use a phone-sized view. These variations reveal assumptions hidden by carefully chosen demo content and a fast local connection.",
+                "Keep enforcement on the backend even when frontend checks are excellent. A browser check prevents frustrating mistakes for ordinary users, but someone can alter the browser or send requests another way. The frontend should guide honestly and clearly; it cannot be trusted to decide permissions. Review what the user sees alongside what the backend actually accepted and persisted."
+              ]
+            }
+          ],
+          "keyIdea": "A useful interface supports the whole interaction, not just the successful final picture.",
+          "taskboard": "Taskboard uses pages for sign-in and personal tasks, with reusable task rows and forms. Its create form retains text after a failed save and distinguishes loading from an empty list. Completion controls must remain usable by keyboard and report the backend outcome.",
+          "walkthrough": {
+            "title": "Test a task form beyond its appearance",
+            "steps": [
+              "Open an empty task list and inspect the guidance.",
+              "Submit with no title and locate the associated error.",
+              "Enter a title and simulate a slow save.",
+              "Cause the request to fail and confirm the text remains.",
+              "Complete the same journey using only the keyboard and check the saved result after refresh."
+            ]
+          },
+          "mistakes": [
+            "Using placeholder text as the only field label.",
+            "Displaying an empty list before knowing whether loading succeeded."
+          ],
+          "aiMistakes": [
+            "AI may generate clickable div elements without keyboard behaviour; inspect semantics and tab through the page.",
+            "AI may clear inputs before confirmation; reject a save and verify recovery."
+          ],
+          "tryIt": [
+            "List loading, empty, success, and error designs for one page.",
+            "Navigate a form without a mouse and record each missing focus cue."
+          ],
+          "check": [
+            {
+              "q": "How do HTML and CSS differ?",
+              "a": "HTML expresses document structure and meaning; CSS controls presentation."
+            },
+            {
+              "q": "Is frontend task state the shared source of truth?",
+              "a": "No; it is a local view that must be reconciled with accepted persistent data."
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "slug": "the-backend-and-application-logic",
+          "title": "The Backend and Application Logic",
+          "question": "Why must a backend repeat checks that the browser already performs?",
+          "summary": "The backend accepts requests and applies rules in an environment the service controls. It authenticates, validates, authorises, coordinates storage, and handles work unsuitable for the immediate response.",
+          "sections": [
+            {
+              "heading": "A server is a role as well as a machine",
+              "paragraphs": [
+                "A server can mean a computer providing a service or the program that listens for requests. Backend code may run on a dedicated machine, in a managed service, or through short-lived hosted functions. The deployment arrangement changes operational details, but not the need for clear rules, protected secrets, and reliable access to persistent data.",
+                "Unlike code shipped to a browser, backend implementation runs in an environment users do not directly control. This makes it the right place for privileged service credentials and enforceable application rules. It does not make the backend automatically secure. Every exposed request remains an input boundary, and a faulty handler can still disclose information or perform an unauthorised action."
+              ]
+            },
+            {
+              "heading": "Routes connect requests to handlers",
+              "paragraphs": [
+                "A route pairs an incoming request pattern with the code that handles it. Both method and path matter: reading a collection and creating a record can use the same path with different methods. A handler interprets the relevant input, invokes application logic, and returns a response. Keeping related routes organised helps you find the code responsible for a visible action.",
+                "Read a handler as a sequence of responsibilities. Establish the caller, examine the input, check permission, perform the requested operation, and shape the response. The precise ordering can vary where necessary, but no required responsibility should vanish. Shared middleware or framework facilities can perform some steps, so inspect those rather than assuming every check must appear directly inside the route function."
+              ]
+            },
+            {
+              "heading": "Validation is about acceptable input",
+              "paragraphs": [
+                "Validation checks whether information has the required shape and allowed values. A title may be required, limited in length, and normalised according to an explicit policy. A supplied date must be interpretable and permitted by the product's rules. Rejecting malformed input early prevents confusing failures farther down the stack and gives the caller a useful explanation.",
+                "The backend must validate even when the frontend already does. Requests can come from altered browsers, scripts, old clients, or other applications. Frontend checks improve the experience; they do not establish trust. Be careful with unexpected fields too. A client should not gain privileged behaviour merely by adding an owner identifier or internal status to an otherwise valid request."
+              ]
+            },
+            {
+              "heading": "Business rules and permission are separate checks",
+              "paragraphs": [
+                "Business rules express the application's intended behaviour beyond basic formatting. They may specify ordering, allowed state transitions, or which values are derived. Authorisation answers whether this caller may perform this operation on this record. A well-formed task update is still unacceptable if it targets somebody else's task. Successful sign-in is not blanket permission.",
+                "Use the verified identity to select and modify owned records. For creation, derive ownership from that identity rather than a client-supplied field. Keep important rules in clear reusable application logic where appropriate, rather than duplicating contradictory versions across several handlers. Database constraints add another safety layer, but a foreign key alone cannot decide whether the current caller is allowed to edit a record."
+              ]
+            },
+            {
+              "heading": "Responses and errors are part of the contract",
+              "paragraphs": [
+                "The caller needs a response that distinguishes success from failure. Return an appropriate status and a predictable body so the frontend knows whether to show a saved record, request sign-in, highlight invalid fields, or offer recovery. A generic success response after an internal failure makes the interface lie, even if the underlying exception was technically caught.",
+                "Keep detailed diagnostics in controlled server logs rather than exposing stack traces, credentials, or raw database messages to users. User-facing errors should be useful without revealing private information. Also consider partial completion: if several changes belong together, coordinate them so an error does not leave misleading half-finished work. Reliable error handling is application behaviour, not simply an emergency fallback."
+              ]
+            },
+            {
+              "heading": "Background and scheduled work",
+              "paragraphs": [
+                "Not every operation belongs inside the request that a person is waiting for. Large reports, image processing, or sending many emails can be handed to background workers. A queue can hold work until a worker processes it. The immediate response may acknowledge that work was accepted rather than falsely claiming the slow operation has finished.",
+                "Scheduled jobs start at specified times, such as checking daily reminders. Time zones, failures, retries, and duplicate delivery need explicit thought. Workers may retry after a crash, so important effects should be designed to avoid harmful duplication. Moving work to the background changes where you observe completion and failure; it does not remove the need to validate input, enforce rules, or tell users what happened."
+              ]
+            }
+          ],
+          "keyIdea": "The backend is the enforcement point for rules that cannot depend on a cooperative browser.",
+          "taskboard": "Taskboard routes accept task operations, verify the session, validate fields, and enforce ownership before saving. A reminder service could later use scheduled and background work without making the task form wait for every email. Private email-service credentials remain on the backend.",
+          "walkthrough": {
+            "title": "Review a create-task handler",
+            "steps": [
+              "Find the route method and path.",
+              "Locate the verified user identity and input validation.",
+              "Confirm the owner is derived from that identity.",
+              "Follow the storage call and inspect the returned status and task.",
+              "Send malformed input directly and verify rejection without a new record."
+            ]
+          },
+          "mistakes": [
+            "Believing a hidden button prevents an API operation.",
+            "Doing slow bulk work while the user waits with no progress or recovery."
+          ],
+          "aiMistakes": [
+            "AI may trust owner_id from the body; inspect record creation and test another account identifier.",
+            "AI may catch all exceptions and return success; simulate storage failure and inspect both response and database."
+          ],
+          "tryIt": [
+            "Write a plain-language handler outline for deleting an owned task.",
+            "Classify a daily reminder and a large export as immediate, background, or scheduled work."
+          ],
+          "check": [
+            {
+              "q": "What does a route do?",
+              "a": "It connects a request method and path to the handler responsible for it."
+            },
+            {
+              "q": "Why validate twice?",
+              "a": "The browser helps the person, while the backend enforces rules even for modified or independent clients."
+            }
+          ]
+        },
+        {
+          "number": 8,
+          "slug": "networks-http-and-apis",
+          "title": "Networks, HTTP and APIs",
+          "question": "How does an action reach a remote computer, and how should the application cope when the conversation fails?",
+          "summary": "Networked applications exchange structured requests and responses. Understanding addresses, HTTP, APIs, and failure makes it possible to inspect that conversation instead of guessing.",
+          "sections": [
+            {
+              "heading": "Clients, servers, and addresses",
+              "paragraphs": [
+                "A client initiates a conversation and a server answers it. These are roles within an interaction, not permanent labels for a device. A backend serving a browser can become a client when it asks an email provider to send a message. The communication crosses networks that can introduce delay, interruption, or failure independently of either program's own logic.",
+                "An IP address identifies a network destination. A domain name provides a human-friendly name, and DNS helps resolve names to addresses. A URL adds information needed to identify a resource: a scheme, host, optional port, path, and sometimes query parameters or a fragment. Reading these parts helps you distinguish the service being contacted from the particular operation or resource being requested."
+              ]
+            },
+            {
+              "heading": "HTTP messages and protected transport",
+              "paragraphs": [
+                "HTTP defines a common request-response protocol. A request includes a method, a target path, headers with metadata, and sometimes a body. A response includes a status code, headers, and often a body. Headers can describe content type or carry authentication-related information; the body holds submitted information or returned data. Keep credentials out of URLs that may be logged or shared.",
+                "HTTPS protects the communication using TLS, providing encryption in transit and helping authenticate the server. It is essential for passwords, session information, and private records. It does not prove that the application stores data safely or checks permissions correctly. Transport protection and application security solve different problems, so a padlock is not evidence that every operation is trustworthy."
+              ]
+            },
+            {
+              "heading": "Methods and response categories",
+              "paragraphs": [
+                "GET requests retrieve information and should not perform data-changing actions. POST commonly creates a resource or starts an operation. PUT commonly replaces a resource representation, PATCH changes selected fields, and DELETE requests removal. Use methods consistently with the API's documented meaning, because clients, caches, and retry behaviour rely on those expectations.",
+                "Response categories provide a first clue about the outcome. Codes in the 200 range indicate success, with 201 commonly used for creation and 204 for success without a body. A 400-range response indicates a request-side issue: examples include invalid input, missing authentication, forbidden access, or a missing resource. A 500-range response points to server-side trouble. Read the response details before deciding the cause from the number alone."
+              ]
+            },
+            {
+              "heading": "APIs, endpoints, and JSON",
+              "paragraphs": [
+                "An API is an agreed way for software to use a capability. A web endpoint is a particular exposed operation, usually identified by method and path. Resource-oriented APIs often organise endpoints around things such as tasks. The contract includes field names, allowed types, authentication, response shapes, and errors, not merely a list of URLs.",
+                "JSON is a text format for exchanging structured data. It represents objects, arrays, strings, numbers, booleans, and null. A date usually travels as an agreed string representation rather than a special JSON date value. JSON syntax being valid does not mean its contents meet your application's rules. The receiving side still needs to validate the expected structure and meaning."
+              ]
+            },
+            {
+              "heading": "External services and uncertain outcomes",
+              "paragraphs": [
+                "Your backend may call APIs for email, payments, or other specialised work. Read the provider's authentication requirements, limits, response formats, and failure behaviour. Keep privileged API keys on the backend. Rate limits mean even a healthy provider may refuse requests sent too frequently, so a design must account for more than a simple success-or-crash distinction.",
+                "A timeout means you stopped waiting, not necessarily that the server did nothing. A create request may succeed while its response is lost. Blindly repeating it can produce duplicates. Retry deliberately, with suitable delays and limits, and use idempotency mechanisms when the operation requires them. Preserve user input and explain uncertainty honestly rather than presenting either guaranteed failure or guaranteed success without evidence."
+              ]
+            },
+            {
+              "heading": "Observe the actual conversation",
+              "paragraphs": [
+                "Browser developer tools include a Network panel that lists requests, methods, status codes, timing, headers, and bodies. Use it to answer concrete questions: did a request leave the page, which endpoint did it reach, what was sent, and what came back? A visible error is easier to investigate when you can locate the relevant message.",
+                "Compare the request with the API contract and then with backend evidence. A successful response with the wrong data suggests a different problem from no request at all. Avoid copying session cookies or sensitive request bodies into public bug reports. Share only the information needed to reproduce the issue, with secrets removed. Observation should make debugging clearer without creating a new privacy problem."
+              ]
+            }
+          ],
+          "keyIdea": "Treat network communication as a fallible exchange with an explicit contract.",
+          "taskboard": "Taskboard sends task requests from the browser to backend endpoints over HTTPS and exchanges JSON. Completing a task requires both an accepted request and a clear response. Its interface must handle waiting, rejection, and uncertain network outcomes without silently duplicating work.",
+          "walkthrough": {
+            "title": "Inspect one task request",
+            "steps": [
+              "Open the Network panel and trigger task creation.",
+              "Locate the method, URL, and submitted JSON fields.",
+              "Read the response status and returned identifier.",
+              "Repeat with invalid input and compare the error response.",
+              "Try offline mode and explain why no response differs from a confirmed server rejection."
+            ]
+          },
+          "mistakes": [
+            "Assuming a timeout proves a write never occurred.",
+            "Using GET for deletion or other state-changing operations."
+          ],
+          "aiMistakes": [
+            "AI may retry POST automatically and duplicate records; interrupt a response and inspect resulting rows.",
+            "AI may mismatch JSON field names between client and server; compare the payload with handler validation."
+          ],
+          "tryIt": [
+            "Break a URL into scheme, host, path, and query.",
+            "Explain how you would safely investigate a task that may have saved during a connection failure."
+          ],
+          "check": [
+            {
+              "q": "What is the difference between an API and JSON?",
+              "a": "An API defines an interaction contract; JSON is one format used for its exchanged data."
+            },
+            {
+              "q": "What does HTTPS not guarantee?",
+              "a": "It does not guarantee correct permissions, safe storage, or bug-free application logic."
+            }
+          ]
+        },
+        {
+          "number": 9,
+          "slug": "databases-and-persistent-storage",
+          "title": "Databases and Persistent Storage",
+          "question": "Where do records live while devices restart and application code changes?",
+          "summary": "Persistent storage lets applications remember beyond a running process. Databases add structured access, integrity, and coordination so records remain useful across users and visits.",
+          "sections": [
+            {
+              "heading": "Storage choices have different promises",
+              "paragraphs": [
+                "Working memory holds information while a program executes and should not be treated as durable storage. Browser storage can survive page reloads, but remains local to a browser profile and can be cleared. It can help with preferences or local caches, yet it does not automatically create a shared account record accessible from another device.",
+                "Ordinary files can retain information too. They work well for many documents and media objects, but coordinating numerous simultaneous edits and precise queries can become difficult. Object storage often holds uploaded files, while a database stores structured information and references to those files. Choose by access patterns and reliability needs rather than assuming every persistent byte belongs in the same place."
+              ]
+            },
+            {
+              "heading": "What a database manager provides",
+              "paragraphs": [
+                "A database is an organised collection of records. A database management system, or DBMS, is the software that stores and manages them. Everyday speech often uses database for both. Products such as PostgreSQL, MySQL, and SQLite differ in deployment and features, but all provide a more disciplined way to work with structured records than repeatedly rewriting an uncoordinated text file.",
+                "A DBMS can support durable writes, queries, concurrent access, integrity rules, access controls, and backup mechanisms. These capabilities still need correct configuration and application use. Installing a database does not automatically create a tested recovery plan or enforce every user-level permission. Understand what the tool provides and what remains a responsibility of your application and operating procedures."
+              ]
+            },
+            {
+              "heading": "Tables, rows, columns, and keys",
+              "paragraphs": [
+                "A relational database represents information in tables. A row is one record and a column is one named attribute. A tasks table might contain a row for each task with columns for title, due date, completion, and ownership. Columns have defined types and rules, making the structure more explicit than an arbitrary collection of text fields.",
+                "A primary key uniquely identifies a row. The title is usually unsuitable because two tasks can legitimately share it and titles can change. A foreign key refers to a key in another table, connecting related information. For example, a task's owner identifier points to a user. The relationship helps preserve integrity without copying the entire user's account information into every task row."
+              ]
+            },
+            {
+              "heading": "Relationships and a shared source of truth",
+              "paragraphs": [
+                "One user can own many tasks, giving a one-to-many relationship. Other requirements can involve one-to-one or many-to-many relationships. Keeping each fact in a sensible place reduces contradictions. If an email address is copied into every task, changing it requires updating many records and risks leaving inconsistent versions behind. A reference normally avoids that unnecessary duplication.",
+                "For a hosted shared application, the database serves as the authoritative persistent record for saved data. The frontend can cache a copy for display, but the copy may be old. Inspecting the stored row is a useful way to confirm whether a feature really wrote what you intended. Still check ownership and field values: the presence of some row is not proof that the right user's operation succeeded correctly."
+              ]
+            },
+            {
+              "heading": "Other models solve other access problems",
+              "paragraphs": [
+                "Document databases store records as structured documents, often allowing varying fields. They can suit data naturally read as whole documents, but flexibility does not remove the need for validation or design. A key-value store retrieves values by a key and is often useful for caching or simple lookup patterns. Neither is automatically better because it sounds simpler than a relational schema.",
+                "Graph databases focus on connections, search systems support text retrieval, and vector databases support similarity retrieval using numerical representations. These tools answer different questions efficiently. Adding specialised storage introduces more systems to operate and synchronise. Start from real queries and requirements; do not adopt several database categories merely because an AI architecture suggestion lists them."
+              ]
+            },
+            {
+              "heading": "Durability needs evidence and care",
+              "paragraphs": [
+                "A record should survive a normal restart if it was committed to persistent storage. Test that claim in a safe environment. A database process running successfully does not prove its storage is persistent: an incorrectly configured deployment may place files on disposable storage. Also distinguish the application restarting from a person clearing local browser data, because they test different boundaries.",
+                "Backups and recovery remain essential for important records. Accidental deletion, faulty migrations, and infrastructure failures can damage persistent data. A backup is useful only if it can be restored correctly. For now, build the habit of asking where the records actually reside, who can access them, how they survive deployment changes, and how you would recover them after a serious mistake."
+              ]
+            }
+          ],
+          "keyIdea": "Persistent, shared records require a deliberate storage design rather than a convincing local display.",
+          "taskboard": "Taskboard stores users and tasks in related tables, with each task pointing to its owner. The browser loads a current view instead of being the only place records exist. Opening another device reads the same persistent account data through the backend.",
+          "walkthrough": {
+            "title": "Confirm a task is truly stored",
+            "steps": [
+              "Create a clearly named test task.",
+              "Locate its stored row using authorised database tooling.",
+              "Check its identifier, title, completion, and owner reference.",
+              "Reload the browser and restart the test application safely.",
+              "Sign in again and confirm the same record is read rather than recreated."
+            ]
+          },
+          "mistakes": [
+            "Using browser storage as though it were shared across devices.",
+            "Assuming the existence of a database removes the need for backups."
+          ],
+          "aiMistakes": [
+            "AI may put a database file on disposable deployment storage; inspect persistence configuration.",
+            "AI may duplicate user details into every task; review relationships and update consequences."
+          ],
+          "tryIt": [
+            "Draw user and task tables with their connecting keys.",
+            "Compare memory, browser storage, files, and a DBMS for a multi-user task list."
+          ],
+          "check": [
+            {
+              "q": "What does a foreign key represent?",
+              "a": "A reference connecting a record to an existing key in a related table."
+            },
+            {
+              "q": "Why can a local browser cache not be the only account store?",
+              "a": "It is device- and browser-specific, may be cleared, and is not automatically shared."
+            }
+          ]
+        },
+        {
+          "number": 10,
+          "slug": "modelling-and-working-with-data",
+          "title": "Modelling and Working with Data",
+          "question": "How can you change stored information without losing records or crossing user boundaries?",
+          "summary": "A data model translates requirements into entities, attributes, and relationships. Safe operations combine scoped queries, database safeguards, and carefully planned structural changes.",
+          "sections": [
+            {
+              "heading": "Model concepts before writing queries",
+              "paragraphs": [
+                "An entity is a kind of thing the application tracks, such as a user or task. Attributes describe it, and relationships connect it to other entities. Find these ideas in requirements rather than inventing tables from whatever a generated screen happens to display. Decide which values are required, which can be absent, and which identify an existing related record.",
+                "A labels feature illustrates relationship design. A task can have several labels and a label can belong on several tasks, suggesting a joining table rather than several numbered label columns. Ownership must also be explicit. If labels are private, their identifiers cannot become a shortcut for connecting one person's task with another person's data. New relationships need permission rules as well as columns."
+              ]
+            },
+            {
+              "heading": "CRUD and the meaning of queries",
+              "paragraphs": [
+                "Create, read, update, and delete are commonly shortened to CRUD. In SQL these broadly correspond to INSERT, SELECT, UPDATE, and DELETE. Web APIs often expose similar operations through POST, GET, PATCH or PUT, and DELETE. This is a useful mapping, not a requirement that every API operation correspond to exactly one statement or table.",
+                "Filtering selects relevant rows, ordering makes results useful, and joins combine related records through their keys. Read the WHERE clause carefully: an update without the intended filter can affect far more records than expected. For private task data, queries need the verified owner's scope as well as a task identifier. Checking only an easily changed identifier is not sufficient."
+              ]
+            },
+            {
+              "heading": "Use parameters and understand your ORM",
+              "paragraphs": [
+                "Never form SQL by joining raw user text into the command. Parameterised queries keep the command structure separate from supplied values so malicious punctuation is treated as data rather than executable SQL. The placeholder notation varies by library. Use the supported parameter interface instead of attempting to escape dangerous characters with a homemade replacement function.",
+                "An object-relational mapper, or ORM, expresses database operations through language objects and generates SQL. It can reduce repetitive code and manage relationships, but cannot decide your ownership policy automatically. Inspect which filters and relationships are used, and learn to view generated SQL when investigating performance or correctness. An elegant-looking ORM call can still read somebody else's records or fetch far more data than necessary."
+              ]
+            },
+            {
+              "heading": "Constraints and transactions protect consistency",
+              "paragraphs": [
+                "Constraints put rules inside the database. NOT NULL rejects missing required values, UNIQUE prevents duplicates where uniqueness is intended, foreign keys protect references, and CHECK rules restrict acceptable values. They form a safety net if application validation is missed. Choose them deliberately: a rule that belongs only to presentation should not accidentally prevent legitimate stored data.",
+                "A transaction groups operations so they commit together or roll back together. Creating a task and its required related records should not leave an incomplete result if one step fails. The transaction boundary needs to match the consistency requirement. It cannot magically undo an external email already sent, so coordinating database work with outside effects requires additional care and clear failure handling."
+              ]
+            },
+            {
+              "heading": "Concurrent edits and indexes",
+              "paragraphs": [
+                "Two requests can read the same record and then overwrite each other's work. A title edit based on an old full copy might unintentionally undo a recent completion change. Updating only the intended fields reduces this risk. Where conflicts matter, version numbers can let the backend reject a change based on stale information rather than silently discarding another person's update.",
+                "Indexes help the database find or order rows efficiently without scanning everything. They are useful for actual query patterns, such as filtering tasks by owner and ordering dates. Indexes also consume storage and add work to writes. Do not add them to every column by reflex. Examine representative queries and realistic amounts of data, because a fast query over five rows tells you little about a large account."
+              ]
+            },
+            {
+              "heading": "Migrations change structure safely",
+              "paragraphs": [
+                "A schema describes the database structure. A migration records a controlled change to that structure, such as adding a column or creating a relationship table. Keeping migrations with source code lets environments move through known changes consistently. Editing only your local database by hand creates a hidden difference that another developer or deployment cannot reproduce reliably.",
+                "Review migrations for data loss, locking, and compatibility with existing records. A new required field needs a plan for old rows. Renaming or dropping a column can break a still-running version of the application. Test the migration using realistic existing data and maintain a recovery plan before touching important records. A generated migration is a proposal to inspect, not permission to erase and recreate production tables."
+              ]
+            }
+          ],
+          "keyIdea": "Safe data work preserves ownership, consistency, and existing records while the application evolves.",
+          "taskboard": "Taskboard scopes task operations to the verified owner and uses parameters or safe ORM calls. Its date-list query can benefit from an appropriate index. Adding labels requires a model, ownership checks, and a migration tested against tasks that already exist.",
+          "walkthrough": {
+            "title": "Review a labels data change",
+            "steps": [
+              "Draw tasks, labels, and the joining relationship.",
+              "State who owns each record and which associations are allowed.",
+              "Review create, read, update, and delete queries for owner scope and parameters.",
+              "Test constraints, partial failure, and simultaneous edits.",
+              "Apply the migration to a safe copy with existing data and verify counts and relationships afterward."
+            ]
+          },
+          "mistakes": [
+            "Running a destructive migration without checking existing records.",
+            "Replacing a full stale record when only one field should change."
+          ],
+          "aiMistakes": [
+            "AI may omit owner filters in a generated join; test label access with two accounts.",
+            "AI may concatenate SQL or drop tables to simplify a migration; inspect query construction and migration operations."
+          ],
+          "tryIt": [
+            "Write a plain-language query for your unfinished tasks ordered by due date.",
+            "Describe how two overlapping edits could lose information and how version checking helps."
+          ],
+          "check": [
+            {
+              "q": "What does a transaction guarantee for grouped database changes?",
+              "a": "The grouped work commits as a unit or is rolled back rather than leaving a partial result."
+            },
+            {
+              "q": "Why are parameterised queries important?",
+              "a": "They separate SQL structure from supplied values, preventing input from becoming executable SQL."
+            }
+          ]
+        },
+        {
+          "number": 11,
+          "slug": "users-authentication-and-permissions",
+          "title": "Users, Authentication and Permissions",
+          "question": "How does an application recognise a returning person and restrict what that person can do?",
+          "summary": "Authentication proves identity, while authorisation governs permitted actions. Safe account handling uses established security components and checks access on every relevant backend operation.",
+          "sections": [
+            {
+              "heading": "Identity does not imply permission",
+              "paragraphs": [
+                "Identity identifies an account. Authentication checks evidence that the caller is entitled to use it. Authorisation decides which actions that account may perform on which records. These questions are related but distinct. A successful sign-in might permit access to a personal list without permitting edits to another account's tasks or entry to an administrator's area.",
+                "A common failure checks that somebody is signed in and then loads a task using only its identifier. Changing that identifier can expose another person's data. This is often described as an insecure direct object reference or broken object-level access control. Make access checks part of each operation rather than relying on the interface to present only permitted links."
+              ]
+            },
+            {
+              "heading": "Accounts and sign-in choices",
+              "paragraphs": [
+                "An account flow may collect an email, verify control of that address, and establish a sign-in method. Proof might be a password, passkey, authenticator code, or trusted identity provider. Multi-factor authentication combines different kinds of proof and can reduce risk from a stolen password. Choose a supported approach appropriate to the sensitivity of the application.",
+                "A sign-in screen also contains important usability decisions. Fields need labels and password-manager support; a show-password control can reduce typing errors. Send credentials only over HTTPS. Use generic failure messages that do not disclose whether a particular address exists, and limit repeated attempts. Account recovery and provider sign-in require deliberate design rather than decorative buttons that imply unsupported capabilities."
+              ]
+            },
+            {
+              "heading": "Sessions, cookies, and tokens",
+              "paragraphs": [
+                "HTTP requests do not automatically remember who made earlier requests. With server-side sessions, successful sign-in creates a session record and the browser receives a difficult-to-guess identifier in a cookie. Later requests include it, letting the backend look up the account. Signing out must invalidate the session on the server, not merely remove the visible welcome message.",
+                "HttpOnly limits JavaScript access to the cookie, Secure restricts it to HTTPS, and SameSite helps control cross-site attachment. An alternative is a signed identity token, often a JWT. Tokens need careful expiry, storage, and revocation decisions; being signed does not mean their contents are secret. Browser storage can expose tokens to malicious scripts. Use the established pattern recommended by your authentication tooling rather than inventing a hybrid casually."
+              ]
+            },
+            {
+              "heading": "Cookie sessions need CSRF protection",
+              "paragraphs": [
+                "Because browsers automatically attach cookies, a hostile site may try to trigger an authenticated action without the person's intention. This is cross-site request forgery, or CSRF. The fact that a valid session cookie arrived does not by itself prove the user intentionally submitted the action from your application's interface. That distinction matters especially for requests that change data.",
+                "SameSite settings reduce many attacks but are not a complete replacement for the protection expected by your framework. Use its supported CSRF mechanism, commonly involving a token that an unrelated website cannot read. Do not change data through GET requests. Test the configured authentication and request protections together rather than assuming a cookie flag alone settles every cross-site situation."
+              ]
+            },
+            {
+              "heading": "Handle passwords through proven components",
+              "paragraphs": [
+                "Never store readable passwords or reversible encrypted copies for ordinary verification. Established password-hashing libraries use slow password-specific algorithms, such as Argon2id or bcrypt, with unique salts. On sign-in, the library verifies the submitted password against the stored result. Do not write your own hashing, random generation, or comparison scheme to make the code look simpler.",
+                "Prefer length and breached-password screening over arbitrary composition puzzles. The guidance discussed here calls for at least fifteen characters for password-only authentication, or eight when used as part of multi-factor authentication, and support for at least sixty-four characters. Avoid forced periodic changes without a reason such as compromise. Apply rate limits and use reviewed framework or hosted authentication facilities; their presence still does not implement your application-specific permissions."
+              ]
+            },
+            {
+              "heading": "Ownership, roles, and meaningful tests",
+              "paragraphs": [
+                "Ownership connects a record to the account permitted to use it. Roles collect permissions for groups such as members and administrators. Both must be enforced in backend operations. Derive account identity from verified authentication, not a user identifier supplied in a form. New team features need explicit policies; do not quietly assume all signed-in users share the same rights.",
+                "Use at least two accounts in access tests. Create a task as one person, then attempt to read, edit, complete, and delete it as the other, including direct API requests. Repeat relevant checks without signing in and after sign-out. A hidden button is not an authorisation test. Authentication providers can establish who someone is, but your application must still decide which records and operations that identity may reach."
+              ]
+            }
+          ],
+          "keyIdea": "Recognising an account and granting access are different responsibilities that both need backend enforcement.",
+          "taskboard": "Taskboard uses a verified session to identify the account and scopes private task operations to it. Its first version can deliberately postpone recovery or additional sign-in providers, but those omissions must be documented. Two-account tests verify that private tasks stay private even through direct requests.",
+          "walkthrough": {
+            "title": "Test the account boundary",
+            "steps": [
+              "Create accounts A and B in a safe environment.",
+              "Create a task as A and note its identifier.",
+              "As B, attempt direct read and change requests for that identifier.",
+              "Verify rejection and confirm A’s stored task is unchanged.",
+              "Sign out and repeat an authenticated operation to confirm session invalidation."
+            ]
+          },
+          "mistakes": [
+            "Treating any signed-in user as authorised for every task.",
+            "Storing passwords or long-lived credentials in readable form."
+          ],
+          "aiMistakes": [
+            "AI may implement homemade cryptography; replace it with reviewed library or provider flows.",
+            "AI may hide controls without backend checks; use direct two-account API tests to reveal the gap."
+          ],
+          "tryIt": [
+            "Explain authentication and authorisation using a shared office example.",
+            "Inspect cookie flags and identify the framework’s CSRF protection without exposing real session values."
+          ],
+          "check": [
+            {
+              "q": "Does using a hosted auth service solve task ownership?",
+              "a": "No; the application still has to enforce its own record and action permissions."
+            },
+            {
+              "q": "Why does signing out require server action with sessions?",
+              "a": "An otherwise valid server-side session must be invalidated so its identifier cannot continue to authenticate requests."
+            }
+          ]
+        },
+        {
+          "number": 12,
+          "slug": "following-an-action-through-the-application",
+          "title": "Following an Action Through the Application",
+          "question": "Which components handle one click, and how can you identify the hand-off where it fails?",
+          "summary": "An end-to-end trace connects interface behaviour, network messages, backend checks, and stored records. It turns a vague symptom into evidence about a specific boundary.",
+          "sections": [
+            {
+              "heading": "Draw the application at a useful level",
+              "paragraphs": [
+                "Start with the person using the application and the main running pieces: browser frontend, backend API, database, and external services. Label the connections with the kind of conversation, such as HTTPS with JSON or database queries. A useful architecture drawing is not a picture of every source file. It shows responsibilities and communication clearly enough to orient a new reader.",
+                "This broad view follows the spirit of container-level architecture diagrams, such as those in the C4 approach. Here, a container means a main software execution or storage unit, not necessarily a Docker container. Add the authentication responsibility and relevant external providers. Keep the map small enough that you can use it while discussing a bug rather than treating it as a poster no one maintains."
+              ]
+            },
+            {
+              "heading": "Trace creation from form to durable row",
+              "paragraphs": [
+                "The person enters a title and submits. The frontend provides immediate validation and a waiting state, then sends a create request. The browser supplies session credentials according to its cookie rules. The backend verifies the session, validates the submitted fields, and determines the owner from the authenticated account. Ownership must not come from an editable request field.",
+                "The backend performs a parameterised insert or an equivalent safe ORM operation. The database checks constraints and stores the row, assigning or retaining its identifier according to the schema. The response returns the accepted task, commonly with a creation status. Only then does the interface have confirmed data to show. At each transition, record what information is passed and which component is responsible for checking it."
+              ]
+            },
+            {
+              "heading": "Trace sign-in and a later return",
+              "paragraphs": [
+                "For sign-in, the frontend sends credentials over HTTPS. The backend's established authentication component finds the account and verifies the password hash or other proof. A failure produces a generic response and contributes to guessing limits. Success creates a session and sends the appropriate cookie settings. The frontend can then request the user's tasks using that session.",
+                "On a later visit, a valid session or a fresh sign-in again establishes identity. The backend queries only that account's relevant tasks, applying the required filters and ordering. The interface first shows loading and then either the returned list, a genuine empty state, or an error. A task appearing on a different device demonstrates the persistent shared path rather than a phone remembering its own old page."
+              ]
+            },
+            {
+              "heading": "Assign each concern to the right layer",
+              "paragraphs": [
+                "The frontend gives convenient validation feedback, the backend makes authoritative decisions, and the database enforces structural constraints. These layers complement one another. A database foreign key can ensure an owner exists, but it does not establish that the current caller is that owner. A visible disabled button can guide users, but cannot enforce the underlying permission.",
+                "Errors also have layered responsibilities. The database rejects invalid writes and rolls back transactional work; the backend records useful diagnostics and returns an appropriate response; the frontend explains the outcome and preserves recoverable input. The database is the authoritative stored record for this shared application. The backend coordinates rules, while the browser holds a temporary view. Avoid assigning every responsibility to whichever layer is easiest to edit."
+              ]
+            },
+            {
+              "heading": "Use evidence to find a broken hand-off",
+              "paragraphs": [
+                "Reproduce the symptom and follow the sequence. If no request leaves the browser, start with the frontend event and validation. If a request returns a rejection, inspect its status and body. If it returns success but the task disappears after refresh, inspect what was stored and how the later read is filtered. A success status alone does not prove every business requirement was met.",
+                "For example, a row saved with the wrong owner can exist durably while remaining absent from the intended user's list. The right correction is to derive ownership from the session, not remove the owner filter to make the row visible. Network tools show the conversation, server logs show backend decisions, and database inspection shows the persistent outcome. Together they narrow the problem much more effectively than repeated speculative prompts."
+              ]
+            },
+            {
+              "heading": "Keep traces accurate and share safe evidence",
+              "paragraphs": [
+                "A sequence diagram places participants across the page and orders messages over time. Write one for task creation, sign-in, and a later list read. Mark failure branches and waiting points, not only the happy path. The diagram becomes especially valuable when a feature adds another request, changes a field, or introduces a background operation whose completion happens later.",
+                "Store diagrams and traces with application documentation and update them alongside behaviour changes. Verify AI-written explanations against actual routes, payloads, and stored records. Larger systems can connect operations with distributed tracing tools, including OpenTelemetry-based instrumentation, but the habit starts with one request. When seeking help, provide the expected behaviour, actual result, relevant request, and sanitised diagnostics rather than private cookies, passwords, or an unsupported guess."
+              ]
+            }
+          ],
+          "keyIdea": "Trace an action through its real boundaries before choosing where to fix it.",
+          "taskboard": "Taskboard documents its frontend, API, authentication component, database, and email connection. Its create, sign-in, and later-read traces show where each check happens. When a feature changes those hand-offs, its documentation and tests should change too.",
+          "walkthrough": {
+            "title": "Investigate a task that disappears",
+            "steps": [
+              "Reproduce creation and refresh using a clearly identified test account.",
+              "Inspect the create response and note the returned task identifier.",
+              "Check the stored owner and fields in an authorised test environment.",
+              "Inspect the later list query and compare its filters with the verified account.",
+              "Correct the responsible layer and add a regression test, including the wrong-account case."
+            ]
+          },
+          "mistakes": [
+            "Guessing a fix from the visible symptom without tracing the request.",
+            "Removing a permission filter to make missing records appear."
+          ],
+          "aiMistakes": [
+            "AI may patch the frontend to conceal a backend ownership bug; compare stored records before accepting the fix.",
+            "AI may describe routes or fields that differ from the code; verify every diagram arrow against an observed operation."
+          ],
+          "tryIt": [
+            "Draw a sequence for completing a task, including a rejected request.",
+            "Trace one feature using network evidence, backend logs, and a persistent record without sharing secrets."
+          ],
+          "check": [
+            {
+              "q": "Why can a creation response still be followed by a missing task?",
+              "a": "The row may have wrong ownership or values, or the later read may apply an incorrect filter."
+            },
+            {
+              "q": "What makes a trace useful for debugging?",
+              "a": "It identifies actual messages, responsibilities, and outcomes at each boundary so the failing step can be isolated."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

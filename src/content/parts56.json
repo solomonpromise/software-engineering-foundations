@@ -1,0 +1,1314 @@
+{
+  "parts": [
+    {
+      "number": 5,
+      "title": "Building Software with AI",
+      "question": "How can we build a working application with AI while checking and understanding each change?",
+      "intro": "Turn your design into a useful first version through small, reviewable changes. Learn to give an assistant bounded tasks, inspect its code, test requirements, and investigate failures with evidence.",
+      "project": {
+        "title": "Build a verified first version",
+        "summary": "Create the first useful version of your application with a clear history, tested permissions, and setup instructions another person can follow.",
+        "steps": [
+          "Prepare version control, setup documentation, assistant instructions, ignored secrets, example configuration, and the design notes.",
+          "Connect the interface, API, and database in a minimal working path. Run it locally or deploy to staging after checking hosting costs.",
+          "Order small feature increments so sign-in and ownership protections arrive early.",
+          "For each increment, write acceptance criteria, review a plan, implement, run tests, inspect the diff, and merge a focused pull request. When working alone, review again after a break.",
+          "Test every acceptance criterion, add two-account access checks, and exercise a few complete browser journeys.",
+          "Reproduce each bug before fixing it and keep a regression test for the repaired behaviour.",
+          "Run the complete suite and manually check phone, laptop, keyboard navigation, and accessibility findings.",
+          "Confirm a fresh setup works, documentation matches the code, secrets are absent from history, and each feature has traceable review and test evidence."
+        ]
+      },
+      "glossary": [
+        {
+          "term": "Acceptance test",
+          "definition": "A check that turns a stated requirement into an automated pass or fail."
+        },
+        {
+          "term": "Code coverage",
+          "definition": "A measure of which code executed during tests, not how well its results were examined."
+        },
+        {
+          "term": "Coding agent",
+          "definition": "An AI assistant connected to tools that let it inspect, change, and run project code."
+        },
+        {
+          "term": "Context window",
+          "definition": "The limited amount of instructions and other material a model can use for one response."
+        },
+        {
+          "term": "Copyleft licence",
+          "definition": "A software licence whose conditions may require distributed adaptations to retain the same sharing freedoms."
+        },
+        {
+          "term": "End-to-end test",
+          "definition": "A test of a complete user journey across the application’s connected layers."
+        },
+        {
+          "term": "git bisect",
+          "definition": "A Git investigation that narrows down the first faulty commit by testing intermediate versions."
+        },
+        {
+          "term": "Hallucination",
+          "definition": "A plausible model-generated claim that is unsupported or incorrect."
+        },
+        {
+          "term": "Debugging hypothesis",
+          "definition": "A proposed cause of a fault that a specific experiment can support or reject."
+        },
+        {
+          "term": "Increment",
+          "definition": "A bounded addition that can be reviewed and tested while keeping the application usable."
+        },
+        {
+          "term": "Instruction file",
+          "definition": "A project document that gives an assistant persistent rules and working context."
+        },
+        {
+          "term": "Integration test",
+          "definition": "A check that collaborating components exchange data and behave correctly together."
+        },
+        {
+          "term": "Large language model",
+          "definition": "A trained model that generates language or code from patterns and supplied context."
+        },
+        {
+          "term": "Mutation testing",
+          "definition": "Checking test strength by introducing controlled defects and seeing whether tests fail."
+        },
+        {
+          "term": "Task plan",
+          "definition": "The proposed implementation approach, including assumptions that should be checked before editing."
+        },
+        {
+          "term": "Prompt injection",
+          "definition": "An attempt to smuggle instructions through material an assistant was only meant to read as data."
+        },
+        {
+          "term": "Code provenance",
+          "definition": "The origin and reuse history of code, including information needed to assess licensing."
+        },
+        {
+          "term": "Refactoring",
+          "definition": "Reorganising an implementation while keeping its intended external behaviour unchanged."
+        },
+        {
+          "term": "Regression",
+          "definition": "A defect introduced into behaviour that previously worked."
+        },
+        {
+          "term": "Reproduction steps",
+          "definition": "A repeatable sequence that demonstrates a reported fault."
+        },
+        {
+          "term": "Test pyramid",
+          "definition": "A testing balance favouring numerous focused checks and fewer expensive full-system journeys."
+        },
+        {
+          "term": "Test-driven development",
+          "definition": "Developing behaviour by first writing a failing check, then implementing and improving the solution."
+        },
+        {
+          "term": "Training cut-off",
+          "definition": "The approximate latest period represented in a model’s training material; it does not guarantee complete knowledge before that date."
+        },
+        {
+          "term": "Unit test",
+          "definition": "A focused check of a small piece of logic with external dependencies controlled."
+        },
+        {
+          "term": "Walking skeleton",
+          "definition": "The smallest working path through the main system layers, including how it is run or deployed."
+        }
+      ],
+      "chapters": [
+        {
+          "number": 24,
+          "slug": "understanding-ai-coding-tools",
+          "title": "Understanding AI Coding Tools",
+          "question": "When an assistant announces success, what would let you check its work?",
+          "summary": "AI coding products offer different kinds of help and different powers over your project. Understanding their limits lets you choose useful work for them without confusing a confident answer with a checked result.",
+          "sections": [
+            {
+              "heading": "Choose the right kind of helper",
+              "paragraphs": [
+                "A chat assistant helps you discuss ideas, understand errors, and draft small pieces of code. In a basic chat, it sees the material you provide, not your entire computer. Code completion works inside an editor and offers likely next lines while you type. Those suggestions are most helpful when you already understand the code you are accepting.",
+                "A coding agent can take several steps: inspect files, edit them, run commands, and react to results. An app builder may also arrange hosting and a database. Before choosing one, ask what you can export, who controls the accounts, and how you would leave the service. Convenience does not remove the need to understand what it created."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Fluent output is not verified knowledge",
+              "paragraphs": [
+                "Most current coding assistants use a large language model, a system trained to produce likely continuations of text and code. This helps it recognise familiar patterns and explain them clearly. It does not mean every function name, package recommendation, or security claim is correct. A made-up answer can look just as polished as a correct one.",
+                "This confidently incorrect output is often called a hallucination. A model may also know an older version of a library rather than the one your project uses. Check unfamiliar methods against the documentation for your installed version. Treat speed and confidence as presentation qualities, not evidence that a change works or that using the tool saved time."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Inspect what it can see and remember",
+              "paragraphs": [
+                "The context window is the limited working space available to the model during a response. It contains instructions, conversation, opened files, and selected tool results. Having access to a repository is not the same as having read every file in it. Check whether the assistant inspected the permission rules and tests, not merely the screen it was asked to change.",
+                "Long sessions can lose detail as earlier material is shortened or dropped. A fresh session may know nothing about yesterday’s decisions. Keep durable project rules in an instruction file such as AGENTS.md, and record design choices in documentation. Before restarting, write a short handover with the goal, constraints, evidence, and unresolved questions."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Set limits before giving it work",
+              "paragraphs": [
+                "An agent’s commands can have real consequences. Reading a file is different from deleting it, installing a package, sending an email, or changing a cloud account. Begin from a saved, reviewable version of the project and restrict work to the intended folder. Decide which commands can run freely and which require your approval.",
+                "Development test commands may be reasonable to allow automatically. Package installation, migrations, deletion, pushing changes, deployment, and network actions deserve closer control. Never supply production credentials simply to shorten a conversation. Use limited development access. Approve an external action only after understanding its destination, purpose, and possible cost; a payment or public message is not merely another line of generated text."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Recognise instructions hidden inside data",
+              "paragraphs": [
+                "An agent may read webpages, issue reports, downloaded documents, or dependency files. Those sources can contain language intended to redirect it, perhaps asking it to reveal secrets or ignore your restrictions. This is prompt injection: instructions arriving inside material that should be treated as information rather than authority.",
+                "Suppose a bug report tells the agent to upload configuration files to a troubleshooting website. That request is not trustworthy just because it appeared beside a genuine error message. Stop and inspect unexpected network commands or requests for broader permissions. Keep secrets out of reach, and require human approval for consequential actions. Technical boundaries are stronger protection than repeatedly asking an agent to be careful."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Make claims come with evidence",
+              "paragraphs": [
+                "A useful completion report identifies changed files, exact commands, their results, and anything not checked. If the agent says every test passed, inspect which tests actually ran. A frontend-only command cannot establish that the backend still behaves correctly. Likewise, a screenshot cannot prove that a permission check exists on the server.",
+                "Review the actual changes, run the application, and compare observed behaviour with your requirements. When evidence is missing, ask for it rather than accepting reassurance. If something fails, supply the precise failure and ask for a narrow correction. You remain responsible for deciding whether the result is ready, even when the assistant wrote every line of the proposed solution."
+              ],
+              "bullets": []
+            }
+          ],
+          "keyIdea": "Use AI as a capable helper whose claims still need independent, observable evidence.",
+          "taskboard": "Taskboard gives its agent written project rules and development credentials only. Reading files and running tests are ordinary work, while installs, migrations, remote pushes, and production actions require approval.",
+          "walkthrough": {
+            "title": "Investigate a claimed test success",
+            "steps": [
+              "Ask for the exact command and complete result summary, including skipped tests.",
+              "Notice that only browser-side tests ran, then run the project-wide test command.",
+              "Use the backend failure to identify an incorrect rule for tasks without due dates.",
+              "Request a small correction, rerun the relevant test and full suite, and inspect the diff before saving the change."
+            ]
+          },
+          "mistakes": [
+            "Approving permission requests without reading what they allow.",
+            "Keeping one conversation going long after important requirements have drifted out of context.",
+            "Sharing live account credentials because development access feels inconvenient."
+          ],
+          "aiMistakes": [
+            "An agent may announce tests without running them: require command output.",
+            "It may invent a package or method: check the package registry and versioned documentation.",
+            "It may obey malicious text in a document: inspect unexpected commands and deny access beyond the agreed task."
+          ],
+          "tryIt": [
+            "Review your tool’s access settings and write down three actions that should need approval.",
+            "Track the files opened during one small change and identify any missing source of requirements."
+          ],
+          "check": [
+            {
+              "q": "How does an agent differ from a basic chat assistant?",
+              "a": "An agent can use connected tools to inspect, modify, and execute project work; a basic chat mainly responds to supplied material."
+            },
+            {
+              "q": "Why do long sessions become less reliable?",
+              "a": "The available context is finite, so earlier details may be compressed or omitted."
+            },
+            {
+              "q": "What makes a success claim convincing?",
+              "a": "Relevant commands, actual results, reviewed changes, and observed behaviour that agree with the requirements."
+            }
+          ]
+        },
+        {
+          "number": 25,
+          "slug": "preparing-tasks-and-giving-ai-context",
+          "title": "Preparing Tasks and Giving AI Context",
+          "question": "Why can identical tools produce very different results from apparently similar requests?",
+          "summary": "A useful AI task explains a small outcome, its boundaries, and the evidence needed to accept it. Clear context and an early plan prevent the assistant from filling important gaps with guesses.",
+          "sections": [
+            {
+              "heading": "Turn a feature into reviewable tasks",
+              "paragraphs": [
+                "A feature request describes something useful to a person, but it may contain several implementation jobs. Adding labels to tasks requires stored labels, rules for who can use them, API behaviour, and a usable picker on the screen. Asking for all of this at once makes mistakes harder to isolate and the final change harder to understand.",
+                "Split the feature into independently checkable tasks that leave the application usable. First create the database structure, then label management, then attaching labels to tasks, then the interface. Make dependencies explicit: the attachment task should know that the tables already exist. A task is small enough when you can reasonably review its complete change in one sitting."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Provide a map rather than a mountain",
+              "paragraphs": [
+                "Give an assistant the context a new teammate would need to work safely. Identify the instruction file, the design notes relevant to this change, the implementation files, and a similar feature worth following. An existing service or test often communicates project expectations more precisely than a long general description.",
+                "Also explain what is already finished. Otherwise the agent may recreate a table or add a second helper for a problem the project already solved. Avoid pasting unrelated folders or a long history of abandoned approaches. Too little information causes guessing; too much can bury the rules that matter. Ask the agent to read named files and report important assumptions before it proposes changes."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Write outcomes that can be checked",
+              "paragraphs": [
+                "Acceptance criteria explain the conditions under which you will consider the task complete. Replace “labels should work nicely” with observable statements: a person can attach their own label to their own task; another person’s task cannot be changed; repeating the same attachment does not create duplicate links. Describe both the result and any important side effect.",
+                "Specify useful API details where your design already defines them, including status codes and response fields. For example, Taskboard can return 404 for an unavailable task without revealing whether another account owns it. Include performance expectations when relevant, such as loading labels together rather than running an extra database query for every task. Each criterion should suggest a concrete test."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Include constraints and exclusions",
+              "paragraphs": [
+                "A goal says where to go; constraints say which routes are acceptable. State the approved technologies, module boundaries, error format, and policy on dependencies. If database work belongs in repositories rather than request handlers, say so or point to the current rule. These requirements are part of correctness, not optional tidying after the feature works.",
+                "An out-of-scope list is equally useful. For an API attachment task, explicitly exclude new screens, styling changes, analytics, or unrelated cleanup. This protects your ability to review the result. A short task brief can use six headings: goal, relevant context, constraints, acceptance criteria, exclusions, and working process. It need not be elaborate to eliminate expensive misunderstandings."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Approve the plan before the edit",
+              "paragraphs": [
+                "For more than a tiny change, ask for a short implementation plan and a list of assumptions before editing starts. Compare the plan with your data model, ownership rules, and task boundaries. Look for missing tests, unnecessary dependencies, and work that repeats an earlier task. A mistaken plan is much cheaper to correct than a large mistaken implementation.",
+                "If the assistant proposes storing all label names inside a task field even though a separate labels table exists, stop there. Explain the mismatch and request a revised plan using the existing structure. Planning is a decision checkpoint, not a ceremony where you automatically type yes. Once the plan fits, authorise only the agreed scope and request actual verification output afterward."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Keep the written context trustworthy",
+              "paragraphs": [
+                "Project instructions lose value when they describe a system that no longer exists. Update them when a recurring mistake reveals a missing rule, and remove guidance that has become obsolete. If the architecture changes, update the design and the decision record as well. Contradictory documents invite the assistant to choose whichever instruction is easiest to satisfy.",
+                "Keep lasting guidance brief and specific. A rule about loading labels in a single query is useful if that failure keeps recurring; a transcript of every debugging conversation is not. Start new tasks with a focused brief rather than relying on the previous session’s memory. Good preparation becomes a reusable specification for humans, automated tests, and whichever AI tool you use next."
+              ],
+              "bullets": []
+            }
+          ],
+          "keyIdea": "A narrow goal with current context and testable boundaries gives AI fewer opportunities to guess incorrectly.",
+          "taskboard": "Taskboard tracks a feature as several small issues, each with a prepared brief. The label attachment task refers to existing tables, preserves the route–service–repository boundaries, and excludes interface changes until a later task.",
+          "walkthrough": {
+            "title": "Correct a plan before implementation",
+            "steps": [
+              "Write criteria for attaching an owned label to an owned task, including duplicates and forbidden ownership combinations.",
+              "Ask for a plan and assumptions without permission to edit.",
+              "Reject a plan that invents a task field instead of using the existing label tables.",
+              "Approve a revised plan covering service rules, efficient queries, and tests; request the test output with the final diff."
+            ]
+          },
+          "mistakes": [
+            "Describing the happy path but leaving ownership and duplicate behaviour unspecified.",
+            "Pasting the whole repository instead of pointing to the relevant files.",
+            "Treating an outdated instruction file as a reliable source of truth."
+          ],
+          "aiMistakes": [
+            "An agent may rebuild something already present: require it to inspect the existing implementation.",
+            "It may expand the task into interface redesign: compare its plan with the exclusions.",
+            "It may omit permission tests: check each acceptance criterion against the proposed tests."
+          ],
+          "tryIt": [
+            "Split one feature into four ordered tasks with separately checkable results.",
+            "Write a six-heading brief for one task and ask someone else what they would still need to guess."
+          ],
+          "check": [
+            {
+              "q": "What is an acceptance criterion?",
+              "a": "An observable condition that must hold before you accept the result."
+            },
+            {
+              "q": "Why request assumptions explicitly?",
+              "a": "They reveal decisions the assistant might otherwise make silently."
+            },
+            {
+              "q": "Why include exclusions?",
+              "a": "They prevent helpful-looking extras from enlarging the change and making it difficult to review."
+            }
+          ]
+        },
+        {
+          "number": 26,
+          "slug": "building-features-in-small-increments",
+          "title": "Building Features in Small Increments",
+          "question": "How can smaller implementation steps make progress safer without slowing learning?",
+          "summary": "A small increment takes one understood change from a plan to working, reviewed software. Connecting the system early and completing one journey at a time makes hidden integration problems visible.",
+          "sections": [
+            {
+              "heading": "Use a complete loop for every change",
+              "paragraphs": [
+                "An increment is a small improvement you can implement, check, understand, and save separately. Begin with a prepared task and an approved plan. Let the agent implement that plan, run the application and tests, read the changes, then commit the reviewed result. Repeat this loop instead of stacking new prompts on work you have not yet checked.",
+                "The order matters. A commit is a meaningful recovery point only if you know what it contains and whether it works. If a change becomes confusing, reduce its scope or discard that attempt and return to the last good state. Losing a short experiment is much cheaper than repairing several intertwined features whose boundaries have disappeared."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Connect the system with a walking skeleton",
+              "paragraphs": [
+                "A walking skeleton is the smallest working path through the application’s main pieces. For a web app, that might be a page requesting a single sample task from an API, with the API obtaining it from a database. Deploy it to staging early, or run the services together locally when paid hosting is not appropriate.",
+                "This thin path is deliberately unimpressive as a product. Its job is to reveal whether the pieces can communicate: addresses are correct, configuration is present, the database is reachable, and the deployment can start the service. Discovering these problems before adding many features prevents a polished interface from hiding a system that has never actually run end to end."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Finish a journey across every layer",
+              "paragraphs": [
+                "After the skeleton, choose one useful user journey. “Create a task and find it in my list” crosses the form, validation, API, service rules, database, and displayed result. Complete those connected pieces together, with tests, before starting a different journey. This is a vertical slice: a narrow outcome running through the whole system rather than a broad unfinished layer.",
+                "Include the screen’s loading, empty, success, and failure states. Check that saving survives a reload; temporary browser memory can make an unfinished feature look real. Building all screens first is tempting because visible progress is satisfying, but disconnected screens provide little evidence about persistence, permissions, or failures. A complete small journey provides much stronger feedback."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Bring identity and ownership in early",
+              "paragraphs": [
+                "Once the first journey works, add sign-in and the rules that connect records to their owners. Authentication establishes who is making the request. Permission checks decide which records that person may read or change. These are separate concerns, and a successful sign-in does not automatically make every task query safe.",
+                "Add ownership filtering before building many more task features, then prove it using two accounts. Retrofitting ownership later means revisiting queries, API responses, screen assumptions, and tests throughout the application. Keep any initial unauthenticated demonstration local or protected; it is a construction step, not a reason to expose private records publicly. Future features should start with a reliable user boundary already in place."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Add outside services behind a boundary",
+              "paragraphs": [
+                "Email and payments introduce networks, credentials, delays, and failures outside your control. Add each integration as its own increment behind an adapter: a small interface separating your application’s needs from a provider’s particular API. The rest of the application asks the adapter to perform an action without knowing every provider detail.",
+                "Use a fake implementation in development and tests so ordinary work cannot charge a card or send unexpected messages. Check failure behaviour as well as success. A reminder email problem should not necessarily prevent someone from reading their tasks. Keeping the integration small lets you inspect its permissions, retry behaviour, and configuration before it becomes entangled with several unrelated features."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Save evidence-backed progress",
+              "paragraphs": [
+                "Before saving an increment, use the feature yourself and try at least one failure case. Run the whole relevant project suite, not just the new tests: a change to dates may affect sorting or reminders elsewhere. Read every changed file and ask whether the task explains it. Separate unrelated cleanup rather than letting it hide inside the feature.",
+                "Commit with a message describing the achieved behaviour, then follow your project’s approved push and pull-request process. Automatic checks add another barrier before merging. A clear history shows how the system grew and provides safe places to return to. Frequent integration of small checked changes makes failures easier to locate because fewer possible causes arrived together."
+              ],
+              "bullets": []
+            }
+          ],
+          "keyIdea": "Keep the next known-working version close enough that a failed experiment costs minutes rather than a whole feature set.",
+          "taskboard": "Taskboard first connects page, API, and database, then completes task creation. Sign-in and owner filtering follow early; completion, dates, badges, and the email adapter arrive as separate checked increments.",
+          "walkthrough": {
+            "title": "Complete one small task journey",
+            "steps": [
+              "Prepare the task and approve the plan for marking a task complete.",
+              "Implement the API change, owner-aware service rule, interface control, and tests together.",
+              "Complete a task in the browser, reload, and confirm the saved result.",
+              "Run the suite, inspect every changed file, then commit and submit through the normal review process."
+            ]
+          },
+          "mistakes": [
+            "Building attractive screens without connecting persistence.",
+            "Leaving permission rules until the end of the project.",
+            "Asking for several new features before reviewing or saving the previous work."
+          ],
+          "aiMistakes": [
+            "An agent may deliver mock data instead of a real connection: reload and inspect the API and database.",
+            "It may add unrelated improvements: compare every changed file with the task.",
+            "It may run only new tests: request the complete suite results."
+          ],
+          "tryIt": [
+            "Sketch a walking skeleton and state the connection each piece proves.",
+            "Order six increments for a first release, placing ownership before private multi-user features."
+          ],
+          "check": [
+            {
+              "q": "What distinguishes a skeleton from a finished feature?",
+              "a": "The skeleton proves connections; a finished feature delivers a useful journey with rules, states, and verification."
+            },
+            {
+              "q": "Why prefer vertical slices?",
+              "a": "They reveal integration problems while delivering a small complete outcome."
+            },
+            {
+              "q": "What closes the increment loop?",
+              "a": "Reviewing and committing the tested result before beginning another change."
+            }
+          ]
+        },
+        {
+          "number": 27,
+          "slug": "understanding-and-reviewing-generated-code",
+          "title": "Understanding and Reviewing Generated Code",
+          "question": "If a feature looks right in the browser, what else must you understand before accepting its code?",
+          "summary": "Review checks whether a proposed change belongs in your application, not merely whether one demonstration succeeds. It also helps you remain the person who understands the software you are responsible for.",
+          "sections": [
+            {
+              "heading": "Start with the outline of the change",
+              "paragraphs": [
+                "A diff shows what changed between two versions of files. Before studying individual lines, inspect the file list and change sizes, using a pull request or a command such as git diff --stat. Ask whether the shape matches the task. A label API change should not quietly redesign the homepage or rewrite unrelated documentation.",
+                "Large formatting changes can bury a small security error in harmless noise. Request that unrelated edits be removed or split into another change before continuing. Scope review is not bureaucracy: it makes the rest of the review possible. If you cannot explain why a file changed, ask before allowing that file to become part of the application."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Follow the rules through the code",
+              "paragraphs": [
+                "Read the implementation against each acceptance criterion, including invalid inputs, repeated requests, empty results, and records belonging to someone else. Follow information from the request through the service and database layers. A parameter called user does not protect anything unless the code actually uses it to restrict the operation.",
+                "Check that user-data queries include ownership, use parameters rather than building SQL from untrusted text, and avoid running one extra query per displayed item. Look for backend validation even when the screen already checks input. Browser checks improve usability, but someone can send a request without using your screen. A comment promising a permission check later is evidence that the rule is missing now."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Inspect secrets, failures, and configuration",
+              "paragraphs": [
+                "Search for credentials placed directly in code, sensitive data sent to the browser, and personal information written to logs. If a real credential appears, revoke it promptly; removing the line alone does not invalidate copies already exposed. New settings belong in environment-based configuration, with safe example names documented in .env.example rather than live values.",
+                "Read error handling carefully. A broad exception handler that does nothing can make an operation report success even when nothing was saved. Failures should be handled deliberately or reported through the normal mechanism. The user needs an understandable outcome, and maintainers need enough protected diagnostic information to investigate. Hiding every exception is not the same as making the application reliable."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Question additions and unnecessary machinery",
+              "paragraphs": [
+                "A new package introduces code, maintenance obligations, and security exposure. Check that it exists, is maintained, has an appropriate licence, and solves a real need not already covered by the project. Models sometimes invent plausible package names or add a dependency for something a small existing helper already handles.",
+                "Also inspect design fit. Does the change respect established layers and naming? Has it added duplicate helpers, dead code, or a framework for a problem with only one simple case? Prefer the clearest solution that meets the requirements. Be strict about correctness, security, and maintainability, while avoiding arguments over personal style that the project’s formatter or conventions can settle automatically."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Ask for explanations without treating them as proof",
+              "paragraphs": [
+                "Use the assistant to explain unfamiliar code in terms of concrete cases. Ask what happens when a task belongs to another user, when a label was deleted, or when the database fails. Then find the lines that produce the described behaviour. Generated explanations can describe an intended design that the implementation does not actually contain.",
+                "A fresh assistant session can review the diff against your checklist without the original conversation’s assumptions. That is a useful additional perspective, not an independent guarantee. Confirm each finding yourself and use targeted tests when behaviour is uncertain. After reviewing, either approve, request specific changes, or discard the attempt and restart with a clearer task if the design is fundamentally wrong."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Check where code and rights come from",
+              "paragraphs": [
+                "Responsibility includes provenance: where code originated and what conditions apply to using it. An unusually large polished block, an unfamiliar licence header, or distinctive comments may warrant checking for a public source. Enable public-code matching features when your tool offers them, and record reviewed changes through commits and pull requests.",
+                "Licences differ. Permissive licences commonly require notices; copyleft licences can create source-sharing obligations in particular distribution or service situations. These details depend on the actual licence and use, not a quick AI summary. Also read your tool’s terms about generated output. Copyright treatment varies by jurisdiction and human contribution. Seek qualified legal guidance when ownership or commercial licensing is important rather than treating the assistant as legal authority."
+              ],
+              "bullets": []
+            }
+          ],
+          "keyIdea": "Approve a change only when you can connect its implementation to the behaviour, boundaries, and obligations you intend to accept.",
+          "taskboard": "Taskboard uses a pull-request checklist covering scope, ownership, errors, dependencies, configuration, tests, and documentation. A separate AI review can help, but the builder still reads the diff and checks the two-account permission tests before merging.",
+          "walkthrough": {
+            "title": "Review a suspicious label change",
+            "steps": [
+              "Revoke a live key found in the diff and investigate its exposure.",
+              "Remove unrelated restyling so the functional change is visible.",
+              "Require owner-filtered lookups for both task and label, explicit failure handling, and tests for cross-account attempts.",
+              "Recheck the full diff, dependency list, configuration, and test results before approving."
+            ]
+          },
+          "mistakes": [
+            "Approving code because a quick demonstration looked convincing.",
+            "Ignoring a critical TODO because the happy path works.",
+            "Allowing large unrelated cleanups to conceal the requested change."
+          ],
+          "aiMistakes": [
+            "An explanation may claim a missing ownership check exists: locate the exact query and prove it with a test.",
+            "An agent may invent an import: verify the package and whether it is needed.",
+            "It may hide failures with an empty exception handler: simulate a failure and inspect the result."
+          ],
+          "tryIt": [
+            "Review a small diff with separate passes for scope, data boundaries, and failures.",
+            "Ask for an explanation of one unfamiliar function, then verify each important claim against its lines."
+          ],
+          "check": [
+            {
+              "q": "Why look at the file list first?",
+              "a": "It exposes scope drift before you spend time reading details."
+            },
+            {
+              "q": "What should happen after finding an exposed live key?",
+              "a": "Revoke or rotate it promptly, investigate use, and correct how secrets are stored."
+            },
+            {
+              "q": "Does an AI reviewer replace your review?",
+              "a": "No; its suggestions and explanations still need verification."
+            }
+          ]
+        },
+        {
+          "number": 28,
+          "slug": "testing-and-verifying-behaviour",
+          "title": "Testing and Verifying Behaviour",
+          "question": "How can you check that today’s improvement did not quietly break yesterday’s feature?",
+          "summary": "Tests make important requirements repeatable so changes can be checked quickly. Strong verification combines meaningful automated assertions with human checks of real journeys and accessibility.",
+          "sections": [
+            {
+              "heading": "Make checks repeatable",
+              "paragraphs": [
+                "An automated test sets up a situation, performs an action, and compares the result with an expected outcome. Repeating those checks after changes helps catch regressions: behaviour that used to work and no longer does. This matters especially when AI can modify many files faster than a person can manually revisit every feature.",
+                "Tests should be quick, predictable, and easy to understand when they fail. A suite that often fails randomly trains people to ignore it. A suite that merely starts the program without checking outcomes gives little protection. Treat tests as part of the application’s specification, with readable names that tell you which user rule is broken when a failure appears."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Use different levels of tests",
+              "paragraphs": [
+                "A unit test examines one small piece in isolation, such as a date comparison or a sorting rule. It is usually fast and gives a narrow clue when it fails. An integration test checks connected pieces, such as an API route saving into a real test database. It can reveal wiring problems a unit test cannot see.",
+                "An end-to-end test uses the running application, often through a real browser with a tool such as Playwright or Cypress. It proves a whole journey but generally costs more time and maintenance. A useful balance resembles a pyramid: many focused unit tests, some integration tests, and a smaller set of end-to-end journeys. No one level can replace all the others."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Translate requirements into observable assertions",
+              "paragraphs": [
+                "A Given–When–Then requirement already contains a test structure. Given two accounts and a task owned by the first, when the second requests that task, then the request should be rejected according to your API policy. Set up the data explicitly, perform the request, and assert the expected result. Name the test after the rule rather than its implementation details.",
+                "Check side effects too. If an empty task title is rejected, confirm that no task was inserted. If attaching a label twice should be harmless, assert that only one relationship exists afterward. A response code alone may conceal incorrect data changes. The test should distinguish correct behaviour from a plausible but broken implementation."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Explore beyond the ordinary success case",
+              "paragraphs": [
+                "Include signed-out access and two-account permission checks. Try missing, oversized, incorrectly typed, and badly formatted input. Check empty lists and larger collections. Date logic deserves cases around today, midnight, time zones, missing due dates, and completed tasks. These boundaries are often where a perfectly reasonable-looking comparison becomes wrong.",
+                "Repeated actions also matter: double clicks, retried requests, and repeated webhook deliveries should follow an explicit rule rather than accidentally duplicating work. Use fake external services to simulate failures without sending real messages or spending money. You can approve a failing test first and ask the assistant to implement the required behaviour without weakening the assertion. This turns a vague instruction into an executable expectation."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Test the strength of the tests",
+              "paragraphs": [
+                "Passing tests establish only that the assertions succeeded for the situations they ran. Coverage tells you which lines executed, not whether their results were checked well. A test can run an entire function and still miss the important defect. Review AI-written tests for meaningful assertions and for mocks that replace the very behaviour you intended to verify.",
+                "On a safe working copy, deliberately introduce one small defect: change a date comparison or remove an ownership filter. The appropriate tests should fail. Restore the original code immediately afterward. Automating many such deliberate changes is called mutation testing. If a meaningful mutation survives, investigate whether the missing protection belongs in a unit, integration, or journey-level test."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Add human and accessibility verification",
+              "paragraphs": [
+                "Automation cannot fully judge whether a screen is understandable or comfortable to use. Try important journeys on a phone and a laptop, including a slow connection and failure states. Use only the keyboard: can you reach each control, see where focus is, and complete the task without a pointer? Check contrast and, where possible, use a screen reader.",
+                "An automated accessibility checker such as axe can identify some common problems, but passing it does not prove the whole experience is accessible. Combine its findings with manual checks. Before accepting a change, run the full suite rather than only the newly added test, inspect any skips or deletions, and review both the implementation and its tests with equal care."
+              ],
+              "bullets": []
+            }
+          ],
+          "keyIdea": "A useful test proves a requirement strongly enough that the wrong behaviour would make it fail.",
+          "taskboard": "Taskboard combines backend unit and integration tests with frontend checks of date rules and dedicated two-account permissions tests. The source implementation still lists browser-level journeys as future work, so a passing suite must not be described as proof of full end-to-end coverage.",
+          "walkthrough": {
+            "title": "Prove that repeated label attachment is harmless",
+            "steps": [
+              "Set up one owned task and label, attach the label twice, and assert that only one link exists.",
+              "Run the test and confirm it fails for the known duplicate behaviour.",
+              "Fix the data constraint and insertion behaviour without weakening the requirement.",
+              "Run the new test and entire suite, review the diff, then manually check the visible result."
+            ]
+          },
+          "mistakes": [
+            "Checking only normal inputs and a single signed-in account.",
+            "Confusing high line coverage with strong assertions.",
+            "Ignoring a flaky suite until nobody trusts it."
+          ],
+          "aiMistakes": [
+            "An agent may alter an expected result to match a bug: compare test edits with the original criterion.",
+            "It may mock away the database in a supposed database integration test: inspect what actually runs.",
+            "It may skip a failure to obtain a green result: inspect skips, deletions, and test counts."
+          ],
+          "tryIt": [
+            "Write three tests from acceptance criteria, including one rejected request and its lack of side effects.",
+            "Introduce a harmless temporary mutation on a safe branch, confirm a test fails, then restore it.",
+            "Perform a keyboard-only journey and record issues an automated scan misses."
+          ],
+          "check": [
+            {
+              "q": "How do integration tests differ from unit tests?",
+              "a": "They check connected components instead of one isolated piece."
+            },
+            {
+              "q": "Why check side effects?",
+              "a": "A response can look correct while unwanted records are still created or changed."
+            },
+            {
+              "q": "What does mutation testing reveal?",
+              "a": "Whether tests notice deliberately introduced defects rather than merely execute the code."
+            }
+          ]
+        },
+        {
+          "number": 29,
+          "slug": "debugging-and-refining-with-ai",
+          "title": "Debugging and Refining with AI",
+          "question": "What evidence would help you fix a failure rather than merely make its symptoms disappear?",
+          "summary": "Debugging is a structured investigation of why observed behaviour differs from the intended result. AI is most useful when it receives reproducible evidence and helps test one explanation at a time.",
+          "sections": [
+            {
+              "heading": "Make the problem happen deliberately",
+              "paragraphs": [
+                "Begin by reproducing the bug before changing code. Write the shortest reliable sequence that produces it, the expected result, the actual result, and the environment. Browser, device, account, time zone, and relevant configuration can matter. A clear report lets someone else see the same problem rather than guess what “dates look wrong” means.",
+                "If the failure is intermittent, record the conditions when it does and does not occur. Do not claim a fix merely because it stopped appearing once. Reproduction provides a baseline you can repeat after the change. It also prevents a common trap: editing the first suspicious function even though the real failure lives elsewhere in the system."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Gather clues from the right places",
+              "paragraphs": [
+                "An error message identifies a failure category; the last line often contains the central complaint. A stack trace adds the functions and lines involved. Browser network tools show what the page sent and what the server returned, helping separate interface mistakes from backend problems. Server logs add timing and the order of events.",
+                "Stored data answers another question: what was actually saved, rather than what the screen currently displays. Version history helps identify when the behaviour changed. Gather only the relevant evidence and remove secrets or private information before sharing it with an assistant. A short exact response or trace is usually more useful than a long emotional description or a screenshot without context."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Test one explanation at a time",
+              "paragraphs": [
+                "A hypothesis is a specific possible cause that an experiment could reject. “Dates are broken” is too broad. “The server compares a calendar due date with UTC today instead of the user’s local today” suggests a concrete test around midnight. Choose an experiment whose outcome would distinguish that cause from alternatives.",
+                "Narrow the system: call the API without the screen, try a second account, reduce the input, or compare working and failing dates. Change one relevant thing at a time. If you change styling, date parsing, storage, and tests together, a successful demonstration will not tell you which change mattered or whether another problem was introduced. Investigation should reduce uncertainty, not merely produce more edits."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Use history when a regression appeared recently",
+              "paragraphs": [
+                "Git history records earlier versions of the application. When you know one version worked and another failed, git bisect can repeatedly select a version between them. Test that version and mark it good or bad. Each answer cuts the remaining search range roughly in half until Git identifies the change where the regression began.",
+                "Start with a clean, safely saved working state and a reliable reproduction test. After the investigation, end the bisect session so you return to your normal branch state. Then read the identified diff rather than assuming every line in that commit is wrong. A helper moved between modules may have lost one argument, making a tiny historical difference more revealing than a broad rewrite."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Give the assistant a bounded investigation",
+              "paragraphs": [
+                "Provide reproduction steps, expected and actual outcomes, relevant logs or requests, and your current hypothesis. Ask it to explain an error, propose a discriminating experiment, or write a failing test before implementing a fix. Limit the correction to the responsible behaviour and preserve the original test requirement.",
+                "Be suspicious of a list of unrelated remedies offered without evidence. Suppressing an exception, hiding a badge, or deleting a failing test can make the report disappear while leaving the cause intact. If the conversation starts repeating failed ideas, stop editing. Summarise established facts, experiments, and remaining questions, then use a fresh session. A concise investigation record is more valuable than an increasingly tangled chat."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Verify the cause and separate cleanup",
+              "paragraphs": [
+                "Once the cause is understood, add a regression test that fails before the fix and succeeds afterward. Repeat the original manual reproduction, then run the wider suite. For a time-zone defect, check the affected zone and sensible neighbouring cases, not only the exact example in the report. The aim is a repaired rule, not a special case for one screenshot.",
+                "Refactoring changes the structure of code without intentionally changing its behaviour. Renaming unclear helpers or removing duplication may be useful after a fix, but keep that cleanup in a separate commit. Tests support the claim that behaviour stayed stable; they do not prove every untested case. Update documentation and durable project rules when necessary, and explain the cause as well as the correction in the change record."
+              ],
+              "bullets": []
+            }
+          ],
+          "keyIdea": "Reproduce, gather evidence, test a specific explanation, and preserve a regression test for the cause you fix.",
+          "taskboard": "Taskboard’s bug reports record steps, expectations, observations, and supporting evidence. Its early overdue-badge problem is investigated as a local-date versus server-date mismatch, and the resulting regression test becomes a permanent guard.",
+          "walkthrough": {
+            "title": "Find a regression through history",
+            "steps": [
+              "Save current work and identify a known-good version plus a failing version.",
+              "Start a bisect session and run the same reproduction check on the selected midpoint.",
+              "Mark each result good or bad until Git identifies the first failing change.",
+              "End the session, inspect the responsible diff, and write a focused regression test before repairing it."
+            ]
+          },
+          "mistakes": [
+            "Editing before confirming the failure.",
+            "Applying several speculative fixes at once.",
+            "Removing a visible symptom without repairing the rule shared by other features."
+          ],
+          "aiMistakes": [
+            "An agent may propose broad shotgun edits: require a hypothesis and one experiment first.",
+            "It may hide errors instead of resolving them: inspect exception handlers and monitoring changes.",
+            "It may loop through old guesses: restart with a written record of experiments already rejected."
+          ],
+          "tryIt": [
+            "Write a bug report detailed enough for someone else to reproduce without questioning you.",
+            "Use a safe practice repository to find an intentionally introduced regression with git bisect."
+          ],
+          "check": [
+            {
+              "q": "What makes a good hypothesis?",
+              "a": "It names a specific possible cause and suggests a test that could disprove it."
+            },
+            {
+              "q": "Why keep fixes and refactors separate?",
+              "a": "They have different purposes, so separate changes are easier to understand, verify, and reverse."
+            },
+            {
+              "q": "Why reproduce the original bug after fixing it?",
+              "a": "It checks that the user-visible problem actually changed, not merely that a new isolated test passes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Shipping and Maintaining Software",
+      "question": "How can we release an application and keep it reliable, recoverable, and useful?",
+      "intro": "A release begins an ongoing responsibility. Practise deployment, operational monitoring, recovery, and routine maintenance, then document enough for someone else to operate the service safely.",
+      "project": {
+        "title": "Release the application and prepare its maintenance guide",
+        "summary": "Deploy a checked release and document how to monitor, update, recover, and hand over the application. Use separate local environments if paid hosting is not appropriate.",
+        "steps": [
+          "Separate staging and production configuration, credentials, and databases. Choose managed hosting and file storage where needed, or use independent local setups.",
+          "Create a repeatable pipeline for dependency installation, tests, builds, and security checks. Rehearse migrations and smoke checks in staging before approving production.",
+          "Configure a domain and HTTPS when hosting publicly; a platform subdomain or localhost is sufficient for the practice route.",
+          "Add health probes, release-linked error reports, structured logs, and a small set of actionable alerts. Local scripts and log files can support a low-budget rehearsal.",
+          "Set recovery objectives, schedule backups with a separate off-site copy, and time a restore into an isolated fresh database.",
+          "Write docs/maintenance.md with the system map, access responsibilities, secret locations without secret values, monitoring, release approval, and rollback procedures.",
+          "Document dependency updates, recovery steps and drill dates, incident response, and how users will receive incident updates.",
+          "Include weekly, monthly, and quarterly upkeep and cost reviews. Ask another person to rehearse operating the application from the repository and guide."
+        ]
+      },
+      "glossary": [
+        {
+          "term": "3-2-1 backup rule",
+          "definition": "A backup strategy using three data copies across two storage types, with a copy kept elsewhere."
+        },
+        {
+          "term": "Alert",
+          "definition": "A notification tied to a condition that requires someone to investigate or act."
+        },
+        {
+          "term": "CDN",
+          "definition": "A distributed delivery service that serves cached assets from locations nearer their users."
+        },
+        {
+          "term": "CI/CD",
+          "definition": "Practices that automatically check integrated changes and keep verified versions ready for controlled release."
+        },
+        {
+          "term": "Credential rotation",
+          "definition": "Issuing a replacement secret and disabling the previous one."
+        },
+        {
+          "term": "Deployment pipeline",
+          "definition": "The repeatable checks and release actions that move a change into a running environment."
+        },
+        {
+          "term": "Environment",
+          "definition": "An independently configured instance of an application and its supporting resources."
+        },
+        {
+          "term": "Error tracking",
+          "definition": "Collecting and grouping failures so their frequency, context, and affected releases can be investigated."
+        },
+        {
+          "term": "Expand and contract",
+          "definition": "Changing a database through compatible intermediate stages before removing the old structure."
+        },
+        {
+          "term": "Feature flag",
+          "definition": "A runtime control that enables or disables behaviour without replacing the deployed code."
+        },
+        {
+          "term": "Golden signals",
+          "definition": "Four useful operational views: request duration, demand, failures, and resource pressure."
+        },
+        {
+          "term": "Health check",
+          "definition": "A small probe that reports whether selected application functions or dependencies are available."
+        },
+        {
+          "term": "Incident",
+          "definition": "A disruption that compromises the service users receive or the safety of their data."
+        },
+        {
+          "term": "Object storage",
+          "definition": "Storage designed for independently addressed files rather than relational database records."
+        },
+        {
+          "term": "Observability",
+          "definition": "Using emitted evidence to explain what a running system is doing and why."
+        },
+        {
+          "term": "p95 latency",
+          "definition": "The response-time boundary at or below which 95 percent of measured requests finish."
+        },
+        {
+          "term": "Platform as a service",
+          "definition": "Managed hosting that accepts your application while handling much of the underlying infrastructure."
+        },
+        {
+          "term": "Postmortem",
+          "definition": "A learning-focused incident review describing impact, causes, response, and preventive follow-up."
+        },
+        {
+          "term": "Rollback",
+          "definition": "Restoring an earlier application version, after checking compatibility with current data and schema."
+        },
+        {
+          "term": "RPO",
+          "definition": "The recovery point objective: the maximum acceptable amount of recent data loss, expressed as time."
+        },
+        {
+          "term": "RTO",
+          "definition": "The recovery time objective: the target maximum delay before service is restored."
+        },
+        {
+          "term": "Runbook",
+          "definition": "An operational checklist with concrete actions for a recurring job or failure scenario."
+        },
+        {
+          "term": "SLO",
+          "definition": "A numerical reliability goal measured over a defined period."
+        },
+        {
+          "term": "Smoke test",
+          "definition": "A brief post-release check that essential functionality is available."
+        },
+        {
+          "term": "Staging",
+          "definition": "A separate release rehearsal environment configured to resemble production without using live user data."
+        },
+        {
+          "term": "Structured log",
+          "definition": "An event record organised into named fields that tools can filter and correlate."
+        }
+      ],
+      "chapters": [
+        {
+          "number": 30,
+          "slug": "understanding-deployment-and-hosting",
+          "title": "Understanding Deployment and Hosting",
+          "question": "What must be in place before somebody outside your computer can use the application?",
+          "summary": "Deployment makes a chosen version available to other people, while hosting supplies the place it runs. A simple map of environments, services, names, and storage helps you understand what your platform has arranged.",
+          "sections": [
+            {
+              "heading": "Separate development from real use",
+              "paragraphs": [
+                "Local development is the copy you use while building. It normally contains invented data and experimental changes. Staging is a separate, production-like copy where you check releases before exposing users to them. Production is the live service, with real people and valuable private information. Treat each as a separate environment with its own settings and database.",
+                "Keep the environments similar in code, service types, and software versions, while keeping credentials and data separate. Otherwise a release may pass staging only because staging behaves differently. Preview environments for individual changes can be useful, but they do not justify copying real private records into a casually protected test system. Know which environment you are using before running a command."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Distinguish building, releasing, and running",
+              "paragraphs": [
+                "A build turns source code into something ready to execute or serve: optimised browser files, an application package, or a container image. That result is a build artefact. A release combines a particular artefact with the settings for an environment. Running starts that release as a service that can receive requests.",
+                "Keeping these stages distinct lets you promote the same tested artefact from staging to production instead of rebuilding something slightly different. Record the commit associated with each deployed version. When users report a failure, “the latest code” is not a precise enough answer; you need to know exactly which release is running and which configuration it received."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Choose how much infrastructure to manage",
+              "paragraphs": [
+                "A platform as a service handles much of the server operation while you provide code and configuration. Managed services similarly operate specialised components such as databases, file storage, email, and queues. For a small first application, a straightforward hosting platform and managed database often leave more time for product work than running infrastructure yourself.",
+                "Containers on cloud infrastructure offer more control but require decisions about networking, scaling, and operation. Managing your own virtual server adds responsibility for operating-system updates, security, web-server configuration, and backups. More control is not automatically more appropriate. Ask what problem an extra infrastructure component solves, who will maintain it, and how you will recover when it fails."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Connect a domain securely",
+              "paragraphs": [
+                "A domain is a readable name registered through a registrar. DNS records tell clients where services for that name can be found. Your hosting platform usually supplies the records to add. Changes may take time to become visible because different systems cache earlier answers; a delay does not necessarily mean your application code is broken.",
+                "HTTPS protects traffic between browser and service and requires a valid certificate for the name. Many platforms obtain and renew certificates automatically, commonly using automated certificate authorities. Confirm that this is actually configured and that redirects and application URLs use HTTPS. A certificate warning is a real availability or trust problem to investigate, not something to tell users to click through."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Know where persistent information lives",
+              "paragraphs": [
+                "A running application process and its data are different things. The service may be replaced during deployment while the managed database continues to hold records. Uploaded files generally belong in durable object storage rather than a temporary application disk that may disappear when a server restarts or a release is replaced.",
+                "Draw a map showing the web service, API, scheduled jobs, database, file storage, email provider, and backup locations. Mark which components can talk to each other and who has access. Keep database access restricted rather than exposing it publicly by default. Backups need a separate location and recovery plan; the fact that a provider runs the database does not tell you what recovery protection you purchased."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Make the first deployment deliberately simple",
+              "paragraphs": [
+                "Choose a region reasonably close to your users and keep closely connected services together unless there is a good reason not to. Create staging and production with separate databases, configure the repository connection, and enter settings through the platform’s protected configuration system. Use new production secrets rather than copying development values.",
+                "Run the required migrations through a reviewed release procedure, connect the domain, and wait for working HTTPS. Then behave like a new user: sign up and follow each important journey. Maintain an inventory of live versions, accounts, regions, and persistent stores. A platform can make setup easy, but only a clear inventory makes its choices understandable when costs rise or a component stops working."
+              ],
+              "bullets": []
+            }
+          ],
+          "keyIdea": "You should be able to explain which version runs in each environment and where its services, secrets, files, and data live.",
+          "taskboard": "Taskboard uses one hosted service to serve its browser application and API, alongside a reminder job and managed PostgreSQL. Its staging copy has a separate database, while production exposes a single HTTPS address to the browser.",
+          "walkthrough": {
+            "title": "Map and deploy a minimal service",
+            "steps": [
+              "Create the application, database, and scheduled job in the chosen region.",
+              "Connect the repository to staging and set documented configuration with development-safe test data.",
+              "Prepare production with distinct secrets and data, using the reviewed migration procedure.",
+              "Connect the name and certificate, then verify sign-in and the main journeys from outside your development environment."
+            ]
+          },
+          "mistakes": [
+            "Testing releases directly on real users because there is no staging copy.",
+            "Saving uploads to a disposable application disk.",
+            "Assuming the provider automatically configured every security setting."
+          ],
+          "aiMistakes": [
+            "An agent may propose excessive infrastructure: ask which current requirement needs it.",
+            "It may expose the database publicly: inspect network access settings.",
+            "It may leave debug mode enabled: check production configuration and error responses."
+          ],
+          "tryIt": [
+            "Draw your deployment map, including account ownership and persistent storage.",
+            "Identify the currently running commit and database for every environment."
+          ],
+          "check": [
+            {
+              "q": "How do hosting and deployment differ?",
+              "a": "Hosting provides the runtime location; deployment places a chosen application version there."
+            },
+            {
+              "q": "Why separate staging data?",
+              "a": "Release experiments must not alter or expose real user records."
+            },
+            {
+              "q": "Why avoid local server disks for uploads?",
+              "a": "Many platforms replace those disks when services are rebuilt or restarted."
+            }
+          ]
+        },
+        {
+          "number": 31,
+          "slug": "preparing-and-releasing-an-application",
+          "title": "Preparing and Releasing an Application",
+          "question": "What evidence and escape route would make you comfortable releasing a change today?",
+          "summary": "A safe release is a repeatable process with checks before and after the change reaches users. Small changes, compatible database updates, and a rehearsed rollback reduce both uncertainty and damage.",
+          "sections": [
+            {
+              "heading": "Check production readiness before the first release",
+              "paragraphs": [
+                "Production needs more than a working development server. Confirm every required setting exists and that missing configuration stops startup clearly rather than producing mysterious failures later. Disable debug behaviour, use fresh live secrets, and restrict who and which services can access them. A secret example file should describe names and safe placeholders, never contain usable production values.",
+                "Review HTTPS, secure cookies, sign-in rate limits, and database exposure. Enable backups and test restoration. Connect logs and error tracking before the first incident, not during it. These checks belong to a release readiness list because they are easy to overlook when attention is focused on a visible feature. A polished interface cannot compensate for unprotected data or invisible failures."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Let integration checks run for every change",
+              "paragraphs": [
+                "Continuous integration, or CI, automatically installs what the project needs, checks source quality and types where applicable, runs tests, and builds the application. It runs when changes are proposed or merged so failures appear soon after the responsible edit. Security checks can also scan for committed secrets and known vulnerable dependencies.",
+                "Every change should face the same meaningful checks. A pipeline that skips tests for small-looking changes is betting that people can perfectly predict where regressions occur. Inspect the actual workflow file, including its permissions and secret handling. It is executable project code with access to important accounts, not harmless administrative text that can be accepted without review."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Create a repeatable delivery path",
+              "paragraphs": [
+                "Continuous delivery extends those checks so a passing change is ready to release through a controlled process. Production deployment may still require a human approval; automatically releasing every passing change is a further choice. A typical path builds once, deploys to staging, runs migrations and smoke tests, then promotes the tested version to production.",
+                "Automatic steps reduce forgotten commands and differences between releases. If part of the path remains manual, document exact actions and their success conditions. Stop on failed checks rather than printing an optimistic message and continuing. Over time, automate the repeated safe steps, while retaining explicit approval for consequential production actions until the process is sufficiently understood and trusted."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Keep database changes compatible",
+              "paragraphs": [
+                "During deployment, old and new application versions may coexist. A rollback can also put old code against a database already changed by the new release. A migration that immediately removes an expected column can therefore break both an ongoing deployment and the route back to safety. Treat database compatibility as part of the release design.",
+                "Expand and contract spreads a change across releases. First add a compatible field or structure. Next update code and migrate existing data while both versions can still operate. Only later remove the old structure when nothing depends on it. Test migrations on staging with realistic data shapes, back up production first, and do not give an AI agent unsupervised authority to run live migrations."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Check the deployed result and record it",
+              "paragraphs": [
+                "Smoke tests are a few fast checks after deployment: the service loads, a test account signs in, a task can be created, and the health endpoint responds appropriately. They are not a replacement for the full suite. They answer the narrower question of whether the deployed service is basically operational in its actual environment.",
+                "Record when each release went out, its commit, and the included changes. This makes a later error spike easier to compare with recent deployments. Larger systems may add canary releases, exposing a small share of traffic first, or feature flags, enabling deployed behaviour separately. A small application can gain substantial safety from staging, useful smoke tests, clear release records, and a simple rollback procedure."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Prepare the undo path before you need it",
+              "paragraphs": [
+                "Before approval, identify the previous working release and practise returning to it on staging. Code rollback is often straightforward on a hosting platform, but it does not automatically reverse database changes or recover deleted information. Understand which migrations are compatible, which steps are one-way, and whether restoring data would discard legitimate newer work.",
+                "If a release harms users, restore service first when a safe rollback is available, then investigate calmly. Correct the release process as well as the immediate bug. If a production migration was skipped, adding the column once is not enough; make the pipeline enforce the migration step and fail clearly next time. Small, frequent, reversible releases give you fewer suspects and smaller consequences."
+              ],
+              "bullets": []
+            }
+          ],
+          "keyIdea": "Release safety comes from small changes, repeatable checks, compatible data changes, and a known way to recover.",
+          "taskboard": "Taskboard automates tests, migration checks, security scans, builds, and basic smoke checks in its repository workflow. Hosting-specific promotion remains documented in its runbook, so describing every production step as already automated would overstate the source implementation.",
+          "walkthrough": {
+            "title": "Respond to a failed release",
+            "steps": [
+              "Notice the missing-column errors and confirm the problem began with the new release.",
+              "Use the prepared safe rollback to restore the previous compatible service.",
+              "Find the skipped production migration step and repair the workflow so its failure blocks deployment.",
+              "Verify staging, release again through the corrected path, and record the incident and prevention."
+            ]
+          },
+          "mistakes": [
+            "Keeping an undocumented list of manual release steps in memory.",
+            "Bundling weeks of work into a large difficult-to-reverse change.",
+            "Planning rollback only after production fails."
+          ],
+          "aiMistakes": [
+            "An agent may print secrets into pipeline logs: inspect command output and masking.",
+            "It may rename or drop columns immediately: request a compatible staged migration.",
+            "It may disable a failing check: fix the failure rather than the barrier reporting it."
+          ],
+          "tryIt": [
+            "Write three smoke checks with explicit expected outcomes.",
+            "Practise and time a staging rollback, including checking database compatibility."
+          ],
+          "check": [
+            {
+              "q": "Does continuous delivery require automatic production deployment?",
+              "a": "No; a passing version can remain ready for a human-approved release."
+            },
+            {
+              "q": "Why keep old code compatible with the database?",
+              "a": "Old and new versions can overlap, and rollback may restore old code after a migration."
+            },
+            {
+              "q": "What does a smoke test establish?",
+              "a": "That a few essential functions work in the deployed environment, not that every requirement is covered."
+            }
+          ]
+        },
+        {
+          "number": 32,
+          "slug": "observing-an-application-in-production",
+          "title": "Observing an Application in Production",
+          "question": "How would you know whether the application is working for users at this moment?",
+          "summary": "Observability uses the signals a running system produces to understand its behaviour. Useful monitoring connects those signals to real user experiences and a practical response when something goes wrong.",
+          "sections": [
+            {
+              "heading": "Give each signal a clear purpose",
+              "paragraphs": [
+                "Logs are timestamped event records that help reconstruct what happened. Metrics are numbers over time, such as request counts or failure rates, that reveal patterns. Error tracking collects exceptions and stack traces, groups similar failures, and can connect them to the release that introduced them. Each answers a different kind of question.",
+                "Traces follow a request across components and show where its time went. Health checks provide a simple external way to ask whether essential parts are reachable. Combine these signals rather than expecting one dashboard to answer everything. A server can be running while sign-in is broken, and a quiet error log may mean failures are being swallowed rather than that users are happy."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Watch the four user-facing signals",
+              "paragraphs": [
+                "Latency measures how long requests take. Traffic measures how many requests arrive. Errors measure failed operations. Saturation measures how close a resource, such as memory or database connections, is to its practical limit. Together these four signals help distinguish a growing load problem from a new application defect or an unavailable dependency.",
+                "Look beyond averages. If most requests are quick but a minority are very slow, the average can conceal a painful experience. A 95th-percentile latency says that 95 percent of the measured requests are faster than that value. Compare errors and timings with deployment markers so a sudden change can be investigated alongside the version that just reached users."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Measure journeys from outside the service",
+              "paragraphs": [
+                "An uptime monitor requests a health endpoint from outside your infrastructure, ideally from more than one location. The endpoint should check essential dependencies such as database reachability instead of always returning success. Keep the response minimal so it does not reveal credentials or internal infrastructure details to the public.",
+                "Synthetic monitoring goes further by regularly performing a journey with a test account, such as signing in and creating a task. Define a service level objective, or SLO, describing your target reliability over a period. The allowed shortfall is the error budget. These targets make reliability discussions concrete and help you notice when apparently healthy infrastructure still fails to deliver the outcomes users need."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Log enough to investigate without leaking",
+              "paragraphs": [
+                "Structured logs use consistent fields, often JSON, so tools can search and group them. A request ID links events from the same request across components without requiring the full request body. Useful fields include a timestamp, route, result, and duration, subject to your application’s privacy needs and access rules.",
+                "Do not log passwords, session tokens, API keys, payment details, or unnecessary personal information. Even an account identifier or IP address may be personal data when it can be linked to someone. Record security-relevant events carefully, restrict log access, and set a retention period. More logging is not automatically better: it can increase privacy exposure, storage cost, and the difficulty of finding a meaningful clue."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Make alerts actionable",
+              "paragraphs": [
+                "An alert should mean that a person needs to do something now. Persistent failures, unavailable essential journeys, and sustained error rates are usually more meaningful than every short CPU spike. Set thresholds and durations that reflect user impact, then write down the first checks and the person responsible for responding.",
+                "Too many noisy notifications teach people to ignore the whole channel. Test that important alerts reach the intended person, and review whether past alerts were useful. A dashboard nobody sees is not an incident response system. Monitoring needs both a reliable signal and an agreed action, including what to do outside normal working hours if users depend on the service then."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Respond in an order that limits harm",
+              "paragraphs": [
+                "Detect and acknowledge the incident, then assess who is affected and whether data is at risk. Mitigate first when possible, often by rolling back a recent release or disabling a feature. Communicate honestly with affected users while investigation continues. Resolve the cause and verify that the real journeys and operational signals have recovered.",
+                "Finish with a short blameless review describing what happened, why existing safeguards missed it, and which concrete changes will help next time. Avoid making the incident a story about one careless person; look for missing tests, unsafe defaults, and process gaps. Preserve enough evidence for investigation while keeping sensitive data protected, and add a regression check for the failure you discovered."
+              ],
+              "bullets": []
+            }
+          ],
+          "keyIdea": "Collect signals that explain user impact, and connect important failures to a clear human response.",
+          "taskboard": "Taskboard provides a database-aware health endpoint and structured logs containing request metadata rather than task contents or user identifiers. External uptime checks, release-tagged error tracking, a production dashboard, and alert routing still need to be connected through the hosting setup.",
+          "walkthrough": {
+            "title": "Handle a post-release error spike",
+            "steps": [
+              "Acknowledge the alert and compare the timing with the latest deployment.",
+              "Use grouped exceptions and request evidence to identify the affected task-list journey.",
+              "Roll back safely to reduce user harm, then confirm errors and journey checks recover.",
+              "Fix the missing-data assumption, add an old-record regression test, and update the release checklist."
+            ]
+          },
+          "mistakes": [
+            "Waiting for user complaints instead of checking the live service.",
+            "Alerting on every fluctuation until important notifications are ignored.",
+            "Investigating indefinitely while a safe mitigation is available."
+          ],
+          "aiMistakes": [
+            "An agent may log complete request bodies: inspect logs for tokens and private fields.",
+            "It may create a health endpoint that always succeeds: test dependency failure safely.",
+            "It may suppress exceptions so monitoring stays quiet: verify failures reach error tracking."
+          ],
+          "tryIt": [
+            "Create a safe health check that fails when its test database is unavailable.",
+            "Trigger a controlled test exception and verify the release and stack trace appear.",
+            "Audit log fields and retention for unnecessary personal information."
+          ],
+          "check": [
+            {
+              "q": "What are the four golden signals?",
+              "a": "Latency, traffic, errors, and saturation."
+            },
+            {
+              "q": "Why is average response time insufficient?",
+              "a": "It can hide a slow minority of requests that users experience as serious delays."
+            },
+            {
+              "q": "Why mitigate before full diagnosis?",
+              "a": "Reducing ongoing harm gives users relief while the underlying investigation continues."
+            }
+          ]
+        },
+        {
+          "number": 33,
+          "slug": "protecting-data-and-recovering-from-failure",
+          "title": "Protecting Data and Recovering from Failure",
+          "question": "If important records vanished, how much could you lose and how long would recovery take?",
+          "summary": "Data protection combines prevention with a recovery plan that has actually been tested. Limited access, independent backups, explicit recovery targets, and rehearsed procedures reduce the consequences of inevitable mistakes and outages.",
+          "sections": [
+            {
+              "heading": "Reduce the reach of mistakes",
+              "paragraphs": [
+                "Use least privilege: each person, service, and tool receives only the access needed for its job. Ordinary development does not require production database credentials. Avoid shared administrator accounts that obscure who performed an action, and keep AI agents away from live credentials. A destructive command is less dangerous when the account running it cannot reach valuable data.",
+                "Keep dependencies updated with small reviewed changes, using automated update proposals where helpful. Rotate credentials when access changes, periodically according to your policy, and immediately after a suspected leak. Centralised secret management makes this easier than hunting values across source files and personal notes. Prevention cannot eliminate every incident, but it can keep a local error from becoming an organisation-wide failure."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Protect only the data you need",
+              "paragraphs": [
+                "Collecting less private information reduces both risk and the work required to protect it. Use HTTPS in transit and appropriate encryption at rest. Restrict access to production records, logs, backups, and exports; a carefully protected primary database is not enough if an unprotected backup contains the same information.",
+                "Understand the laws and contractual duties that apply to your users and location. Some breaches require notification within strict periods, so record who assesses obligations and contacts affected parties. An assistant’s generic legal answer is not a substitute for qualified advice. Good preparation includes knowing what information you hold, why you hold it, how long you retain it, and which services receive it."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Keep copies that fail independently",
+              "paragraphs": [
+                "The 3-2-1 rule is a useful backup guideline: three copies, across two kinds of storage, with one elsewhere. In a cloud application, think about the live database, provider-managed backups, and a separate export stored under another account. The aim is independence, so one mistaken deletion or compromised account cannot remove every recovery option.",
+                "Check the schedule, retention period, encryption, and permissions of each copy. Provider backups may be valuable without being sufficient for every failure scenario. Uploaded files and other data stores need their own versioning or backup strategy. Keep code and configuration reproducible through the repository and secret store, but do not assume source code contains the user records required to restore the actual service."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Define acceptable loss and downtime",
+              "paragraphs": [
+                "Recovery point objective, or RPO, describes how much recent information you can afford to lose. A daily backup can leave nearly a day of changes missing after a failure. Point-in-time recovery may reduce that gap when it is configured and working. Choose the target based on the impact on users rather than whichever option is easiest to click.",
+                "Recovery time objective, or RTO, describes how long restoration may take. It includes obtaining access, finding the right copy, restoring it, checking the result, and returning users to service. These objectives are targets, not guarantees created by writing them in a document. Your backup design and measured restore drills must show whether they are realistically achievable."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Restore safely and verify the result",
+              "paragraphs": [
+                "Practise restoring to a new database rather than overwriting production while investigating. Confirm that the backup opens, expected records exist, counts look reasonable, and the application can perform important operations against it. Time the exercise so the recovery estimate comes from observation rather than optimism. Document any missing credentials or unclear steps you discover.",
+                "For accidental deletion, first stop further damage if necessary. Identify a point before the mistake, restore alongside the live database, and assess which legitimate newer changes need preserving. Switching to an older full copy can itself lose valid work, so plan the recovery approach carefully. A backup file existing somewhere is not proof that its contents are complete, usable, or recent enough."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Prepare responses for several failure types",
+              "paragraphs": [
+                "A failed deployment often calls for a compatible code rollback. An email-provider outage may call for queueing messages and letting the rest of the application continue. A leaked credential needs immediate revocation, replacement, and investigation. A suspected breach requires containment, evidence preservation, exposure assessment, and appropriate notification rather than casually deleting suspicious logs.",
+                "Write short runbooks for these actions, including access requirements, verification, communication, and escalation. Rehearse restore procedures monthly or quarterly on a safe environment and update them after significant changes. The purpose is to make calm advance decisions available during a stressful incident. After recovery, review how the event became possible and add safeguards rather than assuming the same mistake will never happen again."
+              ],
+              "bullets": []
+            }
+          ],
+          "keyIdea": "A recovery plan becomes credible only when independent copies and timed restore drills demonstrate that it works.",
+          "taskboard": "Taskboard’s maintenance guidance targets at most five minutes of lost data and restoration within an hour. Those production targets depend on configured point-in-time recovery, separate exports, restricted access, and restore drills; a local backup command alone does not establish them.",
+          "walkthrough": {
+            "title": "Recover after an accidental deletion",
+            "steps": [
+              "Revoke the credential involved and stop unsafe writes while preserving investigation evidence.",
+              "Find the deletion time and choose a suitable earlier recovery point.",
+              "Restore into a new database, verify records and application behaviour, and assess later legitimate changes.",
+              "Switch safely, communicate the outcome, measure the recovery, and remove the access or process weakness that enabled the incident."
+            ]
+          },
+          "mistakes": [
+            "Assuming automated backups are usable without trying a restore.",
+            "Keeping every copy under one account that can delete them all.",
+            "Sharing administrator credentials indefinitely without rotation."
+          ],
+          "aiMistakes": [
+            "An agent may target the wrong database with a reset: check the environment and require approval.",
+            "It may suggest recreating tables without preserving data: stop and establish a recovery copy first.",
+            "It may treat a provider backup checkbox as a full plan: demand retention details and a measured restore."
+          ],
+          "tryIt": [
+            "Choose RPO and RTO targets and explain the user impact behind them.",
+            "Restore a backup into a fresh test database, verify known records, and record elapsed time."
+          ],
+          "check": [
+            {
+              "q": "How do RPO and RTO differ?",
+              "a": "RPO concerns acceptable recent data loss; RTO concerns acceptable recovery duration."
+            },
+            {
+              "q": "Why keep a copy in another account?",
+              "a": "It reduces the chance that one compromise or mistake destroys every copy."
+            },
+            {
+              "q": "What proves a backup is usable?",
+              "a": "A successful restore with checked data and application behaviour."
+            }
+          ]
+        },
+        {
+          "number": 34,
+          "slug": "maintaining-and-evolving-the-application",
+          "title": "Maintaining and Evolving the Application",
+          "question": "How do you choose between new features, defects, updates, and a rising hosting bill?",
+          "summary": "Maintenance keeps a live application useful, affordable, and safe as its circumstances change. Evidence-based priorities and regular upkeep prevent small neglected problems from turning into disruptive rewrites or emergencies.",
+          "sections": [
+            {
+              "heading": "Collect evidence in one place",
+              "paragraphs": [
+                "Listen through support messages, a feedback link, and short conversations with active users. Compare requests with privacy-respecting usage information and operational evidence such as failures or slow journeys. A loud request may matter, but it is not automatically more important than an issue quietly preventing many people from finishing their work.",
+                "Record the evidence in one issue tracker rather than leaving decisions scattered across inboxes and memory. Distinguish a bug, an improvement, routine upkeep, and a capacity concern. Link reports that describe the same underlying problem. Clear records let you revisit why work was prioritised and help an assistant understand the actual outcome needed instead of implementing the most recent suggestion literally."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Prioritise impact and effort",
+              "paragraphs": [
+                "Estimate impact on users and the product alongside effort, uncertainty, and risk. High-impact work with modest effort is often worth doing soon. High-impact, high-effort work needs planning and smaller increments. Low-impact quick changes can be batched, while low-impact expensive work may not deserve a place on the roadmap.",
+                "Security vulnerabilities and bugs that expose or lose data jump this ordinary queue. Assess them promptly even if the implementation effort is uncomfortable. Reconnect priorities with the original product goals: an interesting rewrite does not necessarily help the people the application exists to serve. Use estimates as discussion tools, not precise mathematical truth, and update them when new evidence changes what you know."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Reserve regular time for code health",
+              "paragraphs": [
+                "Apply small dependency updates regularly, reviewing release notes carefully for major versions and handling security fixes promptly. Automated proposals can reduce the effort of noticing available updates, but tests and human review still decide whether a change is safe. Avoid accumulating years of version jumps into one difficult migration.",
+                "Track technical debt: known shortcuts or weaknesses that make future changes harder. Reserve a recurring share of maintenance time for paying down the most costly items, especially in frequently changed areas. Give each bug fix a regression test. Investigate flaky checks and repair or deliberately replace them instead of allowing random failures to become normal background noise."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Keep documentation connected to reality",
+              "paragraphs": [
+                "A repository’s README, design notes, decision records, runbook, and agent instructions are working tools. Review them after significant changes so setup steps, operational procedures, and architectural assumptions remain true. Outdated instructions can cause the same mistake repeatedly, whether the next person following them is you, a colleague, or an AI agent.",
+                "Keep maintenance work visible beside feature development. A short routine is easier to sustain than an occasional heroic cleanup. For example, review issues weekly, update proposals on a fixed weekday, and set aside a monthly session for debt, documentation, costs, and capacity. Give these tasks an owner and a checkable result so they do not remain permanently optional."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Watch money and resource limits",
+              "paragraphs": [
+                "Review cloud bills monthly and set budget alerts. Find the services and features driving spend: database tiers, storage, log retention, network traffic, and paid API calls can all grow quietly. A temporary upgrade during an incident may remain expensive long after the emergency ends. Cost visibility belongs in engineering decisions even for a solo project.",
+                "Watch database size, connection use, and response times alongside spending. Do not downgrade a service blindly just to reduce the next bill; first check whether its capacity is still needed. Equally, do not scale infrastructure to conceal an inefficient query without understanding it. Follow evidence from a cost or performance symptom to its cause, then verify that the improvement preserves user experience."
+              ],
+              "bullets": []
+            },
+            {
+              "heading": "Revisit architecture when assumptions change",
+              "paragraphs": [
+                "An architectural decision record, or ADR, explains a choice and the conditions under which it should be reconsidered. As usage and requirements change, compare new evidence with those revisit conditions. A need for richer search, for example, should trigger a deliberate evaluation rather than an unannounced switch of databases during an unrelated feature.",
+                "Changing a past decision does not mean it was foolish when made. The right structure for a small launch can differ from the right structure for a mature product. Record the new trade-offs and migrate in small checked increments. Resist an assistant’s tendency to recommend a new framework or wholesale rewrite before establishing the actual problem. Continued simplicity comes from deliberate upkeep, not from avoiding change or chasing every new tool."
+              ],
+              "bullets": []
+            }
+          ],
+          "keyIdea": "Treat updates, debt, documentation, costs, and capacity as recurring product work guided by evidence.",
+          "taskboard": "Taskboard’s routine combines weekly issue triage and dependency review with monthly upkeep and cost checks. Quarterly reviews compare architectural assumptions with current needs, including the decision-record trigger for richer task search.",
+          "walkthrough": {
+            "title": "Investigate a growing hosting bill",
+            "steps": [
+              "Break the bill down by service and compare it with previous months.",
+              "Check whether an incident-time database upgrade and verbose logging were left in place.",
+              "Adjust the tier only after reviewing capacity, and set appropriate log levels and retention.",
+              "Add a budget alert and a runbook reminder to revisit temporary emergency settings."
+            ]
+          },
+          "mistakes": [
+            "Adding features indefinitely while security updates and debt accumulate.",
+            "Ignoring cost and capacity until they become an emergency.",
+            "Replacing the application wholesale instead of improving the troublesome parts incrementally."
+          ],
+          "aiMistakes": [
+            "An agent may recommend a rewrite without evidence: ask which measured problem it solves.",
+            "It may upgrade every major dependency together: split and verify the changes.",
+            "It may add paid API calls to each request: inspect usage paths and estimate cost before release."
+          ],
+          "tryIt": [
+            "Build a board containing bugs, improvements, upkeep, and costs; prioritise each item.",
+            "Schedule a monthly maintenance block and identify one architecture revisit condition."
+          ],
+          "check": [
+            {
+              "q": "Which issues override the ordinary impact–effort ranking?",
+              "a": "Security problems and defects that lose or expose data."
+            },
+            {
+              "q": "Why review costs regularly?",
+              "a": "Quiet growth and forgotten temporary settings can create avoidable expense."
+            },
+            {
+              "q": "When should an architectural decision be revisited?",
+              "a": "When changed requirements or evidence meet its documented reconsideration conditions."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
