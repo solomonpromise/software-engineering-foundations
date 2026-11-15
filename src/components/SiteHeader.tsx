@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { AppearanceMenu } from "@/components/AppearanceMenu";
+import { LogoMark } from "@/components/Logo";
 import { useProgress } from "@/lib/progress";
 import { chapters } from "@/content/lessons";
 
@@ -29,8 +30,8 @@ export function ProgressRing({ size = 28 }: { size?: number }) {
 function Wordmark() {
   return (
     <Link to="/" className="flex items-center gap-3">
-      <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-header-accent font-serif text-lg leading-none text-header ring-1 ring-header-foreground/25">
-        SF
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-header-accent text-header ring-1 ring-header-foreground/25">
+        <LogoMark className="size-6" />
       </span>
       <span className="leading-none">
         <span className="block font-serif text-xl">Software Foundations</span>
@@ -107,9 +108,6 @@ export function SiteHeader() {
               </Link>
             );
           })}
-          <p className="flex items-center gap-2 pt-4 text-sm text-header-muted">
-            <ProgressRing /> {done.length} of {chapters.length} lessons finished
-          </p>
         </nav>
       )}
     </header>
