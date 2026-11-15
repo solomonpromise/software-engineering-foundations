@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BibliographyRouteImport } from './routes/bibliography'
+import { Route as CertificateRouteImport } from './routes/certificate'
 import { Route as CurriculumRouteImport } from './routes/curriculum'
 import { Route as GlossaryRouteImport } from './routes/glossary'
 import { Route as ReferenceRouteImport } from './routes/reference'
@@ -36,6 +37,11 @@ const AuthRoute = AuthRouteImport.update({
 const BibliographyRoute = BibliographyRouteImport.update({
   id: '/bibliography',
   path: '/bibliography',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CertificateRoute = CertificateRouteImport.update({
+  id: '/certificate',
+  path: '/certificate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CurriculumRoute = CurriculumRouteImport.update({
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/bibliography': typeof BibliographyRoute
+  '/certificate': typeof CertificateRoute
   '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/bibliography': typeof BibliographyRoute
+  '/certificate': typeof CertificateRoute
   '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/bibliography': typeof BibliographyRoute
+  '/certificate': typeof CertificateRoute
   '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/bibliography'
+    | '/certificate'
     | '/curriculum'
     | '/glossary'
     | '/reference'
@@ -156,6 +166,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/bibliography'
+    | '/certificate'
     | '/curriculum'
     | '/glossary'
     | '/reference'
@@ -171,6 +182,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/bibliography'
+    | '/certificate'
     | '/curriculum'
     | '/glossary'
     | '/reference'
@@ -187,6 +199,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   BibliographyRoute: typeof BibliographyRoute
+  CertificateRoute: typeof CertificateRoute
   CurriculumRoute: typeof CurriculumRoute
   GlossaryRoute: typeof GlossaryRoute
   ReferenceRoute: typeof ReferenceRoute
@@ -220,6 +233,13 @@ declare module '@tanstack/react-router' {
       path: '/bibliography'
       fullPath: '/bibliography'
       preLoaderRoute: typeof BibliographyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/certificate': {
+      id: '/certificate'
+      path: '/certificate'
+      fullPath: '/certificate'
+      preLoaderRoute: typeof CertificateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/curriculum': {
@@ -299,6 +319,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   BibliographyRoute: BibliographyRoute,
+  CertificateRoute: CertificateRoute,
   CurriculumRoute: CurriculumRoute,
   GlossaryRoute: GlossaryRoute,
   ReferenceRoute: ReferenceRoute,

@@ -30,7 +30,7 @@ export function useProgressSync() {
       const { data, error } = await supabase.from("learner_progress").select("data").eq("user_id", user.id).maybeSingle();
       if (!alive || error) return;
       const remote = (data?.data ?? { done: [] }) as Progress;
-      replaceProgress(mergeProgress(getProgress(), { done: [], ...remote }));
+      replaceProgress(mergeProgress(getProgress(), { ...remote, done: remote.done ?? [] }));
       save();
       unsub = subscribeProgress(save);
     })();
