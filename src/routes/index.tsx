@@ -30,11 +30,14 @@ function Home() {
         <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
           {chapters.length || 34} plain-language lessons that take you from your first idea to a live, maintained product — so you can judge what AI builds for you, not just hope it works.
         </p>
+        <div className="mt-10 flex flex-wrap items-center gap-4">
+        <Link to="/start/$slug" params={{ slug: "about" }} className="rounded-full border border-primary px-7 py-4 font-semibold text-primary">Start here</Link>
         {first && (
-          <Link to="/learn/$slug" params={{ slug: first.slug }} className="mt-10 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-4 font-semibold text-primary-foreground transition hover:gap-4">
+          <Link to="/learn/$slug" params={{ slug: first.slug }} className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-4 font-semibold text-primary-foreground transition hover:gap-4">
             Start lesson 1 <ArrowRight className="size-4" />
           </Link>
         )}
+        </div>
       </section>
 
       <section id="curriculum" className="border-t border-border bg-card">

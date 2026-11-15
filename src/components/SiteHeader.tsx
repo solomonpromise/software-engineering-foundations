@@ -6,7 +6,9 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
         <Link to="/" className="font-serif text-xl">Software Foundations<span className="text-accent">.</span></Link>
         <nav className="flex gap-6 text-sm text-muted-foreground">
+          <Link to="/start/$slug" params={{ slug: "about" }} className="hover:text-foreground">Start here</Link>
           <Link to="/" hash="curriculum" className="hover:text-foreground">Curriculum</Link>
+          <Link to="/reference" className="hover:text-foreground">Reference</Link>
           <Link to="/glossary" className="hover:text-foreground" activeProps={{ className: "text-foreground" }}>Glossary</Link>
         </nav>
       </div>
