@@ -115,7 +115,12 @@ function Lesson() {
       </aside>
       <article className="mx-auto min-w-0 max-w-3xl flex-1 py-16">
         <Link to="/" hash="curriculum" className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Part {c.part.number} · {c.part.title}</Link>
-        {hero && <img src={hero.url} alt={c.title} className="mt-6 aspect-[21/9] w-full rounded-xl object-cover" />}
+        {hero && (
+          <figure className="mt-6">
+            <img src={hero.url} alt={hero.caption || c.title} className="aspect-[21/9] w-full rounded-xl object-cover" />
+            {hero.caption && <figcaption className="mt-2 text-sm text-muted-foreground">{hero.caption}</figcaption>}
+          </figure>
+        )}
         <p className="mt-6 font-serif text-7xl text-primary/20">{String(c.number).padStart(2, "0")}</p>
         <h1 className="font-serif text-4xl leading-tight md:text-5xl">{c.title}</h1>
         <p className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
