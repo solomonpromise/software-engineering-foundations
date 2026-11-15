@@ -100,7 +100,7 @@ function Lesson() {
     <div className="min-h-screen">
       <SiteHeader />
       <div className="fixed inset-x-0 top-0 z-40 h-1 bg-transparent" aria-hidden>
-        <div className="h-full bg-accent transition-[width] duration-150" style={{ width: `${scroll * 100}%` }} />
+        <div className="h-full bg-brass transition-[width] duration-150" style={{ width: `${scroll * 100}%` }} />
       </div>
       <div className="mx-auto flex max-w-6xl gap-10 px-5">
       <aside className="sticky top-24 hidden h-[calc(100vh-7rem)] w-56 shrink-0 overflow-y-auto py-16 text-sm lg:block">

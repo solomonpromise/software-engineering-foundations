@@ -15,7 +15,7 @@ export function AppearanceMenu() {
   }, [open]);
   return (
     <div ref={ref} className="relative">
-      <button onClick={() => setOpen(!open)} aria-expanded={open} aria-label="Appearance" title="Appearance" className="flex size-9 items-center justify-center rounded-full border border-border text-foreground hover:border-primary">
+      <button onClick={() => setOpen(!open)} aria-expanded={open} aria-label="Appearance" title="Appearance" className="flex size-9 items-center justify-center rounded-full border border-header-accent/45 text-header-foreground transition-colors hover:bg-header-accent/15">
         <Palette className="size-4" />
       </button>
       {open && (
