@@ -1,32 +1,298 @@
 {
-"1": {"slug":"application-brief","time":"2–3 hours","deliverable":"A one-to-two page application brief (brief.md) that someone else could build from without guessing.",
- "setup":["Create a folder for your project, for example taskboard-brief.","Inside it, create an empty file called brief.md (any text editor works).","Optional: clone the Taskboard example to compare your brief with a finished project."],
- "code":[{"title":"Get the example project","lang":"bash","body":"git clone https://github.com/solomonpromise/taskboard.git\ncd taskboard\nls"},
- {"title":"Brief template (brief.md)","lang":"markdown","body":"# Application brief: <name>\n\n## Users and problem\nWho: \nTheir difficulty: \nHow they cope today: \n\n## One-sentence description\n\n## Application type and trade-off\n\n## Core user journey\n1. \n\n## First version\n- \n## Postponed\n- \n\n## User stories\nAs a <user>, I want <goal> so that <reason>.\nAcceptance: Given … When … Then …\n\n## Quality, constraints, assumptions\n\n## Open questions"},
- {"title":"Ask AI to review, not build","lang":"text","body":"Here is my application brief. Do not write any code.\nList every question a developer would need answered\nbefore starting, and point out contradictions or\nvague requirements. Number your findings."}]},
-"2": {"slug":"map-and-trace","time":"2–3 hours","deliverable":"A diagram of your application's parts plus a written trace of one user action from click to database and back.",
- "setup":["Open the Taskboard example (or your own app) in your editor.","Install Node.js LTS if you want to run it locally.","Have a blank page or a diagram tool ready (paper is fine)."],
- "code":[{"title":"Run the example locally","lang":"bash","body":"cd taskboard\nnpm install\nnpm run dev\n# open the printed http://localhost address"},
- {"title":"Watch one request","lang":"text","body":"1. Open the browser's Developer Tools → Network tab.\n2. Create a task in the app.\n3. Click the new request. Note: method, URL, status code,\n   request body and response body."},
- {"title":"Trace template","lang":"markdown","body":"## Action: create a task\n1. Interface: user types a title and presses Save\n2. Request: POST /api/tasks  {\"title\": \"…\"}\n3. Backend: checks the user is signed in, validates title\n4. Database: INSERT INTO tasks (title, owner_id) …\n5. Response: 201 Created + the new task\n6. Interface: list updates\nWhat could fail at each step?"}]},
-"3": {"slug":"set-up-and-change","time":"3–4 hours","deliverable":"A running copy of the project, a short map of its folders, and one small change committed on its own branch.",
- "setup":["Install Git and Node.js LTS.","Create a free GitHub account if you don't have one.","Clone the Taskboard repository."],
- "code":[{"title":"Reproduce the project","lang":"bash","body":"git clone https://github.com/solomonpromise/taskboard.git\ncd taskboard\ncp .env.example .env   # fill in values, never commit .env\nnpm install\nnpm test\nnpm run dev"},
- {"title":"Make a controlled change","lang":"bash","body":"git checkout -b change-empty-state-text\n# edit one file\ngit status\ngit diff\ngit add -A\ngit commit -m \"Clarify empty task list message\"\ngit log --oneline -3"},
- {"title":"Project map (PROJECT_MAP.md)","lang":"markdown","body":"| Folder / file | What it holds | Safe to change? |\n|---|---|---|\n| src/ | application code | yes, with tests |\n| package.json | dependencies and scripts | carefully |\n| .env | secrets | never commit |"}]},
-"4": {"slug":"design-pack","time":"3–4 hours","deliverable":"A compact design pack: system diagram, technology choices with reasons, data model, integrations and quality trade-offs.",
- "setup":["Have your Part 1 brief and Part 2 trace open.","Create a folder called design/ in your project."],
- "code":[{"title":"Decision record (design/decisions.md)","lang":"markdown","body":"## Decision: <what was chosen>\nContext: what problem forced a choice\nOptions considered: A, B, C\nChoice: B\nWhy: \nTrade-offs accepted: \nRevisit when: "},
- {"title":"Data model sketch","lang":"sql","body":"CREATE TABLE users (\n  id UUID PRIMARY KEY,\n  email TEXT UNIQUE NOT NULL\n);\nCREATE TABLE tasks (\n  id UUID PRIMARY KEY,\n  owner_id UUID NOT NULL REFERENCES users(id),\n  title TEXT NOT NULL,\n  done BOOLEAN NOT NULL DEFAULT false,\n  created_at TIMESTAMPTZ NOT NULL DEFAULT now()\n);"},
- {"title":"Ask AI to challenge the design","lang":"text","body":"Here is my design pack. Act as a sceptical reviewer.\nWhere is it over-built for a first version? Where will\nit break under 10x users? Which decision lacks a reason?"}]},
-"5": {"slug":"verified-first-version","time":"1–2 days","deliverable":"A working first version built in small, reviewed steps, with tests passing and a log of what AI produced and what you checked.",
- "setup":["Pick an AI coding tool (an AI app builder or an editor assistant).","Start from your design pack and a clean Git branch.","Make sure npm test runs, even if there are no tests yet."],
- "code":[{"title":"A well-prepared task prompt","lang":"text","body":"Goal: let a signed-in user mark a task as done.\nContext: tasks table has a `done` boolean (see design/).\nScope: only the task list and its API route.\nDo not: change auth, add libraries, touch other pages.\nDone when: toggling persists after reload and a test\ncovers another user being unable to change my task."},
- {"title":"Small test example","lang":"ts","body":"import { describe, it, expect } from \"vitest\";\nimport { canEdit } from \"./permissions\";\n\ndescribe(\"task permissions\", () => {\n  it(\"blocks other users\", () => {\n    expect(canEdit({ ownerId: \"a\" }, \"b\")).toBe(false);\n  });\n});"},
- {"title":"Review each change","lang":"bash","body":"git diff            # read every line AI changed\nnpm test            # must pass\ngit commit -am \"Toggle task done\""}]},
-"6": {"slug":"release-and-maintain","time":"1 day","deliverable":"A live deployment plus a maintenance guide covering monitoring, backups, recovery and how to make future changes safely.",
- "setup":["Choose a host (many AI builders include one-click publishing).","Store production secrets in the host's settings, not in code.","Have your first version passing its tests."],
- "code":[{"title":"Pre-release check","lang":"bash","body":"npm test\nnpm run build\ngit tag v1.0.0\ngit push --tags"},
- {"title":"Health check endpoint","lang":"ts","body":"// GET /api/health\nexport function GET() {\n  return Response.json({ ok: true, time: new Date().toISOString() });\n}"},
- {"title":"Maintenance guide (MAINTENANCE.md)","lang":"markdown","body":"## Where it runs\n## How to deploy\n## How to roll back\n## Backups: what, how often, how to restore (tested on: )\n## Monitoring: where errors appear, who is alerted\n## Secrets: where stored, how to rotate\n## Making a change safely: branch → test → review → release"}]}
+ "1": {
+  "slug": "application-brief",
+  "time": "2\u20133 hours",
+  "deliverable": "A one-to-two page application brief (brief.md) that someone else could build from without guessing.",
+  "setup": [
+   "Install Git, then clone Taskboard to compare your work with a finished brief.",
+   "Create a brief.md file for your own idea (or follow along with Taskboard's)."
+  ],
+  "code": [
+   {
+    "title": "Get the example",
+    "lang": "bash",
+    "body": "git clone https://github.com/solomonpromise/taskboard.git\ncd taskboard\ncat docs/brief.md"
+   },
+   {
+    "title": "Ask AI to review, not build",
+    "lang": "text",
+    "body": "Here is my application brief. Do not write any code.\nList every question a developer would need answered\nbefore starting, and point out contradictions or\nvague requirements. Number your findings."
+   }
+  ],
+  "stepLessons": [
+   [
+    1
+   ],
+   [
+    2
+   ],
+   [
+    1,
+    3
+   ],
+   [
+    3
+   ],
+   [
+    3
+   ],
+   [
+    3
+   ],
+   [
+    4
+   ]
+  ]
+ },
+ "2": {
+  "slug": "map-and-trace",
+  "time": "2\u20133 hours",
+  "deliverable": "A diagram of your application's parts plus a written trace of one user action from click to database and back.",
+  "setup": [
+   "Install Python 3.12+, Node.js 20+ and Git.",
+   "Clone Taskboard and run it locally (commands below).",
+   "Open http://localhost:5173, create an account and add a task."
+  ],
+  "code": [
+   {
+    "title": "Run Taskboard locally",
+    "lang": "bash",
+    "body": "git clone https://github.com/solomonpromise/taskboard.git && cd taskboard\nmake install   # packages + backend/.env\nmake migrate   # local SQLite database\nmake dev       # backend :8000, frontend http://localhost:5173"
+   },
+   {
+    "title": "Watch one request",
+    "lang": "text",
+    "body": "1. Open Developer Tools \u2192 Network.\n2. Create a task in Taskboard.\n3. Click the request to /api/tasks and note: method,\n   status code, request body and response body.\n4. Compare with docs/api.md."
+   }
+  ],
+  "stepLessons": [
+   [
+    6,
+    7,
+    9
+   ],
+   [
+    8
+   ],
+   [
+    12,
+    11
+   ],
+   [
+    11,
+    10
+   ],
+   [
+    8
+   ],
+   [
+    12
+   ],
+   [
+    12
+   ]
+  ]
+ },
+ "3": {
+  "slug": "set-up-and-change",
+  "time": "3\u20134 hours",
+  "deliverable": "A running copy of the project, a short map of its folders, and one small change committed on its own branch.",
+  "setup": [
+   "Install Python 3.12+, Node.js 20+ and Git.",
+   "Create a free GitHub account and fork Taskboard so you can open pull requests.",
+   "Clone your fork into a brand-new folder and follow only the README."
+  ],
+  "code": [
+   {
+    "title": "Fresh setup from the README",
+    "lang": "bash",
+    "body": "git clone https://github.com/<you>/taskboard.git taskboard-fresh\ncd taskboard-fresh\nmake install\nmake migrate\nmake test\nmake dev"
+   },
+   {
+    "title": "A deliberate change",
+    "lang": "bash",
+    "body": "git switch -c tweak-empty-state\n# edit frontend/src/pages/TasksPage.tsx\ngit diff\ngit commit -am \"Clarify empty task list message\"\ngit push -u origin tweak-empty-state\n# open a pull request on GitHub"
+   }
+  ],
+  "stepLessons": [
+   [
+    13,
+    18
+   ],
+   [
+    16
+   ],
+   [
+    16
+   ],
+   [
+    13
+   ],
+   [
+    17
+   ],
+   [
+    14,
+    15
+   ],
+   [
+    15
+   ],
+   [
+    18
+   ]
+  ]
+ },
+ "4": {
+  "slug": "design-pack",
+  "time": "3\u20134 hours",
+  "deliverable": "A compact design pack: system diagram, technology choices with reasons, data model, integrations and quality trade-offs.",
+  "setup": [
+   "Have Taskboard's brief, architecture and decision records open for reference.",
+   "Create a docs/ folder in your own project for your design pack."
+  ],
+  "code": [
+   {
+    "title": "Decision record (docs/decisions/00X-name.md)",
+    "lang": "markdown",
+    "body": "# Decision: <what was chosen>\nContext: what forced a choice\nOptions considered: A, B, C\nChoice: B\nWhy: \nTrade-offs accepted: \nRevisit when: "
+   },
+   {
+    "title": "Ask AI to challenge the design",
+    "lang": "text",
+    "body": "Here is my design pack. Act as a sceptical reviewer.\nFind contradictions, unsupported requirements, risks and\nunnecessary complexity. Cite the section for each."
+   }
+  ],
+  "stepLessons": [
+   [
+    19
+   ],
+   [
+    19,
+    23
+   ],
+   [
+    20
+   ],
+   [
+    20
+   ],
+   [
+    22
+   ],
+   [
+    22
+   ],
+   [
+    21
+   ],
+   [
+    23
+   ],
+   [
+    23
+   ],
+   [
+    19
+   ]
+  ]
+ },
+ "5": {
+  "slug": "verified-first-version",
+  "time": "1\u20132 days",
+  "deliverable": "A working first version built in small, reviewed steps, with tests passing and a log of what AI produced and what you checked.",
+  "setup": [
+   "Pick an AI coding tool and point it at AGENTS.md and docs/design.md first.",
+   "Work on a branch; make sure make test passes before every merge."
+  ],
+  "code": [
+   {
+    "title": "Task prompt (format from docs/templates.md)",
+    "lang": "text",
+    "body": "Read AGENTS.md and docs/design.md first.\nGoal: let a signed-in user mark a task as done.\nScope: routes/tasks.py, services/tasks.py, TaskRow.tsx.\nDo not: change auth, add packages, touch other pages.\nDone when: the change persists after reload and a test\nproves another account gets 404 for my task."
+   },
+   {
+    "title": "Check every increment",
+    "lang": "bash",
+    "body": "make test\ngit diff main\ngit commit -am \"Toggle task done\"\ngit push   # then open a focused pull request"
+   }
+  ],
+  "stepLessons": [
+   [
+    24,
+    25
+   ],
+   [
+    26
+   ],
+   [
+    26
+   ],
+   [
+    25,
+    27
+   ],
+   [
+    28
+   ],
+   [
+    29
+   ],
+   [
+    28
+   ],
+   [
+    27,
+    28
+   ]
+  ]
+ },
+ "6": {
+  "slug": "release-and-maintain",
+  "time": "1 day",
+  "deliverable": "A live deployment plus a maintenance guide covering monitoring, backups, recovery and how to make future changes safely.",
+  "setup": [
+   "Make sure make test passes and the app runs with make start.",
+   "Optional: install Docker to run the production-style setup with PostgreSQL."
+  ],
+  "code": [
+   {
+    "title": "Rehearse a release locally",
+    "lang": "bash",
+    "body": "make test\nmake start                       # production-style on :8000\nmake smoke URL=http://localhost:8000\nmake backup                      # writes to backups/"
+   },
+   {
+    "title": "Production-like with PostgreSQL",
+    "lang": "bash",
+    "body": "docker compose up --build\ncurl http://localhost:8000/health"
+   }
+  ],
+  "stepLessons": [
+   [
+    30
+   ],
+   [
+    31
+   ],
+   [
+    30
+   ],
+   [
+    32
+   ],
+   [
+    33
+   ],
+   [
+    34
+   ],
+   [
+    33,
+    34
+   ],
+   [
+    34
+   ]
+  ]
+ }
 }
