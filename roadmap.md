@@ -6,3 +6,4 @@
 - [x] Phone check
 - [x] Accounts + synced progress (signed-in sync not tested end-to-end)
 - [x] Certificate
+- [x] About the creator page (/about) with portrait, links and bio
