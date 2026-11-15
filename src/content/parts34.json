@@ -1,1 +1,1426 @@
-{"parts":[]}
+{
+  "parts": [
+    {
+      "number": 3,
+      "title": "Understanding the Project",
+      "question": "How can you navigate, reproduce, and safely change the project behind an application?",
+      "intro": "An application rests on more than the code you see on screen. This part helps you find its moving pieces, preserve useful history, reproduce its environment, and leave clear instructions for the next person.",
+      "project": {
+        "title": "Set up, map, and safely change a project",
+        "summary": "Prove that a fresh copy of your project can become a working application without relying on hidden knowledge. Produce a setup log, a structure map, a hygiene checklist, and separate reviewed changes for a small feature and a documentation improvement.",
+        "steps": [
+          "Clone into a new folder and follow only the README.",
+          "Record runtime versions, installation commands, configuration gaps, and fixes without recording credentials.",
+          "Prepare the database, start the app, and run baseline tests.",
+          "Map folders, entry points, scripts, generated files, and configuration.",
+          "Check ignored files, committed lockfiles, and secret-scanning results; revoke any exposed credentials.",
+          "Make a small visible change on a branch, commit deliberately, push, and open a pull request.",
+          "Inspect the full diff and checks before merging, even when reviewing your own work.",
+          "Submit a separate documentation correction and repeat the fresh-setup check."
+        ]
+      },
+      "glossary": [
+        {
+          "term": "Repository",
+          "definition": "Project files together with recorded version history."
+        },
+        {
+          "term": "Commit",
+          "definition": "A recorded selection of changes with an identifier and explanatory metadata."
+        },
+        {
+          "term": "Branch",
+          "definition": "A named line of development that can later be combined with another."
+        },
+        {
+          "term": "Remote",
+          "definition": "Another repository reachable for exchanging recorded work."
+        },
+        {
+          "term": "Clone",
+          "definition": "Create a local repository from an existing repository."
+        },
+        {
+          "term": "Fetch",
+          "definition": "Download remote history without integrating it into your current branch."
+        },
+        {
+          "term": "Pull",
+          "definition": "Download remote work and integrate it into the current branch."
+        },
+        {
+          "term": "Push",
+          "definition": "Send local commits to another repository."
+        },
+        {
+          "term": "Staging area",
+          "definition": "The selection of changes prepared for the next commit."
+        },
+        {
+          "term": "Diff",
+          "definition": "A comparison showing what changed between versions."
+        },
+        {
+          "term": "Pull request",
+          "definition": "A reviewable proposal to merge a branch."
+        },
+        {
+          "term": "Merge conflict",
+          "definition": "A situation where Git needs a decision about how competing edits should combine."
+        },
+        {
+          "term": "Revert",
+          "definition": "Record a new change that undoes an earlier commit."
+        },
+        {
+          "term": "Entry point",
+          "definition": "The starting location for execution of a program or application part."
+        },
+        {
+          "term": "Path",
+          "definition": "A location described from the filesystem root or relative to another location."
+        },
+        {
+          "term": "Generated file",
+          "definition": "A file produced by a tool; whether it belongs in history depends on its workflow."
+        },
+        {
+          "term": "Manifest",
+          "definition": "A project description listing dependencies and sometimes scripts and metadata."
+        },
+        {
+          "term": "Lockfile",
+          "definition": "A record of exact resolved dependency versions."
+        },
+        {
+          "term": "Dependency",
+          "definition": "Outside code or a library needed by the project."
+        },
+        {
+          "term": "Runtime",
+          "definition": "Software that executes code written for a language or platform."
+        },
+        {
+          "term": "Package manager",
+          "definition": "A tool that installs and manages outside libraries."
+        },
+        {
+          "term": "Virtual environment",
+          "definition": "An isolated Python package environment for a project."
+        },
+        {
+          "term": "Build",
+          "definition": "The process that prepares source for delivery or deployment."
+        },
+        {
+          "term": "Environment variable",
+          "definition": "A named value supplied to a running program by its environment."
+        },
+        {
+          "term": "Secret",
+          "definition": "A value whose possession grants access or proves identity."
+        },
+        {
+          "term": ".env.example",
+          "definition": "A safe committed template describing required configuration."
+        },
+        {
+          "term": ".gitignore",
+          "definition": "Patterns that tell Git which untracked paths to leave out by default."
+        },
+        {
+          "term": "README",
+          "definition": "The project’s introductory document and setup starting point."
+        },
+        {
+          "term": "ADR",
+          "definition": "A dated explanation of a significant architectural choice and its consequences."
+        },
+        {
+          "term": "Semantic versioning",
+          "definition": "A convention using major, minor, and patch numbers to communicate compatibility expectations."
+        }
+      ],
+      "chapters": [
+        {
+          "number": 13,
+          "slug": "files-folders-and-project-structure",
+          "title": "Files, Folders and Project Structure",
+          "question": "When a newly generated project contains hundreds of files, how can you discover where a change belongs?",
+          "summary": "A project becomes easier to navigate when you recognise the jobs its files perform. Learn to separate lasting source from disposable output, locate starting points, and trace a feature instead of opening files at random.",
+          "sections": [
+            {
+              "heading": "Start with a map, not every file",
+              "paragraphs": [
+                "Think of a project as a workshop rather than a pile of mysterious documents. Some drawers hold the things you make, some hold tools, and others hold instructions. You do not need to understand every item before doing useful work. Begin with the README, which should describe the application and explain how to start it. Then inspect the folders immediately inside the project, called its top-level folders.",
+                "A web application often separates browser code into frontend/ and server code into backend/. A tests/ folder contains checks, while docs/ contains explanations. These names are common rather than compulsory. The framework, the software foundation used by the project, may require different names. Read the actual project before deciding that its arrangement is wrong."
+              ]
+            },
+            {
+              "heading": "Recognise the main kinds of files",
+              "paragraphs": [
+                "Source code expresses the application's behaviour. You might find it in src/, app/, or lib/. Tests are also source code, but their job is to check other code. A filename ending in .test.ts or beginning with test_ can identify a test even when tests sit beside the feature they check. Assets include pictures, icons, and fonts, often kept in public/ or static/.",
+                "Configuration files tell the application or its tools how to behave. A dependency manifest, such as package.json or pyproject.toml, describes outside libraries and sometimes useful commands. Database migrations record changes to stored data structures. Documentation describes setup, design, and working agreements. Each category answers a different question, so identifying the category often narrows your search before you read any code."
+              ]
+            },
+            {
+              "heading": "Distinguish disposable output from lasting generated work",
+              "paragraphs": [
+                "A build produces files intended for deployment, commonly inside dist/ or build/. Tools also create caches to save repeated work. Package managers download libraries into locations such as node_modules/ or a Python virtual environment. These folders may contain far more files than your own code. Normally you neither edit nor commit them, because the tools can recreate them and overwrite your changes.",
+                "However, generated does not automatically mean disposable. A tool might create a database migration that becomes a permanent part of the project's history. A generated API client or dependency lockfile may also belong in version control. Ask how the file is maintained: recreated during every build, or deliberately generated and reviewed as part of a change? Follow the documented workflow rather than making a blanket rule based on appearance."
+              ]
+            },
+            {
+              "heading": "Find the start and follow connections",
+              "paragraphs": [
+                "An entry point is where execution begins for one part of the application. A browser application might begin in main.tsx, while a Python backend might start in main.py. Frameworks sometimes hide the startup machinery and use specially named files instead. Inspect the startup command and framework conventions to find the relevant beginning. Browser and server programs usually have different entry points.",
+                "From there, follow imports: statements that bring code from another module into the current file. A module is a unit of code, often one file, with a particular responsibility. Trace only the connections relevant to your question. To understand creating a task, follow the form to its API client, then the server route, business rules, and storage operation. Tests along that path offer concrete examples of expected results."
+              ]
+            },
+            {
+              "heading": "Understand paths and naming agreements",
+              "paragraphs": [
+                "A path describes a file's location. An absolute path begins at the filesystem root and identifies a location independently of your current folder. A relative path begins from a particular location, often your terminal's working folder or the importing file. In a relative path, .. means move up one folder. A correct-looking command can fail simply because you ran it from the wrong directory.",
+                "Folder names also communicate meaning. Names such as tasks and notifications reveal more than a growing collection called misc. Yet consistency matters more than inventing a perfect layout. Some frameworks assign URLs or discover features by file location. Moving a file to a place that looks tidier can break that discovery. Check how neighbouring features are organised before adding your own."
+              ]
+            },
+            {
+              "heading": "Investigate with a repeatable routine",
+              "paragraphs": [
+                "After reading the README, identify the languages from the manifests and locate the commands used to start each program. Write a one-line explanation of each important top-level folder. Set aside installed libraries and build output so their volume does not distract you. Search the project for a visible label, field name, or function associated with your question, then confirm how the result is used.",
+                "Treat an AI-generated file map as a starting suggestion, not evidence. Open the named files and follow their callers. If a proposed new helper closely resembles an existing one, ask whether the original should be extended instead. A short architecture note explaining where a rule lives helps the next reader and discourages later AI sessions from creating a second implementation in a different folder."
+              ]
+            },
+            {
+              "heading": "Use evidence to confirm the map",
+              "paragraphs": [
+                "When several search results look plausible, compare their callers and tests. A function name can survive long after the feature moved elsewhere. Look for the chain from the visible action to a currently registered route and then to the implementation. This is more reliable than choosing the file with the most familiar name.",
+                "Before adding a file, describe its responsibility and why no existing module owns it. If the answer is unclear, inspect the nearest similar feature. This small pause prevents duplicate utilities and makes prompts more precise: name the existing module, the intended behaviour, and the files that should remain untouched."
+              ]
+            }
+          ],
+          "keyIdea": "A useful folder structure tells readers where responsibilities belong and which files are safe to change.",
+          "taskboard": "Taskboard places browser and server code in separate folders inside one project. Its backend distinguishes request handlers, business services, and data models, while shared tests and design notes remain easy to find. Ignore rules keep installed packages and routine build output out of Git.",
+          "walkthrough": {
+            "title": "Locate the task-ordering rule",
+            "steps": [
+              "Read the README and identify the backend startup file.",
+              "Search source and tests for due_date and sorting-related names, excluding installed packages and build output.",
+              "Follow the task-list route to the service it calls; confirm which function decides ordering.",
+              "Read a matching test to understand ties and missing dates.",
+              "Record the rule’s location in the architecture notes rather than moving files unnecessarily."
+            ]
+          },
+          "mistakes": [
+            "Editing a deployed bundle rather than the source, so the next build erases the fix.",
+            "Assuming every generated file should be ignored, including reviewed migrations.",
+            "Moving files without checking imports and framework discovery rules."
+          ],
+          "aiMistakes": [
+            "An assistant creates another API helper instead of using the existing one: search for similar responsibilities before accepting it.",
+            "It leaves unused files from failed attempts: inspect references and the diff before deleting or keeping them."
+          ],
+          "tryIt": [
+            "Describe each top-level folder in a project without reading installed libraries.",
+            "Follow an entry point through three imports and explain what each module contributes.",
+            "Classify a lockfile, migration, cache, and image as lasting or disposable, explaining your reasoning."
+          ],
+          "check": [
+            {
+              "q": "Why should you avoid editing node_modules?",
+              "a": "It contains downloaded dependencies that reinstalling can replace; change your source or follow a deliberate dependency-maintenance workflow instead."
+            },
+            {
+              "q": "What makes an entry point useful?",
+              "a": "It provides a purposeful place to begin tracing execution and imports."
+            },
+            {
+              "q": "Why can a relative path work in one terminal but fail in another?",
+              "a": "The terminals may have different working folders, so the same relative location resolves differently."
+            },
+            {
+              "q": "Are all generated files temporary?",
+              "a": "No. Some, including many migrations and lockfiles, are reviewed and committed as part of the source workflow."
+            }
+          ]
+        },
+        {
+          "number": 14,
+          "slug": "repositories-and-where-they-live",
+          "title": "Repositories and Where They Live",
+          "question": "If your computer disappeared, which parts of your project could you recover from another machine?",
+          "summary": "A repository preserves recorded versions, not just the latest files. Understand the relationship between local history, remote copies, hosting services, and the choices for grouping projects.",
+          "sections": [
+            {
+              "heading": "A folder shows now; history explains how",
+              "paragraphs": [
+                "An ordinary project folder shows the files currently on disk. It does not reliably explain what changed last month or why a working feature disappeared. A Git repository adds recorded history, held in a normally hidden .git directory. Each commit records a version together with information such as its author, time, and explanatory message. Only work actually recorded in Git belongs to that history.",
+                "This turns mistakes into questions you can investigate. You can compare an earlier version with the current one, find the change that introduced a problem, or recover an older implementation. History is also a communication tool: a clear commit message and its linked discussion explain intent that may not be obvious from the code alone."
+              ]
+            },
+            {
+              "heading": "Local and remote copies have different jobs",
+              "paragraphs": [
+                "The repository on your own computer is local. A remote is another repository reachable elsewhere, commonly on a hosting service. The usual name origin is a convenient label for that connection, not a special kind of server. Git is distributed: a normal full clone contains the project's recorded history and supports local work even without internet access. Some specialised cloning options download less history, so avoid assuming every copy is complete.",
+                "Saving a commit locally does not upload it. If your laptop fails before you push, that commit may be unavailable elsewhere. Equally, edits never committed are not rescued merely because the project has a remote. Regularly recording and pushing useful work protects code history; databases, uploaded files, credentials, and other excluded material need their own recovery arrangements."
+              ]
+            },
+            {
+              "heading": "Learn the four directions of travel",
+              "paragraphs": [
+                "Clone creates a local repository from an existing one. Push sends your local commits to a remote, subject to its permissions and history rules. Fetch downloads available remote history without integrating it into the branch you are working on. Pull fetches and then integrates the incoming work, using the project's configured merge or rebase approach. These operations are related, but they are not interchangeable.",
+                "Imagine a colleague has updated task ordering. Fetch lets you inspect their recorded changes before combining them with yours. Pull goes further and attempts that combination. Neither command is a general instruction to preserve every unsaved file on your machine. Before synchronising, inspect your current changes and follow the project's working agreement. Knowing which direction information moves removes much of Git's apparent mystery."
+              ]
+            },
+            {
+              "heading": "Separate Git from the hosting website",
+              "paragraphs": [
+                "Git is the version-control tool that operates on repositories. GitHub, GitLab, and Bitbucket are examples of services that host repositories and add collaboration features. You can use Git locally without creating an account on any of them. A hosting service makes sharing easier, but it does not replace understanding what is saved on your own machine and what has reached the remote.",
+                "A repository's web page usually lets you choose a branch, inspect commits, browse files, and copy a clone address. Issues track work or reported problems. Pull requests display proposed changes for review. Automated checks may run when changes are pushed. These surrounding tools make teamwork easier, but they are separate from Git's core job of recording and exchanging versions."
+              ]
+            },
+            {
+              "heading": "Access control is not secret storage",
+              "paragraphs": [
+                "A public repository allows broad reading; a private repository restricts access to approved people or systems. Private access is useful, but it does not make the repository an appropriate home for passwords or service keys. Copies can spread, permissions can change, and recorded history can retain a value long after it disappears from the latest file. A private repository still needs careful secret handling.",
+                "If a key has been committed, removing the visible line is not enough. Treat the credential as exposed and replace it through the relevant provider. Keep real settings in appropriate local or hosted secret storage, with safe templates in the repository. Also remember that account access and recovery matter: someone who can read a private repository may be able to clone its history onto another device."
+              ]
+            },
+            {
+              "heading": "Choose a repository arrangement for actual coordination needs",
+              "paragraphs": [
+                "For a small application, one repository containing frontend, backend, tests, and documentation usually keeps work understandable. A single change can update both sides of an API together. A multi-repository arrangement separates parts into distinct repositories, which can suit independent teams and release schedules but requires extra coordination when an interface changes. More repositories do not automatically create a better architecture.",
+                "A monorepo commonly means one repository containing multiple applications and shared libraries. At large scale it may require specialised tooling. Terminology varies, so ask what actually lives together and how changes are tested. For a solo builder, the simplest arrangement that keeps relevant context visible is usually preferable. Repository grouping describes where code and history live; it does not by itself decide how many programs are deployed."
+              ]
+            },
+            {
+              "heading": "Check recovery rather than assuming it",
+              "paragraphs": [
+                "A remote address in your configuration proves that a connection is named, not that your latest work arrived there. Compare recent local commits with the hosting page or remote-tracking history. Check that you can sign in from another device and that collaborators have appropriate access. Recovery depends on accessible copies, not on remembering that you once created an account.",
+                "A fresh-clone exercise also reveals what history intentionally excludes. Recreate dependencies from manifests and lockfiles, obtain development credentials through the agreed safe channel, and prepare test data separately. Document these distinctions so nobody expects Git to restore customer records or personal local files that were never committed."
+              ]
+            }
+          ],
+          "keyIdea": "Work is recoverable elsewhere only when the necessary history has reached another accessible copy.",
+          "taskboard": "Taskboard uses a private remote repository containing its browser code, API, tests, and documentation. Its shared main branch represents the agreed deployed version, with changes arriving through reviewed pull requests. That arrangement protects coordination, but production data and secrets still require separate storage and recovery.",
+          "walkthrough": {
+            "title": "Practise recovering on a different machine",
+            "steps": [
+              "Confirm that your latest intended commits appear on the remote.",
+              "Use a new directory and clone the repository using its hosting-service address.",
+              "Follow the README to install the documented environment and dependencies.",
+              "Obtain development secrets safely and prepare a non-production database.",
+              "Run the app and tests, then list anything missing because it was never pushed or never belonged in Git."
+            ]
+          },
+          "mistakes": [
+            "Believing local commits have automatically been uploaded.",
+            "Using a remote repository as the only backup plan for data that Git intentionally excludes.",
+            "Splitting a small project across repositories without a coordination reason."
+          ],
+          "aiMistakes": [
+            "Scaffolding creates a nested .git directory: inspect repository boundaries before accepting the new folder.",
+            "The assistant recommends force-pushing after a rejection: inspect the remote history and use a safe integration workflow instead."
+          ],
+          "tryIt": [
+            "Check the remote address and recent pushed commits of a project you own.",
+            "Browse a public repository’s history and explain the purpose of one feature commit.",
+            "Try a fresh clone and note the difference between recovering source and recovering runtime data."
+          ],
+          "check": [
+            {
+              "q": "How does Git differ from GitHub?",
+              "a": "Git records and exchanges versions; GitHub hosts repositories and provides collaboration services."
+            },
+            {
+              "q": "How do fetch and pull differ?",
+              "a": "Fetch downloads remote history; pull also integrates incoming work into the current branch."
+            },
+            {
+              "q": "Why is a private repository unsafe for secrets?",
+              "a": "Its authorised readers and copies can change, and history can preserve deleted credentials."
+            },
+            {
+              "q": "What does a clone fail to recover?",
+              "a": "Work that never reached the cloned repository, plus excluded material such as local secrets or database contents."
+            }
+          ]
+        },
+        {
+          "number": 15,
+          "slug": "working-with-git-and-other-contributors",
+          "title": "Working with Git and Other Contributors",
+          "question": "How can you keep one useful AI edit while safely discarding a much larger unsuccessful change?",
+          "summary": "Git becomes a practical safety net when changes are small, inspected, and recorded deliberately. Follow work from editing through staging, commits, branches, review, and safe recovery without rewriting shared history.",
+          "sections": [
+            {
+              "heading": "Understand the places a change can occupy",
+              "paragraphs": [
+                "The working directory is the set of files you are editing. The staging area is your selection for the next commit. A commit records that staged selection in local history. Pushing later shares commits with a remote. These are distinct steps: editing is not staging, staging is not committing, and committing is not uploading. The distinction lets you separate a useful fix from unrelated work.",
+                "Run git status to see the current state. Use git diff to examine unstaged edits and git diff --staged to inspect the selected changes. Then stage chosen files with git add followed by their paths. If you edit a staged file again, the later edits are not automatically included in the staged version. Review the staged diff immediately before committing so the saved change matches your intention."
+              ]
+            },
+            {
+              "heading": "Make each commit tell one clear story",
+              "paragraphs": [
+                "A helpful commit represents one coherent change: a revised empty-state message, a validation rule with its tests, or a setup correction. It has an identifier, author, timestamp, and message. Use git commit -m followed by a specific message, such as \"Clarify the empty task list message\". Explain a surprising reason in the longer description when necessary. git log --oneline provides a compact view of recent recorded steps.",
+                "Before a substantial AI experiment, establish a known-good committed starting point. That makes comparison and recovery easier. Do not mix a feature, a dependency upgrade, and widespread formatting merely because they happened in the same session. Smaller commits are easier to review and undo. Never turn an unreviewed collection of edits into a supposed safety checkpoint just to make the working tree look clean."
+              ]
+            },
+            {
+              "heading": "Use branches and synchronise deliberately",
+              "paragraphs": [
+                "A branch names a line of development. The shared main branch usually holds the agreed working version, while unfinished work belongs on a feature branch. git switch -c feature/task-labels creates and selects a new branch. Its commits can later be merged into main after checks and review. Branches isolate recorded development; switching branches is not a substitute for understanding or preserving uncommitted edits.",
+                "Clone starts a local copy, fetch downloads remote history for inspection, pull downloads and integrates changes, and push uploads your commits. Check status before synchronising and follow the team's update policy. If a push is rejected because other work has arrived, investigate and integrate it rather than forcing your version over it. Branch names help people understand purpose, but the actual diff determines what the branch changes."
+              ]
+            },
+            {
+              "heading": "Review a proposal before merging it",
+              "paragraphs": [
+                "A pull request asks to merge a branch into another branch. Hosting services display the combined diff, discussion, and automated check results. Read removed as well as added lines: a seemingly small addition may accompany the accidental removal of an access check. Review behaviour, design, naming, complexity, tests, documentation, and whether the change is limited to its stated purpose. Passing tests are useful evidence, not proof of correctness.",
+                "This workflow also helps when working alone. Open a pull request, leave it briefly, then review it with fresh eyes. Another AI session can raise questions, but you remain responsible for deciding what belongs. A protected main branch can require passing checks and review before merging. The goal is a maintainable improvement, not a ritual approval or an endless search for cosmetic perfection."
+              ]
+            },
+            {
+              "heading": "Resolve conflicts by preserving intent",
+              "paragraphs": [
+                "A merge conflict means Git cannot automatically combine competing edits. Commonly, two branches changed the same lines differently. Conflict markers separate the current version from the incoming version. The task is not simply to choose the longest block or accept whichever version is newer. Work out what each change was meant to accomplish and write a correct final version that preserves the necessary intentions.",
+                "For example, one branch sorts tasks by due date while another adds priority ordering. The intended result may need both rules and an explicit tie-breaker. Remove conflict markers, inspect the complete function, run relevant tests, stage the resolution, and finish the merge. Ask for help if the business decision is unclear. An AI conflict resolution can look tidy while silently deleting one branch's requirement."
+              ]
+            },
+            {
+              "heading": "Choose an undo operation for the actual situation",
+              "paragraphs": [
+                "To unstage a mistakenly selected file without deleting its edits, use git restore --staged followed by the path. To discard unwanted unstaged tracked-file edits, use git restore followed by the path; this is destructive, so inspect first. git restore . applies broadly to the current directory tree and does not generally remove untracked files. Do not assume it reverses every possible filesystem change.",
+                "For an already shared bad commit, git revert followed by its identifier creates a new undo commit, preserving shared history. To inspect an earlier version, git switch --detach followed by an identifier enters a historical view; return with git switch main, preserving any new work appropriately first. Avoid reset --hard and force-pushing shared branches as routine repairs. They can discard work or invalidate other people's understanding of history."
+              ]
+            },
+            {
+              "heading": "Review recovery commands as carefully as edits",
+              "paragraphs": [
+                "Before discarding anything, state what you intend to lose and what must survive. Check staged changes separately from unstaged changes, and notice untracked files. If a useful edit depends on several other edits, preserving only one file may create a broken checkpoint. Test the retained change in its own right rather than assuming a small diff is automatically independent.",
+                "After an undo, inspect status and run relevant checks. An undo can conflict with later changes, and reverting a database-related commit does not necessarily restore already changed production data. Git manages recorded files; operational recovery may require migrations, backups, or a separate corrective action. Keep those responsibilities distinct."
+              ]
+            }
+          ],
+          "keyIdea": "Reviewed, focused commits make experiments recoverable and shared history understandable.",
+          "taskboard": "Taskboard changes travel through a feature branch, small commits, a push, a pull request, automated checks, and review before merging. Its main branch is protected. A useful change therefore includes the relevant tests and documentation rather than treating those as later cleanup.",
+          "walkthrough": {
+            "title": "Rescue a useful piece of a failed experiment",
+            "steps": [
+              "Inspect status and the full diff against the known-good starting commit.",
+              "Identify an independent useful change and confirm it does not depend on the broken edits.",
+              "Stage only that change and inspect the staged diff for secrets or unrelated files.",
+              "Commit the reviewed piece with an accurate message.",
+              "Restore only unwanted tracked edits after confirming they are disposable; separately inspect untracked files.",
+              "Run the relevant checks and request the next AI change in a smaller step."
+            ]
+          },
+          "mistakes": [
+            "Committing many unrelated changes together, making review and reversal difficult.",
+            "Using vague commit messages that conceal why a change exists.",
+            "Discarding files before checking whether they contain work worth preserving."
+          ],
+          "aiMistakes": [
+            "An assistant stages everything, including .env: inspect status and the staged diff before every commit.",
+            "It resolves a conflict by dropping a whole side: compare the result with both original intentions and test both behaviours.",
+            "It proposes destructive history commands: pause and prefer restore or revert for the appropriate case."
+          ],
+          "tryIt": [
+            "In a practice repository, change two files and make two focused commits.",
+            "Create a harmless conflict on practice branches, then resolve and test it.",
+            "Revert a sample commit and inspect how the original and undo commits both remain visible."
+          ],
+          "check": [
+            {
+              "q": "What is staging for?",
+              "a": "It selects exactly which changes the next commit will record."
+            },
+            {
+              "q": "Does git restore --staged delete your edits?",
+              "a": "No. It removes them from the next commit’s selection while leaving working-file edits available."
+            },
+            {
+              "q": "Why prefer revert for a pushed mistake?",
+              "a": "It records an undo without rewriting the history other people already share."
+            },
+            {
+              "q": "What should a conflict resolution preserve?",
+              "a": "The required intentions of both changes, expressed as one tested final version."
+            }
+          ]
+        },
+        {
+          "number": 16,
+          "slug": "development-environments-and-dependencies",
+          "title": "Development Environments and Dependencies",
+          "question": "Why might identical code start successfully on your computer but fail immediately on someone else’s?",
+          "summary": "The tools and libraries surrounding code are part of what makes it run. Learn to reproduce that environment, interpret dependency versions, and evaluate commands and packages before trusting them.",
+          "sections": [
+            {
+              "heading": "Know the tools on the workbench",
+              "paragraphs": [
+                "An editor helps you read, change, and search code. An integrated development environment, often shortened to IDE, combines editing with other tools. A terminal is a text-based way to ask programs to do things. Neither is the runtime: the runtime, such as Node.js or Python, executes the application's code. A runtime version can determine whether particular language features are understood at all.",
+                "A package manager installs and manages outside libraries. A development server runs the application locally and often reloads it when files change. Containers can package software with much of its operating environment, while Docker Compose can coordinate local services such as a database. These tools solve different problems. When setup fails, identify which tool reported the error before changing the application's source."
+              ]
+            },
+            {
+              "heading": "Read a command as an action with consequences",
+              "paragraphs": [
+                "Before running a suggested command, identify the program, its options, the files or services it affects, and whether its effects can be reversed. The terminal's current folder matters because many commands operate relative to it. A command copied from a reliable guide can still be wrong for your machine or the version of the project you have. Ask for an explanation you can verify, not just reassurance.",
+                "Pause especially at recursive deletion, administrator privileges, commands that rewrite Git history, or instructions that download a script and immediately execute it. Installing a package also runs someone else's software and may trigger installation scripts. An AI-generated command is not safer because it looks professional. For a risky action, inspect the inputs, establish a recovery point where possible, and use the narrowest scope that achieves the goal."
+              ]
+            },
+            {
+              "heading": "Manifests describe what the project needs",
+              "paragraphs": [
+                "A dependency is a library the project relies on. A manifest lists direct dependencies and may provide named scripts such as dev, test, and build. JavaScript projects commonly use package.json; Python projects may use pyproject.toml or requirements files. Read the actual scripts before treating a familiar command name as a guarantee of what it does. Projects can assign different actions to similar names.",
+                "Development dependencies support building, testing, or checking the application rather than being needed directly by the running application. Examples include test runners and formatters. The distinction concerns purpose, not importance: missing a build tool can still prevent deployment. Prefer project-local installations so two projects can use different versions without interfering. Python virtual environments provide an isolated package location for each project."
+              ]
+            },
+            {
+              "heading": "Versions and lockfiles solve different questions",
+              "paragraphs": [
+                "Semantic versioning uses major, minor, and patch numbers. Under that convention, a major increase can introduce incompatible changes, a minor increase adds compatible functionality, and a patch fixes compatible problems. This is a promise made by maintainers, not a guarantee that upgrades cannot contain bugs. Version ranges in a manifest permit multiple releases, so an install next week might otherwise choose different code from an install today.",
+                "A lockfile records exact resolved versions, including indirect dependencies brought in by other libraries. Commit it according to the project's workflow so teammates, automated checks, and deployment can reproduce the dependency selection. Use the lock-aware installation command documented for the package manager; npm ci is one example. Deleting a lockfile merely to silence an installation problem changes the problem rather than explaining it."
+              ]
+            },
+            {
+              "heading": "Treat dependencies as a supply-chain decision",
+              "paragraphs": [
+                "Each new package adds code you did not write and may add many other packages in turn. Before installing it, verify the exact spelling and official project identity. Check whether it is maintained, whether its documentation matches the version you plan to use, and whether its licence suits your intended use. Ask whether the standard language features or an existing dependency already solve the problem adequately.",
+                "AI assistants sometimes invent plausible package names or recommend abandoned releases. A name appearing in a generated answer is not evidence that it is authentic or trustworthy. Read security audit findings instead of dismissing them, and review dependency updates as real changes with tests. A smaller set of well-understood dependencies usually creates less maintenance work than adopting a library for every tiny operation."
+              ]
+            },
+            {
+              "heading": "Repeat setup in a deliberate order",
+              "paragraphs": [
+                "Start by checking the project's required runtime versions, which may appear in its README, version files, or manifest. Install dependencies with the documented package manager and lockfile. Prepare local configuration using safe development credentials, start required services, and run database migrations. Then start the development servers and open the stated local address. Run tests before making changes to establish a baseline.",
+                "A build is a separate step that prepares deployable output, perhaps compiling TypeScript, combining JavaScript, and optimising styles. A fast development server may tolerate conditions that the production build rejects, so successful local browsing is not the final readiness check. When another machine fails, compare runtimes, installed versions, settings, and services before rewriting code. Reproducible setup instructions prevent the same investigation from happening repeatedly."
+              ]
+            },
+            {
+              "heading": "Diagnose one difference at a time",
+              "paragraphs": [
+                "When setup fails, preserve the first useful error and compare the documented environment with the actual one. Check the current folder, runtime version, selected package manager, required services, and configuration before trying random changes. Changing several factors at once can make the application start while hiding the original cause and making the fix impossible to explain.",
+                "Record a successful correction in the place another person will read: a version file, setup instruction, safe example setting, or troubleshooting note. Do not rely on a global package or a manually changed machine setting that the repository never mentions. A reproducible solution should survive a new terminal, another developer, and a clean installation."
+              ]
+            }
+          ],
+          "keyIdea": "Reproducible software needs documented tools, controlled dependency versions, and a setup process that another machine can follow.",
+          "taskboard": "Taskboard documents its expected Node.js and Python versions and records exact package selections in lockfiles. Its local database can be started with a Compose configuration, and its README orders installation, configuration, migrations, and checks. Dependency scanning and reviewed update proposals help keep outside code visible.",
+          "walkthrough": {
+            "title": "Diagnose a runtime mismatch",
+            "steps": [
+              "Read the first meaningful error rather than the final cascade of failures.",
+              "Compare the failing machine’s runtime version with the project’s documented requirement.",
+              "Install the required supported version using the team’s recommended method.",
+              "Reinstall dependencies using the committed lockfile instead of rewriting application syntax.",
+              "Run the baseline tests and update version documentation if the requirement was unclear."
+            ]
+          },
+          "mistakes": [
+            "Installing packages globally when the project expects an isolated environment.",
+            "Removing a lockfile without understanding why installation failed.",
+            "Assuming a working development server proves a deployment build will succeed."
+          ],
+          "aiMistakes": [
+            "The assistant invents a dependency: verify its identity through official documentation before installation.",
+            "It recommends old framework commands: compare them with documentation for the project’s actual version.",
+            "It adds a library for a trivial operation: ask whether existing tools already handle it."
+          ],
+          "tryIt": [
+            "Identify the runtime, package manager, dependency manifest, and lockfile in a real project.",
+            "Explain two scripts in its manifest in your own words.",
+            "Set up a fresh clone using only the README and record every unstated requirement."
+          ],
+          "check": [
+            {
+              "q": "How is a runtime different from an editor?",
+              "a": "The runtime executes code; the editor helps people read and change it."
+            },
+            {
+              "q": "Why commit a lockfile?",
+              "a": "It preserves exact dependency selections so other environments can reproduce them."
+            },
+            {
+              "q": "What does a major version increase suggest?",
+              "a": "Under semantic versioning it signals that compatibility may break."
+            },
+            {
+              "q": "What should you ask before running a command?",
+              "a": "What program runs, what it affects, which privileges it uses, and whether its effects can be reversed."
+            }
+          ]
+        },
+        {
+          "number": 17,
+          "slug": "configuration-environment-variables-and-secrets",
+          "title": "Configuration, Environment Variables and Secrets",
+          "question": "How can one codebase use safe local services while production connects to real accounts and data?",
+          "summary": "Configuration lets the same application behave appropriately in different environments. Learn to separate ordinary settings from credentials, store each safely, and respond correctly when a secret enters Git history.",
+          "sections": [
+            {
+              "heading": "Keep changing settings outside the implementation",
+              "paragraphs": [
+                "Configuration supplies values that differ between development, staging, and production. A database location, public website address, email mode, or debugging setting may change while the application code stays the same. Keeping those values outside the implementation avoids editing source every time the application moves. It also makes differences between environments easier to inspect and explain.",
+                "Development is for local work with disposable data. Staging resembles the live service for testing. Production serves real users and requires stronger controls. The distinction is not merely a label: a mistaken database address can turn a harmless experiment into a change to customer data. Document which settings each environment expects, use separate credentials, and check the destination before running destructive maintenance commands."
+              ]
+            },
+            {
+              "heading": "Understand how environment variables reach a program",
+              "paragraphs": [
+                "An environment variable is a named value made available to a running program. Server code can read DATABASE_URL rather than containing a fixed connection string. Hosting services usually provide settings screens or secret stores that inject values into the program's environment. On a laptop, a library or startup tool often loads values from a .env file. The filename itself does not make the operating system load it automatically.",
+                "Centralising configuration reading in one module makes requirements easier to find. Validate required values during startup and give a helpful error when something is absent or malformed. Environment values commonly arrive as strings, so a boolean or number may need careful conversion. Avoid silently falling back to a weak signing secret or a production database when a setting is missing."
+              ]
+            },
+            {
+              "heading": "Give three familiar files separate responsibilities",
+              "paragraphs": [
+                "The real .env file holds local settings and must not be committed when it contains credentials. A committed .env.example describes the required variable names with blank or safe demonstration values. It is the shopping list, not the filled-in account details. The .gitignore file tells Git which currently untracked files and folders should normally be left out, including local secret files and disposable output.",
+                "An ignore pattern for .env variants may need an explicit exception for .env.example so the template remains included. Check the result rather than assuming the pattern is correct. Ignore rules do not erase a file already tracked by Git or remove older copies from history. If a real secret has entered the repository, fixing the ignore file is a prevention step, not a complete incident response."
+              ]
+            },
+            {
+              "heading": "Recognise secrets and choose appropriate storage",
+              "paragraphs": [
+                "Treat any value that grants access or proves identity as a secret. Examples include private keys, database credentials, service API tokens, and session-signing material. A public application URL usually is not secret, though it can still use the same configuration mechanism. A connection string may look like an address while also embedding a username and password, so inspect its meaning rather than judging by its label.",
+                "Use development-only credentials locally. Store production credentials in the hosting platform's secret facilities, pipeline credentials in the automation service's protected store, and more complex shared secrets in a dedicated manager with access control and auditing. Keep secrets out of source, tickets, screenshots, logs, chat, and AI prompts. Sharing a credential with an assistant is still sharing it with another system."
+              ]
+            },
+            {
+              "heading": "Browser configuration is visible to the browser user",
+              "paragraphs": [
+                "Frontend tooling sometimes calls selected variables public, using prefixes such as VITE_ or NEXT_PUBLIC_. Values intended for browser code can be embedded into downloaded JavaScript. They are not protected simply because their original text came from a .env file. Anyone receiving the application may inspect those values. Store a provider's private API key only on the server and let the browser request an authorised server operation.",
+                "This is a consequence of where code executes, not a peculiarity of one framework. Client code cannot keep an access credential secret from the person controlling that client. Review both variable names and import paths: a server configuration module accidentally imported into a client bundle can also create exposure. Public configuration should contain only information you are prepared to reveal."
+              ]
+            },
+            {
+              "heading": "Respond to exposure before tidying the repository",
+              "paragraphs": [
+                "If a credential is committed, assume someone could have copied it. Revoke or disable it at the provider first, then issue a replacement with suitable permissions. Update the authorised secret stores and restart or redeploy affected services if needed. Check usage and access logs for unexpected activity. Deleting the visible line or making the repository private does not invalidate copies of the old key.",
+                "Then correct the cause: move the value into protected configuration, fix ignore rules, and add scanning where practical. History cleanup may be necessary, but it needs coordination and does not replace revocation. Keep source, tests, migrations, documentation, manifests, and lockfiles in Git; exclude local credentials, installed packages, routine build output, logs, uploads, and machine-specific data according to the project workflow."
+              ]
+            },
+            {
+              "heading": "Verify prevention without spreading the secret",
+              "paragraphs": [
+                "Reviewing configuration should not mean printing credentials into a shared terminal recording or attaching the entire environment file to a bug report. Check variable names, whether required values are present, and which storage mechanism supplies them. Use redacted or invented examples when documenting a failure, and avoid exposing a connection string merely to prove that it was loaded.",
+                "Automated secret scanning is helpful but cannot identify every sensitive value or prove that none has escaped. Combine scanning with careful staging, narrow credentials, and a clear replacement procedure. If an ignore rule or configuration loader changes, test the safe template and failure messages so convenience improvements do not quietly weaken the production defaults."
+              ]
+            }
+          ],
+          "keyIdea": "A secret remains compromised after deletion from the latest file, so invalidate it before treating the incident as resolved.",
+          "taskboard": "Taskboard reads server settings through a central configuration module and refuses to start without required values. Its example environment file lists settings without live credentials. Production values live in hosting secret settings, and pull requests run a secret-detection check.",
+          "walkthrough": {
+            "title": "Handle an exposed email credential",
+            "steps": [
+              "Disable the exposed credential in the provider’s dashboard immediately.",
+              "Create a replacement with only the access the app needs.",
+              "Update the appropriate development and production secret stores without pasting values into a ticket or prompt.",
+              "Replace any hard-coded use with configuration reading and correct the ignore rules.",
+              "Inspect provider activity for misuse and document the incident without including either credential."
+            ]
+          },
+          "mistakes": [
+            "Adding .gitignore after a secret is already tracked and assuming history is now safe.",
+            "Using live customer-service credentials during local experiments.",
+            "Keeping a guessable production fallback for a missing signing secret."
+          ],
+          "aiMistakes": [
+            "The assistant hard-codes a key for convenience: inspect configuration changes and reject embedded credentials.",
+            "It puts a private token into a public frontend variable: check which program receives the compiled value.",
+            "It claims deleting the line fixes a leak: require provider-side revocation and replacement."
+          ],
+          "tryIt": [
+            "Create a safe example configuration file listing the variables your project requires.",
+            "Review ignore rules and tracked files without displaying real secrets in shared output.",
+            "Describe an exposure response using imaginary credentials only."
+          ],
+          "check": [
+            {
+              "q": "What is the purpose of .env.example?",
+              "a": "It documents required settings using empty or safe sample values so others can prepare their own configuration."
+            },
+            {
+              "q": "Does .gitignore remove tracked history?",
+              "a": "No. It normally affects untracked files and does not erase earlier commits."
+            },
+            {
+              "q": "Can a public browser variable hold a private service key?",
+              "a": "No. Its value can be delivered to and inspected by browser users."
+            },
+            {
+              "q": "What comes first after a leaked key is found?",
+              "a": "Revoke or disable the exposed credential, then replace it and investigate misuse."
+            }
+          ]
+        },
+        {
+          "number": 18,
+          "slug": "reading-and-documenting-a-project",
+          "title": "Reading and Documenting a Project",
+          "question": "What would help a new contributor or a fresh AI session become useful without relying on your memory?",
+          "summary": "Good documentation explains setup, responsibilities, conventions, and the reasons behind important choices. Learn a systematic reading routine and create short, verifiable documents that stay aligned with the code.",
+          "sections": [
+            {
+              "heading": "Write a README that opens the right doors",
+              "paragraphs": [
+                "A README should first explain what the project is, then how to run it, then where to learn more. Begin with a brief description of the actual product rather than the framework template. State prerequisites, including runtime versions and required local services. Give setup commands in order, beginning from a fresh clone, and explain how to confirm success with a running application and tests.",
+                "Include a short folder map, a pointer to configuration documentation, and the important working conventions. Mention the AI instruction file if there is one. Keep the main route through setup easy to scan; detailed background can live elsewhere. The README is not a place to paste every design discussion. Its job is to help a reader make the next correct move without already knowing the project."
+              ]
+            },
+            {
+              "heading": "Read the implementation through purposeful questions",
+              "paragraphs": [
+                "After the README, inspect startup and test scripts in manifests or a Makefile. Locate routes to learn the system's external entry points, data models and migrations to learn what is stored, and pages and components to learn what users can do. Read tests as worked examples of intended behaviour. Configuration templates and automation workflows reveal what the environment must supply and what checks run automatically.",
+                "Dependency manifests and lockfiles show the building blocks and resolved versions. Follow one real user journey across those locations instead of trying to read the entire repository sequentially. Ask an assistant to locate files if helpful, but verify its answers by opening them and checking references. A confidently named file is not evidence that the function it contains is still called."
+              ]
+            },
+            {
+              "heading": "Match the document to the reader’s need",
+              "paragraphs": [
+                "The Diátaxis approach distinguishes four useful documentation purposes. A tutorial guides a learner through an experience, such as creating a first Taskboard feature. A how-to guide helps someone accomplish a specific goal, such as adding a migration. Reference material supplies precise facts for lookup, such as endpoint fields or configuration variables. Explanation develops understanding of why the system works as it does.",
+                "These purposes can link to one another without becoming one enormous document. Someone fixing setup needs actionable steps, not a long architectural essay before the first command. Someone evaluating a database choice needs trade-offs, not merely a command list. Choosing the intended reader and purpose before writing makes documentation shorter and more useful, even when the same subject appears in several forms."
+              ]
+            },
+            {
+              "heading": "Preserve decisions, not just outcomes",
+              "paragraphs": [
+                "An architecture decision record, or ADR, is a short dated note about one significant choice. Include its context, alternatives, selected option, and consequences. A status such as proposed, accepted, or superseded helps readers understand whether the decision still applies. A revisit condition makes change deliberate: it identifies evidence that would justify reopening the choice instead of starting the same debate every month.",
+                "For example, using SQLite locally and PostgreSQL in production simplifies setup but introduces compatibility differences that tests must catch. A useful ADR states both the convenience and the cost, plus when PostgreSQL-specific needs would change the plan. Without that explanation, a new contributor or AI session may suggest a database switch while unknowingly undoing a deliberate compromise."
+              ]
+            },
+            {
+              "heading": "Give AI tools concise, durable context",
+              "paragraphs": [
+                "Many coding assistants can read repository instruction files, though supported names and discovery rules vary by tool. Files such as AGENTS.md or CLAUDE.md commonly describe the stack, commands, conventions, and safety constraints. Treat this as a practical orientation note. State where business rules belong, how to run relevant checks, and what changes require approval. Never put actual credentials into an instruction file.",
+                "Keep instructions short enough to remain usable and consistent with the README and code. Contradictory rules make tool behaviour unpredictable, and outdated commands waste time. An instruction such as requiring owner filters on task queries is valuable only if reviewers verify it in actual changes. Documentation informs tools; it does not enforce security by itself or guarantee that an assistant followed every instruction."
+              ]
+            },
+            {
+              "heading": "Test documentation and update it with the change",
+              "paragraphs": [
+                "The strongest setup test is a fresh clone followed literally, ideally by someone who did not write the instructions. Record every missing prerequisite, assumed setting, or unexplained command. If tests require a variable absent from the example configuration, fix the project documentation and template rather than relying on a private note. Repeat the exercise when installation or infrastructure changes.",
+                "Documentation belongs in the same pull request as the behaviour or convention it describes. A route rename should update API reference; a new startup service should update setup instructions. Ask during review whether any explanation became false. AI-generated documentation needs the same verification: it may describe intended features as if they already exist. Prefer a small accurate note to an impressive document filled with generic or untested claims."
+              ]
+            },
+            {
+              "heading": "Use documentation as reviewable evidence",
+              "paragraphs": [
+                "A good factual statement should have an obvious way to check it. If the README claims tests run through a certain command, try that command in the documented environment. If an architecture note says only one module accesses a provider, search for direct calls elsewhere. Documentation review becomes much more useful when it tests specific claims instead of judging how polished the writing sounds.",
+                "Keep uncertainty visible. Mark an unresolved question as unresolved, label a planned feature as planned, and supersede old decisions rather than pretending they never existed. This prevents new contributors from treating aspirations as guarantees. Short, current explanations give both people and assistants a more dependable starting point than a large volume of confident prose."
+              ]
+            }
+          ],
+          "keyIdea": "Documentation is reliable only when it is specific, checked against reality, and maintained alongside the change it explains.",
+          "taskboard": "Taskboard has a README for setup, architecture notes for understanding, and a decisions folder for ADRs. A concise AI instruction file supplies the agreed stack and conventions to new sessions. Its pull-request checklist asks whether documentation needs updating.",
+          "walkthrough": {
+            "title": "Test a README without private knowledge",
+            "steps": [
+              "Clone into a fresh folder or ask another person to do so.",
+              "Follow the documented prerequisites and commands exactly, without adding remembered steps.",
+              "Write down each missing service, variable, migration, or command explanation.",
+              "Correct the instructions and safe configuration template in a focused change.",
+              "Repeat the process until the documented route produces a running app and passing baseline checks."
+            ]
+          },
+          "mistakes": [
+            "Keeping the framework’s sample README instead of explaining the actual product.",
+            "Leaving important decisions only in a chat transcript.",
+            "Updating code now and postponing the documentation until its details are forgotten."
+          ],
+          "aiMistakes": [
+            "The assistant describes planned behaviour as implemented: trace each factual claim to code or a working test.",
+            "It produces long generic instructions: replace generalities with actual paths, commands, and conventions.",
+            "It adds conflicting AI rules: compare instruction files and remove contradictions."
+          ],
+          "tryIt": [
+            "Review a README and identify its answers to what, how, and where next.",
+            "Write a short ADR for a choice you have already made, including its downside.",
+            "Create a concise AI orientation file containing no secrets and only verified commands."
+          ],
+          "check": [
+            {
+              "q": "What distinguishes reference from explanation?",
+              "a": "Reference provides precise lookup facts; explanation develops understanding and reasons."
+            },
+            {
+              "q": "What should an ADR preserve?",
+              "a": "The decision’s context, alternatives, outcome, consequences, and conditions for reconsideration."
+            },
+            {
+              "q": "How can you test setup documentation?",
+              "a": "Follow it literally from a fresh clone without using undocumented knowledge."
+            },
+            {
+              "q": "Why update docs in the same pull request?",
+              "a": "It keeps instructions and explanations aligned with the behaviour readers will actually receive."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "System Design and Architectural Decisions",
+      "question": "How can you choose a suitable structure before implementation makes the choices for you?",
+      "intro": "Design turns a product idea into responsibilities, boundaries, and decisions that people can explain. Keep the design small enough to maintain, but concrete enough to guide implementation and expose important risks.",
+      "project": {
+        "title": "Create a compact design pack",
+        "summary": "Prepare a repository-based design pack that a newcomer can read in about fifteen minutes. It should explain scope, quality targets, components, data ownership, interfaces, major choices, and risks without pretending unresolved questions are settled.",
+        "steps": [
+          "Update the product brief and identify first-release features and exclusions.",
+          "Write four to six measurable quality targets, followed by constraints and assumptions.",
+          "Draw context and container diagrams with protocols and trust boundaries.",
+          "Describe layers, modules, rendering choices, and deployment units.",
+          "Model entities, fields, relationships, and the single owner of each important rule.",
+          "Write initial endpoint contracts including errors, pagination, and retry behaviour.",
+          "Record major stack, database, hosting, and provider choices in ADRs with alternatives.",
+          "Add security, privacy, performance, reliability, accessibility, and debt plans.",
+          "Ask an AI reviewer to find contradictions, unsupported requirements, risks, and unnecessary complexity; verify its concerns yourself.",
+          "Have a new reader explain what is being built, how parts communicate, where data lives, and why the choices fit."
+        ]
+      },
+      "glossary": [
+        {
+          "term": "Functional requirement",
+          "definition": "A behaviour or capability the application must provide."
+        },
+        {
+          "term": "Quality requirement",
+          "definition": "A verifiable expectation about how well the application behaves."
+        },
+        {
+          "term": "Constraint",
+          "definition": "A limit the design must operate within."
+        },
+        {
+          "term": "Assumption",
+          "definition": "An unconfirmed belief that should remain visible and testable."
+        },
+        {
+          "term": "Architecture",
+          "definition": "The system’s structural choices and boundaries, especially those costly to change."
+        },
+        {
+          "term": "Layer",
+          "definition": "Code grouped by a kind of responsibility, such as rules or data access."
+        },
+        {
+          "term": "Modular monolith",
+          "definition": "One deployable application with clear internal responsibility boundaries."
+        },
+        {
+          "term": "Microservice",
+          "definition": "An independently deployed service that communicates with other services over a network."
+        },
+        {
+          "term": "Static rendering",
+          "definition": "Preparing page files ahead of requests."
+        },
+        {
+          "term": "Server-side rendering",
+          "definition": "Producing page HTML on a server for a request."
+        },
+        {
+          "term": "Client-side rendering",
+          "definition": "Building the interface in the browser with JavaScript."
+        },
+        {
+          "term": "Decision matrix",
+          "definition": "A comparison table that makes weighted priorities and option scores visible."
+        },
+        {
+          "term": "Utility capability",
+          "definition": "Necessary support functionality that does not usually distinguish the product."
+        },
+        {
+          "term": "Strategic capability",
+          "definition": "Functionality that creates the product’s distinctive value."
+        },
+        {
+          "term": "Bounded context",
+          "definition": "An area with coherent domain meanings and clear ownership of data and rules."
+        },
+        {
+          "term": "API contract",
+          "definition": "An explicit agreement about accepted requests, responses, and errors."
+        },
+        {
+          "term": "Adapter",
+          "definition": "An application-owned wrapper around another system’s interface."
+        },
+        {
+          "term": "Webhook",
+          "definition": "An incoming callback used by an external service to report an event."
+        },
+        {
+          "term": "Idempotent",
+          "definition": "Safe to repeat without creating an additional intended effect."
+        },
+        {
+          "term": "Idempotency key",
+          "definition": "An identifier connecting repeated attempts to one intended operation."
+        },
+        {
+          "term": "Outbox",
+          "definition": "Stored delivery intentions recorded transactionally with related business changes."
+        },
+        {
+          "term": "Pagination",
+          "definition": "Returning a bounded part of a larger result set with a way to continue."
+        },
+        {
+          "term": "Trust boundary",
+          "definition": "A crossing between areas with different control or trust assumptions."
+        },
+        {
+          "term": "Least privilege",
+          "definition": "Only the permissions actually required for a job."
+        },
+        {
+          "term": "Defence in depth",
+          "definition": "Several complementary safeguards rather than reliance on one check."
+        },
+        {
+          "term": "Data minimisation",
+          "definition": "Collecting, retaining, and exposing only the personal information genuinely needed."
+        },
+        {
+          "term": "Cache",
+          "definition": "Stored results reused to avoid repeating expensive work."
+        },
+        {
+          "term": "Queue",
+          "definition": "A holding mechanism for work awaiting processing."
+        },
+        {
+          "term": "Technical debt",
+          "definition": "Future change cost created by compromises or a design that no longer fits."
+        },
+        {
+          "term": "Reversible decision",
+          "definition": "A choice that can be changed without disproportionate cost or disruption."
+        }
+      ],
+      "chapters": [
+        {
+          "number": 19,
+          "slug": "turning-requirements-into-a-design",
+          "title": "Turning Requirements into a Design",
+          "question": "What needs to be decided before you ask an assistant to implement an entire application?",
+          "summary": "Design connects what users need with the components that will deliver it. Write measurable quality targets, realistic constraints, explicit responsibilities, and a small diagram before implementation makes accidental choices for you.",
+          "sections": [
+            {
+              "heading": "Separate features from qualities",
+              "paragraphs": [
+                "A functional requirement says what the system does: users can create tasks, add due dates, or mark work complete. A quality requirement says how well the system must behave: how quickly it responds, whose data it protects, or whether a keyboard user can complete a journey. A feature checklist alone cannot tell you whether the resulting application is safe or useful under real conditions.",
+                "Make qualities observable. Instead of asking for a fast task list, specify that 95 percent of list requests should finish within one second for accounts containing up to a stated number of tasks. That includes an action, conditions, and a measurable response. It gives designers a target and testers a way to disagree with an optimistic claim. Measurements should describe the experience that matters, not merely an easy internal statistic."
+              ]
+            },
+            {
+              "heading": "Choose targets that shape real decisions",
+              "paragraphs": [
+                "Availability describes how much time the service should be usable over a defined period. Security might require that users can never access another account's tasks. Accessibility can specify WCAG 2.2 AA and keyboard completion of core journeys. Recoverability should say how much data loss is acceptable and how far back restoration must reach. Maintainability can describe the expected size and difficulty of a typical change.",
+                "These targets affect architecture. A restoration requirement calls for backups and tested recovery, not merely an export button. A privacy requirement affects logging and external services. A response-time target may call for indexes and bounded result sizes. Do not collect targets simply to sound thorough: explain which design choice supports each target and how you will verify that support later."
+              ]
+            },
+            {
+              "heading": "Write down constraints and uncertain beliefs",
+              "paragraphs": [
+                "Constraints limit the solution space. Record expected users, peak workload, monthly budget, available skills, deadlines, required devices, integrations, and legal or location obligations. A solo builder serving a few hundred early users faces a different problem from a large team operating a global service. Design for credible numbers, leaving room to learn, rather than paying immediately for imagined future scale.",
+                "Assumptions are beliefs that still need checking. Perhaps offline use is unnecessary or users do not need shared workspaces in the first release. Label those beliefs so they can be tested. Distinguish them from requirements and fixed constraints. A written assumption that proves false is useful feedback; an unstated assumption often appears later as a surprising bug or an expensive redesign."
+              ]
+            },
+            {
+              "heading": "Assign responsibilities before choosing details",
+              "paragraphs": [
+                "Identify the major components and give each one a short job description. The web interface displays information and collects input. The API enforces authorisation and business rules. The database stores authoritative records. An external email service delivers messages. A useful responsibility also states a boundary: the browser must not connect directly to the database or decide what another user is allowed to read.",
+                "Trace important journeys through the components. For creating a task, identify where input arrives, where it is checked, where ownership is assigned, and where the record is saved. For reminders, identify who determines local time, who selects tasks, and who sends email. If two components appear to own the same rule, resolve that overlap before two independent implementations emerge."
+              ]
+            },
+            {
+              "heading": "Draw a small diagram people can maintain",
+              "paragraphs": [
+                "A context diagram shows the application as one system alongside its users and outside services. A container view zooms into deployable pieces such as the web application, API, database, and scheduled job. Here container means a major running or deployable unit, not necessarily a Docker container. Use labelled boxes and arrows to explain communication, including protocols where they matter.",
+                "Keep diagrams in the repository with the design they explain. Text-based tools such as Mermaid make changes reviewable, but a simple accurate drawing is better than an elaborate stale one. Avoid drawing every class or function at this stage. A reader should understand who talks to whom, what data crosses a boundary, and where key responsibilities sit without decoding dozens of decorative shapes."
+              ]
+            },
+            {
+              "heading": "Keep the design brief and honest",
+              "paragraphs": [
+                "A useful first design can fit into a few pages: goals and scope, measurable qualities, constraints, assumptions, components, responsibilities, and unresolved questions. Include what is deliberately excluded so an AI tool does not fill gaps with unnecessary features. Specify domain details that influence correctness, such as whether a due date is a calendar date and whose local date defines today.",
+                "Walk a requirement into an implementation decision. A daily reminder raises questions about time zones, provider outages, and bursts of email. A scheduled worker, stored preferences, and a retryable sending plan may answer them. Record what remains uncertain, including any mismatch between the promised delivery time and the scheduler's actual frequency. Point substantial AI tasks at this design and revise it when evidence changes the plan."
+              ]
+            },
+            {
+              "heading": "Review for missing links",
+              "paragraphs": [
+                "Read the design from both directions. For each requirement, identify the component or tactic that supports it. Then inspect each proposed component and ask which requirement justifies its existence. This exposes unsupported promises as well as unnecessary infrastructure. A database backup plan without a restoration check may not meet recoverability, while an unexplained event system may not serve any first-release need.",
+                "Ask a reviewer to raise questions rather than replace the design wholesale. Useful questions identify ambiguous time zones, conflicting ownership, missing failure handling, or costs that exceed the stated budget. Decide which concerns matter using the written scope and numbers. Update the assumptions and open questions as you learn, keeping the design a working guide rather than a frozen ceremony."
+              ]
+            }
+          ],
+          "keyIdea": "A small explicit design prevents requirements, assumptions, and implementation choices from silently drifting apart.",
+          "taskboard": "Taskboard keeps its goals, scale estimates, exclusions, responsibilities, and open questions in a design document. Its diagrams connect the browser, API, database, authentication, and email capabilities. Major choices link to ADRs so later AI sessions can understand the reasons rather than inventing a new structure.",
+          "walkthrough": {
+            "title": "Design a daily reminder",
+            "steps": [
+              "State the required reminder time and whose time zone defines it.",
+              "Estimate recipient volume and the acceptable delay or failure rate.",
+              "Assign selection rules to the owning module and delivery to a worker using an email adapter.",
+              "Specify retry and duplicate-prevention behaviour if the provider fails.",
+              "Record scheduling limitations, unanswered questions, and the evidence that would change the plan."
+            ]
+          },
+          "mistakes": [
+            "Describing qualities with words such as fast or secure but no verifiable conditions.",
+            "Planning for millions of users without evidence while ignoring the actual budget.",
+            "Leaving scope exclusions and uncertain assumptions unwritten."
+          ],
+          "aiMistakes": [
+            "The assistant invents components from a vague brief: require a requirement-to-component explanation.",
+            "It silently adds features: compare the proposal with the written scope and exclusions."
+          ],
+          "tryIt": [
+            "Write four measurable quality scenarios for a small app.",
+            "Draw context and container views and label communication arrows.",
+            "List three assumptions and how you would check each."
+          ],
+          "check": [
+            {
+              "q": "How does a quality requirement differ from a feature?",
+              "a": "It describes a required level of behaviour rather than an action the system offers."
+            },
+            {
+              "q": "Why record assumptions?",
+              "a": "They can be tested and revisited instead of becoming invisible design commitments."
+            },
+            {
+              "q": "What should a component responsibility explain?",
+              "a": "What it owns, what it does, and what it must leave to other components."
+            },
+            {
+              "q": "Why avoid designing for imagined huge scale?",
+              "a": "It adds costs and failure modes without meeting a demonstrated current requirement."
+            }
+          ]
+        },
+        {
+          "number": 20,
+          "slug": "application-architecture-and-boundaries",
+          "title": "Application Architecture and Boundaries",
+          "question": "What evidence would justify splitting a small application into many independently deployed services?",
+          "summary": "Architecture defines responsibilities and the boundaries between them. Learn to separate interface, rules, and storage while choosing deployment and rendering models independently of repository layout.",
+          "sections": [
+            {
+              "heading": "Hide change behind clear boundaries",
+              "paragraphs": [
+                "Architecture consists of structural decisions that become costly to change. Its purpose is not to maximise the number of boxes on a diagram. Good boundaries let you replace a storage technique, change a user interface, or revise an external integration without rewriting unrelated rules. Separation of concerns means dealing with different responsibilities separately so each part remains understandable.",
+                "A useful module hides details that other parts should not depend on. For example, a task service can offer a create operation without exposing its database query. Callers depend on the operation's meaning rather than the storage mechanism. When you repeatedly need to edit many unrelated files for a small feature, ask whether responsibilities are tangled rather than immediately adding another abstraction."
+              ]
+            },
+            {
+              "heading": "Give three layers three different jobs",
+              "paragraphs": [
+                "The interface layer understands communication with the outside world. In the browser it includes screens and controls; on the server it includes routes that receive HTTP requests and shape responses. A route can identify the signed-in user and pass the request onward without deciding every business rule itself. The business layer handles rules such as valid due dates, task limits, and whether an operation is permitted.",
+                "The data-access layer understands storage through SQL or an object-relational mapping tool. It should expose purposeful operations rather than spread database details across the application. In this layered design, calls move downward: interface to business logic to data access. Business services should not need HTTP response objects, and screens should not need SQL. This keeps each concern testable in terms appropriate to its job."
+              ]
+            },
+            {
+              "heading": "Prefer modular simplicity over premature distribution",
+              "paragraphs": [
+                "A monolith is an application deployed as one unit. It can be straightforward to build, run, test, and debug, but careless growth can tangle its code. A modular monolith keeps one backend deployment while giving areas such as tasks, users, and notifications clear internal boundaries. The modules communicate through agreed operations instead of reaching into one another's storage details.",
+                "Microservices are independently deployed services communicating over a network. They can help teams release or scale separately when there is a real need. They also introduce network failures, additional monitoring, coordination across deployments, and harder consistency problems. Splitting a small application merely for prestige trades cheap local calls for expensive operational boundaries. Establish clean modules first; evidence can later justify extracting one."
+              ]
+            },
+            {
+              "heading": "Decide where each page gets its HTML",
+              "paragraphs": [
+                "A static page is produced ahead of requests and served as a file. This suits relatively stable content such as a marketing page or documentation. With server-side rendering, a server produces HTML when a request arrives, possibly using user-specific data. That can suit content-heavy pages where initial loading and search visibility matter. These are choices about page construction, not labels for the whole organisation.",
+                "In client-side rendering, browser JavaScript builds the interface and typically obtains data from an API. This can fit an interactive signed-in tool. Modern frameworks can mix rendering approaches page by page. Understand where each piece executes: browser code cannot safely hold server credentials, and a server-rendered page still needs appropriate authorisation. A rendering label alone does not establish a complete security design."
+              ]
+            },
+            {
+              "heading": "Keep source grouping separate from deployment grouping",
+              "paragraphs": [
+                "A repository groups source files and their history. A deployment groups running or delivered software. One repository can produce a browser bundle, an API process, and a scheduled reminder job. Conversely, several repositories might contribute to a single deployed product. Saying monorepo does not mean microservices, and saying monolith does not explain how many repositories exist.",
+                "Draw these views separately when necessary. In a code view, show modules and layers. In a deployment view, show which processes run, how they communicate, and which services they require. This prevents a common beginner confusion: assuming that creating another folder creates an independent service, or that combining repositories removes network boundaries. Operational complexity follows actual running components, not folder count."
+              ]
+            },
+            {
+              "heading": "Review architecture with concrete questions",
+              "paragraphs": [
+                "When an assistant proposes six services, ask which requirement cannot be met with one well-structured backend. Estimate traffic, team size, deployment burden, and failure handling. A modest workload and one maintainer rarely justify a distributed system by themselves. If one component eventually needs very different scaling or ownership, that can become evidence for a targeted change rather than a total redesign.",
+                "Review individual changes against the boundaries too. A convenient route that executes SQL directly may bypass shared rules. A server-only module imported into browser code can expose secrets. Excessive scaffolding can obscure a simple operation under many empty interfaces. Record significant choices and revisit conditions in an ADR, then check that new code follows the documented responsibility map."
+              ]
+            },
+            {
+              "heading": "Test boundaries with a change scenario",
+              "paragraphs": [
+                "Imagine replacing the email provider while keeping reminder rules identical. Which files should change? The provider adapter and related configuration are plausible answers; every screen and task query are not. Now imagine changing a task limit. The owning business service and tests should carry the rule, while interface code may display the resulting message. These thought experiments reveal coupling before a costly real migration.",
+                "Boundaries need proportionate enforcement. Consistent imports, focused tests, and review may be enough for a small application. Adding a network service simply to stop an accidental import creates a much larger problem. Start with understandable module interfaces, inspect violations, and introduce stronger tooling only when repeated mistakes show that the current safeguards are insufficient."
+              ]
+            }
+          ],
+          "keyIdea": "Build clear internal boundaries before paying the operational cost of boundaries across a network.",
+          "taskboard": "Taskboard uses a modular backend with task, user, and notification responsibilities, organised into request handling, services, and storage access. Its signed-in interface is client-rendered and its marketing page is static. One repository supplies the web application, API, and reminder job without turning each module into a separate microservice.",
+          "walkthrough": {
+            "title": "Evaluate a six-service proposal",
+            "steps": [
+              "Ask which measurable requirement requires independent services.",
+              "Compare the expected workload with a simpler backend’s credible capacity.",
+              "Count deployments, logs, network failures, and data-consistency obligations.",
+              "Keep the modular monolith if no demonstrated need outweighs those costs.",
+              "Write an ADR describing the choice and the future evidence that would justify extraction."
+            ]
+          },
+          "mistakes": [
+            "Duplicating business rules in screens and routes.",
+            "Confusing a multi-folder repository with independently deployed services.",
+            "Adopting microservices before identifying an operational need."
+          ],
+          "aiMistakes": [
+            "The assistant skips layers for convenience: trace a request and check where rules and queries live.",
+            "It imports server configuration into a browser component: inspect execution boundaries and build exposure.",
+            "It adds abstractions with no current responsibility: require a concrete use case."
+          ],
+          "tryIt": [
+            "Trace one feature through interface, business logic, and data access.",
+            "List modules and define one sentence of ownership for each.",
+            "Choose a rendering approach for each page and explain the reason."
+          ],
+          "check": [
+            {
+              "q": "What distinguishes a modular monolith?",
+              "a": "It keeps one deployment while maintaining clear internal modules."
+            },
+            {
+              "q": "Name two microservice costs.",
+              "a": "Network failure handling and coordination or monitoring across multiple deployments."
+            },
+            {
+              "q": "Why separate business rules from HTTP routes?",
+              "a": "The rules can be reused and tested without depending on transport details."
+            },
+            {
+              "q": "Does one repository imply one deployment?",
+              "a": "No. Repository layout and deployment structure are independent choices."
+            }
+          ]
+        },
+        {
+          "number": 21,
+          "slug": "choosing-languages-frameworks-and-services",
+          "title": "Choosing Languages, Frameworks and Services",
+          "question": "How can you choose between conflicting technology recommendations without relying on popularity or confidence?",
+          "summary": "Technology should fit the requirements, the maintainer, and the operating budget. Compare options explicitly, distinguish utility capabilities from product strengths, and record trade-offs so future sessions keep a consistent stack.",
+          "sections": [
+            {
+              "heading": "Begin with the problem, not a trend",
+              "paragraphs": [
+                "A stack is the set of languages, frameworks, databases, and supporting tools used by an application. There is rarely one universally best stack. Start with the design requirements: an interactive interface, a JSON API, related records, transactions, authentication, and scheduled email. Many mainstream options may satisfy these requirements, which means other considerations should settle the choice rather than increasingly elaborate feature comparisons.",
+                "Identify genuine constraints first. A required integration, deployment platform, or offline requirement may eliminate an option. Once basic fit is established, ask who will read and maintain the result. A framework that produces working code quickly can still be a poor choice if you cannot investigate errors or recognise when an assistant has bypassed an important security rule."
+              ]
+            },
+            {
+              "heading": "Evaluate the whole maintenance experience",
+              "paragraphs": [
+                "Familiarity matters because reviewing generated code requires understanding it. Ecosystem quality matters because you will need mature libraries, clear documentation, and answers to common failures. Popular stable tools may also be better represented in AI training material, but generated answers can still be outdated. Check documentation for the actual version rather than treating widespread usage as a correctness guarantee.",
+                "Evaluate hosting, monitoring, backups, licensing, recurring costs, learning time, and likely longevity. A cheap runtime can become expensive if every deployment needs manual repair. A free service tier can become costly at realistic traffic. Consider whether the tool is actively maintained and whether its maintainers and community provide a credible long-term path. The relevant cost includes your attention, not only the monthly invoice."
+              ]
+            },
+            {
+              "heading": "Use a decision matrix to expose reasoning",
+              "paragraphs": [
+                "For a close choice, list criteria and assign weights reflecting their importance to this project. Score each option consistently, multiply scores by weights, and add the results. If familiarity is crucial for a solo maintainer, give it more weight than a feature the project does not need. State what evidence supports the scores so someone else can question them constructively.",
+                "The resulting total is a discussion aid, not an objective verdict. Small score changes may reverse a close result, revealing that a prototype or further research would be more valuable than pretending to have precision. Do not manipulate weights after seeing the outcome merely to justify a favourite. Record the downside of the selected option and the circumstances that would make a different option preferable."
+              ]
+            },
+            {
+              "heading": "Spend novelty only where it helps",
+              "paragraphs": [
+                "Choosing well-understood technology is not an admission of limited ambition. Familiar tools have documented failure modes and established operational practices. Every unfamiliar component creates learning and maintenance demands, so spend that effort where novelty provides a real product advantage. A task tracker rarely becomes better because its database is the newest database; it becomes better through a useful and reliable user experience.",
+                "This is particularly important when building with AI. An assistant can generate a convincing scaffold for a technology you do not understand, leaving you unable to assess the result. Prefer a coherent stack you can inspect and operate over a fashionable collection selected independently in different sessions. New tools remain possible choices, but they should earn their place through requirements and evidence."
+              ]
+            },
+            {
+              "heading": "Build your distinction; reuse utilities carefully",
+              "paragraphs": [
+                "A utility capability must work but usually does not distinguish your product: sending email, processing payments, hosting files, or handling standard authentication. A strategic capability creates the specific value users choose you for, such as Taskboard's planning workflow or reminder rules. Using established services or proven libraries for utilities can free attention for the product-specific work.",
+                "A service also creates dependencies. Examine pricing at expected volume, reliability, data handling, export options, and the effort required to leave. Reliable email delivery involves reputation, bounces, spam policies, and compliance, not just sending a network request. Wrap the provider behind a small interface you control so the rest of the application depends on a stable operation instead of provider-specific details everywhere."
+              ]
+            },
+            {
+              "heading": "Make choices durable without making them permanent",
+              "paragraphs": [
+                "Write an ADR for each significant technology decision. Include the context, realistic alternatives, choice, costs, limitations, and revisit trigger. Then put the selected stack in the README and AI instructions. Future sessions should extend the agreed system rather than introduce another framework or database because a new prompt did not mention the previous choice.",
+                "Review recommendations against current official information before adopting them. An assistant may suggest a retired package, an incompatible major release, or a service already covered by the framework. Require a reason for additions and a migration plan for replacements. Consistency is not stubbornness: when evidence changes, update the decision deliberately and explain how existing code and data will move safely."
+              ]
+            },
+            {
+              "heading": "Check decisions against a realistic operating month",
+              "paragraphs": [
+                "Estimate ordinary usage rather than comparing only free-tier headlines. Include active users, email volume, storage growth, backups, monitoring, and the time needed to respond to failures. Ask what happens if traffic increases or a provider changes a limit. A slightly more expensive service may still be cheaper overall if it removes operational work you are not equipped to perform.",
+                "Before committing heavily to an unfamiliar choice, a small focused experiment can answer the riskiest question. Verify deployment, a required integration, or a representative query rather than building an entire prototype product. Record what the experiment showed and what it did not establish. This gives the decision evidence without turning technology evaluation into an endless side project."
+              ]
+            }
+          ],
+          "keyIdea": "The right technology is one you can understand, operate, afford, and justify against real requirements.",
+          "taskboard": "Taskboard pairs a TypeScript React interface with a Python FastAPI backend and relational storage, using PostgreSQL in production and SQLite for local work where appropriate. It relies on proven password hashing and an external transactional email provider rather than inventing those utilities. ADRs and AI instructions preserve the stack and require discussion before adding frameworks or databases.",
+          "walkthrough": {
+            "title": "Decide whether to operate your own email system",
+            "steps": [
+              "Classify reliable email delivery as a utility rather than the product’s unique value.",
+              "List hidden obligations such as sender reputation, bounces, and compliance.",
+              "Compare services at a realistic daily email volume, including privacy and reliability.",
+              "Choose a provider behind a small application-owned sending interface.",
+              "Record cost estimates, trade-offs, and conditions for revisiting the choice."
+            ]
+          },
+          "mistakes": [
+            "Copying a famous company’s stack without sharing its requirements or team size.",
+            "Ignoring maintenance and learning time in a cost comparison.",
+            "Building sensitive utility systems from scratch without the necessary expertise."
+          ],
+          "aiMistakes": [
+            "The assistant introduces a second framework: compare the diff with the recorded stack.",
+            "It recommends deprecated tooling: verify maintenance status and version-specific documentation.",
+            "It adds a service for an existing framework feature: require a gap the service actually fills."
+          ],
+          "tryIt": [
+            "Build a weighted comparison of two plausible hosting options.",
+            "Classify your application’s capabilities as utility or strategic and explain ambiguous cases.",
+            "Write a stack ADR with one disadvantage and one measurable revisit trigger."
+          ],
+          "check": [
+            {
+              "q": "Why does familiarity matter with AI-generated code?",
+              "a": "You need enough understanding to review, debug, and challenge the generated implementation."
+            },
+            {
+              "q": "What does choosing boring technology mean?",
+              "a": "Preferring established, understandable tools unless novelty offers a concrete advantage."
+            },
+            {
+              "q": "What does a decision matrix prove?",
+              "a": "It makes assumptions and priorities visible; it does not prove one option is universally best."
+            },
+            {
+              "q": "What should be checked before choosing a service?",
+              "a": "Expected-scale pricing, reliability, data handling, operational needs, and the difficulty of leaving."
+            }
+          ]
+        },
+        {
+          "number": 22,
+          "slug": "designing-data-and-integrations",
+          "title": "Designing Data and Integrations",
+          "question": "How can a repeated click or retried message avoid creating duplicate work or charges?",
+          "summary": "Data crossings need explicit ownership and contracts. Design storage, APIs, external integrations, and change strategies so duplicates and partial failures do not quietly damage correctness.",
+          "sections": [
+            {
+              "heading": "Choose storage from the data’s needs",
+              "paragraphs": [
+                "Start with relationships, queries, and consistency requirements. Users, tasks, and labels form related records and benefit from relational storage, transactions, and ownership filters. Large uploads often belong in object storage while the database holds references and metadata. Temporary recreatable values may suit a cache or key-value store. Full-text search and similarity search address different query needs and should not be confused.",
+                "A new application can often begin with one relational database. Adding a search engine, cache, or vector index creates another system to secure, back up, monitor, and keep consistent. Adopt another store because a specific requirement demands it, not because a stack diagram seems incomplete without it. Describe which store is authoritative and which values can be rebuilt from other records."
+              ]
+            },
+            {
+              "heading": "Assign one owner to each record and rule",
+              "paragraphs": [
+                "An owner is the component responsible for maintaining a kind of data and its invariants, the conditions that must remain true. The tasks module owns task rules; the users module owns accounts; notifications owns reminder preferences and delivery coordination. Other modules request operations through the owner instead of directly editing its tables. This establishes a clear place to fix a rule.",
+                "A bounded context is an area within which domain meanings, rules, and ownership are kept coherent. You do not need a complicated framework to benefit from that idea. A simple ownership table can prevent two implementations of overdue logic from disagreeing. Ownership does not mean nobody else can read useful information; it means changes and authoritative decisions follow a defined path."
+              ]
+            },
+            {
+              "heading": "Write an API contract before clients depend on guesses",
+              "paragraphs": [
+                "An API contract states accepted requests and promised responses. Include endpoint paths and methods, authentication expectations, field names, types, limits, optional values, success statuses, and consistent errors. For creating a task, specify the title limit and whether a missing due date is represented by null. Distinguish a machine-readable error code from the human-facing message. A standard format such as OpenAPI can support documentation, checks, and generated clients.",
+                "Large lists need pagination so response sizes remain bounded. Define a limit and a continuation cursor or another deliberate paging method. Versioned paths such as /v1/tasks make room for incompatible future interfaces, but a version prefix alone does not prevent breaking changes within that version. The frontend and backend should share the contract rather than independently guessing what the other side means."
+              ]
+            },
+            {
+              "heading": "Wrap external services and distrust callbacks",
+              "paragraphs": [
+                "Place provider-specific calls behind an adapter, a small module you control. The rest of the application asks it to send an email or perform another operation without knowing the provider's detailed API. This localises credential use, error translation, and replacement work. It does not remove the provider's outages, but it gives your application one place to handle them consistently.",
+                "A webhook is a callback from an external system to your endpoint. Verify its authenticity using the provider's documented signature process before trusting its contents. Expect delayed, duplicate, and out-of-order events. Record a unique event identifier and make processing safe to repeat. Where relevant, recording that identifier and changing business state should occur atomically so a crash cannot leave the deduplication record inconsistent with the actual update."
+              ]
+            },
+            {
+              "heading": "Make retries safe with idempotency",
+              "paragraphs": [
+                "An operation is idempotent when repeating it produces the same intended effect as performing it once. Reading data is naturally repeatable; creating a task or charging a payment usually needs extra design. An idempotency key identifies one intended operation across retries. The client reuses the key for that operation, and the server recognises it and returns the saved outcome rather than performing the operation again.",
+                "The implementation must handle concurrent arrivals, not merely check a list and hope requests arrive sequentially. Scope keys appropriately, store the relevant result, and reject incompatible reuse according to the contract. A new intended operation needs a new key. Disabling a button helps usability but does not replace server-side protection because retries can arise from networks, workers, or callers outside the interface."
+              ]
+            },
+            {
+              "heading": "Plan partial failure and interface evolution",
+              "paragraphs": [
+                "Suppose saving a task succeeds but sending its notification fails. The database and email provider cannot simply be treated as one reliable action. An outbox records the important database change and the intent to send a message in the same transaction. A worker later sends pending messages and retries failures. Delivery still needs duplicate-aware handling; an outbox does not magically guarantee that an external recipient sees exactly one message.",
+                "Avoid holding a database transaction open while waiting for an external service. For changing interfaces, prefer additive changes such as new optional fields. For a breaking rename, add the replacement alongside the old field, migrate callers, and remove the old form only when safe. Public APIs may require a parallel version and a stated transition period. Apply the same care to database schemas that old and new application versions may both use."
+              ]
+            },
+            {
+              "heading": "Test boundaries under awkward timing",
+              "paragraphs": [
+                "A successful single request is only the beginning of integration testing. Try a duplicate arriving before the first attempt finishes, a timeout after the provider completed its action, and a worker restart after sending but before recording success. These scenarios reveal why checking for duplicates must be coordinated with state changes, and why external effects need provider-aware recovery rather than optimistic assumptions.",
+                "Write down what the caller can safely retry and how it learns the final outcome. Include ownership and authentication when storing idempotency results so one account cannot obtain another account’s response by guessing an identifier. State the supported retention period rather than implying protection lasts forever. A boundary contract should explain practical limits as well as the happy path."
+              ]
+            }
+          ],
+          "keyIdea": "Design each boundary for repeated messages, incomplete outcomes, and gradual change rather than assuming one perfect delivery.",
+          "taskboard": "Taskboard documents versioned task endpoints and supports an idempotency key when creating a task. Its reminders enter an outbox alongside the recorded reminder decision, and a worker uses one email-provider adapter. Ownership rules keep task semantics from diverging between the interface and notifications.",
+          "walkthrough": {
+            "title": "Follow a double submission",
+            "steps": [
+              "Generate a unique key for one intended form submission and reuse it for retries.",
+              "On the first request, atomically associate the key with creating the task and its result.",
+              "On a concurrent or later repeat, return the original task instead of inserting another.",
+              "Verify that a different payload cannot silently reuse the same key.",
+              "Document key scope and retention, and test retries plus concurrent requests."
+            ]
+          },
+          "mistakes": [
+            "Treating a disabled submit button as complete duplicate protection.",
+            "Letting several modules update the same data with different rules.",
+            "Calling an external service while holding database locks."
+          ],
+          "aiMistakes": [
+            "The assistant trusts an unsigned webhook: check provider signature verification before state changes.",
+            "It deduplicates only after performing the action: test concurrent requests and crash boundaries.",
+            "It renames an API field immediately: require a compatibility and migration plan."
+          ],
+          "tryIt": [
+            "Create an ownership table for your main entities and rules.",
+            "Write one endpoint contract including errors, pagination where relevant, and retry behaviour.",
+            "Describe every outcome if the database succeeds but a provider times out."
+          ],
+          "check": [
+            {
+              "q": "What problem does an idempotency key solve?",
+              "a": "It links retries to one intended operation so the server can avoid repeating its effect."
+            },
+            {
+              "q": "What should a webhook handler check?",
+              "a": "Authenticity, whether the event has already been processed, and whether its state transition is valid."
+            },
+            {
+              "q": "Why use an outbox?",
+              "a": "It records business changes and delivery intent together so pending external work can be retried."
+            },
+            {
+              "q": "How can you safely rename a public API field?",
+              "a": "Introduce the replacement alongside the old form, migrate clients, and retire the old form only through a controlled transition."
+            }
+          ]
+        },
+        {
+          "number": 23,
+          "slug": "designing-for-quality-and-future-change",
+          "title": "Designing for Quality and Future Change",
+          "question": "Which design habits keep a working application safe and adaptable as it grows?",
+          "summary": "Quality comes from explicit tactics, not from hoping finished code will be good enough. Build in trust checks and privacy, measure performance, track compromises, and recognise when a decision or specialist review deserves more care.",
+          "sections": [
+            {
+              "heading": "Draw trust boundaries and check crossings",
+              "paragraphs": [
+                "A trust boundary marks where data moves between differently controlled areas, such as the browser and your API or an external webhook and your application. Draw these crossings and ask four questions: what are we designing, what might go wrong, what will we do about it, and how will we check the result? This is a practical introduction to threat modelling rather than a promise to predict every attack.",
+                "Validate input, establish identity when needed, and check permission for the specific operation. Apply least privilege: users, services, database accounts, and keys receive only the access their jobs require. Use defence in depth so one missed check does not remove every safeguard. Keep database access behind the intended server path, and send providers only the minimum data needed for their task."
+              ]
+            },
+            {
+              "heading": "Treat privacy as more than secrecy",
+              "paragraphs": [
+                "Security protects information against inappropriate access and change. Privacy also asks whether you should collect it, how long you should retain it, and whether people understand its use. A securely stored but unnecessary personal profile can still create privacy problems. Minimise collection, logging, and retention. Make a map that includes databases, backups, error trackers, email providers, support tools, and any other destination.",
+                "Use invented data when asking an AI assistant to debug a problem. Plan how people can inspect, export, and delete their information, and how expired backups eventually stop retaining it. Explain collection and use in a clear privacy notice. Legal duties vary by location and data type, so seek qualified advice when necessary rather than treating a general checklist as legal compliance."
+              ]
+            },
+            {
+              "heading": "Connect each quality to a tactic",
+              "paragraphs": [
+                "For performance, begin with queries that match real usage, suitable indexes, pagination, and avoiding one query per list item. Measure user-relevant response times before optimising. For reliability, set timeouts, retry appropriate failures safely, design idempotent operations, and move slow work off request paths when justified. Backups matter only if restoration is possible and tested under the conditions the recovery target describes.",
+                "Accessibility benefits from shared semantic components, reliable keyboard paths, visible focus, and suitable contrast from the beginning. Maintainability benefits from coherent modules, tests, current documentation, and consistent conventions. None of these qualities appears automatically because a framework advertises support. Specify how the chosen tactic will be verified through tests, measurements, review, or expert evaluation."
+              ]
+            },
+            {
+              "heading": "Add caches and queues for a demonstrated need",
+              "paragraphs": [
+                "A cache saves results so they do not need to be recomputed or fetched repeatedly. It can speed repeated expensive work but introduces stale-data and invalidation questions. A background job handles slow work users do not need to watch. A queue smooths bursts and separates accepting work from processing it, but it introduces backlogs, retries, and possible duplicate processing.",
+                "Choose these mechanisms after diagnosing a concrete symptom. If task listing is slow because it loads labels with hundreds of individual queries, combine the queries before adding a cache. If a measured burst exceeds processing capacity, a queue may help, provided you monitor delay and failures. Every new moving part should solve an identified problem and come with a plan for its own failure modes."
+              ]
+            },
+            {
+              "heading": "Track debt and distinguish reversible decisions",
+              "paragraphs": [
+                "Technical debt is the extra future cost created by a compromise or a design that no longer fits. Some debt is deliberate and prudent: ship a limited scheduling approach while documenting its delay and replacement trigger. Some is reckless: ignore design or security without understanding the consequences. Debt can also arise through learning when new evidence reveals a better approach. Record what was compromised, why, and how repayment would work.",
+                "Keep a small debt list and repay work in areas that repeatedly slow development. Spend more care on hard-to-reverse choices such as public contracts, database structure, and data ownership. Internal names and layouts are usually easier to revise. Repeated bugs, widespread edits for small features, measured missed targets, or disproved assumptions are signals to reconsider the design through an explicit proposal rather than accidental drift."
+              ]
+            },
+            {
+              "heading": "Know when general knowledge is not enough",
+              "paragraphs": [
+                "Use specialists when the risks exceed your experience. Payments should normally use a provider's hosted checkout so card details do not pass through your systems; handling them yourself creates serious compliance obligations. Health, financial, children's, and other sensitive data may require data-protection and legal advice before collection. An application holding many people's information or supporting important daily work merits independent security review.",
+                "Commercial ownership and licensing questions can require a lawyer. Promised accessibility may require an auditor, and contractual uptime or recovery commitments may need experienced operations help. Seeking advice early can prevent expensive redesign or harm. For a small product, the aim is not maximum architectural sophistication: it is a safe current system with clear boundaries, visible risks, and affordable paths to change."
+              ]
+            },
+            {
+              "heading": "Make quality work visible in normal changes",
+              "paragraphs": [
+                "Quality plans matter when they influence everyday review. A new endpoint should trigger questions about authorisation, result size, sensitive logging, and retry behaviour. A new form should prompt keyboard and error-message checks. A change to stored personal information should update the retention and deletion map. These are small repeated habits, not a separate quality phase reserved for the end.",
+                "Revisit the design when evidence accumulates rather than after one frustrating afternoon. Track recurring incidents, measured targets, and the areas repeatedly touched by changes. An ADR proposing evolution should describe the observed problem, alternatives, migration risks, and expected improvement. This keeps redesign focused on a real constraint while preserving the simplicity that still works elsewhere."
+              ]
+            }
+          ],
+          "keyIdea": "Build safety and evidence into the design, then evolve it deliberately instead of optimising for imaginary perfection.",
+          "taskboard": "Taskboard records trust boundaries, quality tactics, and technical debt alongside its design. It uses ownership checks, bounded task lists, an email outbox, and tested recovery practices. Its reminder interval is an explicit limitation, while unfinished export and account-deletion work must be addressed before public release rather than being presented as complete.",
+          "walkthrough": {
+            "title": "Investigate a slow task list before caching it",
+            "steps": [
+              "Measure the list response time under the relevant account size.",
+              "Inspect query counts and identify whether labels trigger one query per task.",
+              "Change data loading to fetch related labels in a bounded number of queries.",
+              "Measure again against the target and run behaviour tests.",
+              "Add a cache only if an expensive repeated result remains, with explicit invalidation and privacy rules."
+            ]
+          },
+          "mistakes": [
+            "Collecting personal data without a purpose or retention plan.",
+            "Adding infrastructure before identifying the actual bottleneck.",
+            "Taking on compromises without recording their cost and repayment trigger."
+          ],
+          "aiMistakes": [
+            "The assistant grants administrator permissions: compare every permission with the actual operation required.",
+            "It logs full requests for debugging: inspect logging changes for tokens and personal data.",
+            "It calls a risky shortcut temporary without documenting it: require a debt entry and an owner."
+          ],
+          "tryIt": [
+            "Draw trust boundaries and list checks at every crossing.",
+            "Map all destinations for personal data, including backups and providers.",
+            "Write three debt entries and distinguish hard-to-reverse decisions from easy experiments.",
+            "Identify one scenario where your project would need specialist advice."
+          ],
+          "check": [
+            {
+              "q": "What is least privilege?",
+              "a": "Giving each identity or component only the permissions needed for its job."
+            },
+            {
+              "q": "How does privacy differ from security?",
+              "a": "Privacy also concerns appropriate collection, use, retention, and people’s control, not merely protection from unauthorised access."
+            },
+            {
+              "q": "When is a cache justified?",
+              "a": "When measurement shows repeated expensive work that caching can address, with stale-data risks understood."
+            },
+            {
+              "q": "What makes debt prudent?",
+              "a": "The compromise is understood, recorded, proportionate to its benefit, and paired with a credible repayment plan."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
