@@ -1,7 +1,16 @@
 import { useSyncExternalStore } from "react";
 
 const KEY = "sf:progress:v1";
-export type Progress = { done: string[]; last?: string; steps?: Record<string, number[]> };
+export type Practice = { answer?: string; done?: number[] };
+export type Progress = {
+  done: string[];
+  last?: string;
+  steps?: Record<string, number[]>;
+  bookmarks?: string[];
+  notes?: Record<string, string>;
+  assessments?: Record<string, number[]>;
+  practice?: Record<string, Practice>;
+};
 const EMPTY: Progress = { done: [] };
 let cache: Progress | null = null;
 const subs = new Set<() => void>();
@@ -17,6 +26,19 @@ function write(p: Progress) {
   try { localStorage.setItem(KEY, JSON.stringify(p)); } catch { /* ignore */ }
   subs.forEach((f) => f());
 }
+function toggleIndex(map: Record<string, number[]> | undefined, key: string, i: number) {
+  const cur = new Set(map?.[key] ?? []);
+  if (cur.has(i)) cur.delete(i); else cur.add(i);
+  return { ...(map ?? {}), [key]: [...cur].sort((a, b) => a - b) };
+}
+function mergeIndexes(a: Record<string, number[]> | undefined, b: Record<string, number[]> | undefined) {
+  const out: Record<string, number[]> = {};
+  for (const src of [a ?? {}, b ?? {}]) {
+    for (const [k, v] of Object.entries(src)) out[k] = [...new Set([...(out[k] ?? []), ...v])].sort((x, y) => x - y);
+  }
+  return out;
+}
+
 export function markDone(slug: string, done = true) {
   const p = read();
   const set = new Set(p.done);
@@ -25,22 +47,65 @@ export function markDone(slug: string, done = true) {
 }
 export function toggleStep(project: string, i: number) {
   const p = read();
-  const cur = new Set(p.steps?.[project] ?? []);
-  if (cur.has(i)) cur.delete(i); else cur.add(i);
-  write({ ...p, steps: { ...(p.steps ?? {}), [project]: [...cur] } });
+  write({ ...p, steps: toggleIndex(p.steps, project, i) });
 }
-/** Union of two progress records: nothing finished on either side is ever lost. */
+export function toggleAssessment(project: string, i: number) {
+  const p = read();
+  write({ ...p, assessments: toggleIndex(p.assessments, project, i) });
+}
+export function toggleBookmark(slug: string) {
+  const p = read();
+  const saved = new Set(p.bookmarks ?? []);
+  if (saved.has(slug)) saved.delete(slug); else saved.add(slug);
+  write({ ...p, bookmarks: [...saved] });
+}
+export function setNote(slug: string, text: string) {
+  const p = read();
+  write({ ...p, notes: { ...(p.notes ?? {}), [slug]: text.slice(0, 5000) } });
+}
+export function setPracticeAnswer(slug: string, text: string) {
+  const p = read();
+  write({ ...p, practice: { ...(p.practice ?? {}), [slug]: { ...p.practice?.[slug], answer: text.slice(0, 5000) } } });
+}
+export function togglePracticeTask(slug: string, i: number) {
+  const p = read();
+  const done = toggleIndex({ [slug]: p.practice?.[slug]?.done ?? [] }, slug, i)[slug] ?? [];
+  write({ ...p, practice: { ...(p.practice ?? {}), [slug]: { ...p.practice?.[slug], done } } });
+}
+
+/** Union of two learning records: finished work and saved items on either side are retained. */
 export function mergeProgress(a: Progress, b: Progress): Progress {
-  const steps: Record<string, number[]> = {};
-  for (const src of [a.steps ?? {}, b.steps ?? {}]) for (const [k, v] of Object.entries(src)) steps[k] = [...new Set([...(steps[k] ?? []), ...v])].sort((x, y) => x - y);
   const last = a.last ?? b.last;
-  return { done: [...new Set([...a.done, ...b.done])], ...(last ? { last } : {}), steps };
+  const notes: Record<string, string> = { ...(b.notes ?? {}) };
+  for (const [slug, text] of Object.entries(a.notes ?? {})) if (text || !notes[slug]) notes[slug] = text;
+  const practice: Record<string, Practice> = {};
+  for (const slug of new Set([...Object.keys(a.practice ?? {}), ...Object.keys(b.practice ?? {})])) {
+    const local = a.practice?.[slug];
+    const remote = b.practice?.[slug];
+    practice[slug] = {
+      answer: local?.answer || remote?.answer || "",
+      done: mergeIndexes({ [slug]: local?.done ?? [] }, { [slug]: remote?.done ?? [] })[slug] ?? [],
+    };
+  }
+  return {
+    done: [...new Set([...a.done, ...b.done])],
+    ...(last ? { last } : {}),
+    steps: mergeIndexes(a.steps, b.steps),
+    bookmarks: [...new Set([...(a.bookmarks ?? []), ...(b.bookmarks ?? [])])],
+    notes,
+    assessments: mergeIndexes(a.assessments, b.assessments),
+    practice,
+  };
 }
 export function getProgress() { return read(); }
 export function replaceProgress(p: Progress) { write(p); }
 export function subscribeProgress(f: () => void) { subs.add(f); return () => { subs.delete(f); }; }
 export function setLast(slug: string) { const p = read(); if (p.last !== slug) write({ ...p, last: slug }); }
-export function resetProgress() { write(EMPTY); }
+/** Clear course completion without deleting the learner's notes, bookmarks or practice answers. */
+export function resetProgress() {
+  const p = read();
+  write({ ...p, done: [], last: undefined, steps: {}, assessments: {} });
+}
 export function useProgress(): Progress {
   return useSyncExternalStore(
     (f) => { subs.add(f); return () => subs.delete(f); },
