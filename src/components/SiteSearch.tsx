@@ -7,14 +7,15 @@ import { appendices, introPages } from "@/content/extras";
 
 const glossary = parts.flatMap((p) => p.glossary);
 
-export function SiteSearch() {
+export function SiteSearch({ hotkey = false }: { hotkey?: boolean }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
+    if (!hotkey) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "k" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); setOpen((o) => !o); } };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [hotkey]);
   const go = (fn: () => void) => { setOpen(false); fn(); };
   return (
     <>
