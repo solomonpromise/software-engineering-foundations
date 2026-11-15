@@ -30,3 +30,5 @@ use the editor.
 <!-- LOVABLE:END -->
 - Learner progress lives in localStorage (src/lib/progress.ts) and, when signed in, is merged (union) into public.learner_progress by useProgressSync in __root — local-first so the site works without an account.
 - The lesson tutor works only with the learner's own xAI key (sent per request, never stored server-side); /api/tutor rejects requests without one — owner chose no shared AI cost.
+- Offline reading uses vite-plugin-pwa generateSW with NetworkFirst page caching; src/lib/pwa.ts is the only registrar and must keep development, iframe, preview and ?sw=off opt-outs.
+- Lesson feedback accepts anonymous or signed-in submissions but is readable only by an admin role in public.user_roles; never expose it through public select policies.

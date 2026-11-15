@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BibliographyRouteImport } from './routes/bibliography'
@@ -19,6 +20,7 @@ import { Route as GlossaryRouteImport } from './routes/glossary'
 import { Route as ReferenceRouteImport } from './routes/reference'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TaskboardRouteImport } from './routes/taskboard'
+import { Route as AuthenticatedFeedbackRouteImport } from './routes/_authenticated/feedback'
 import { Route as ApiTutorRouteImport } from './routes/api/tutor'
 import { Route as LearnSlugRouteImport } from './routes/learn.$slug'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
@@ -28,6 +30,10 @@ import { Route as StartSlugRouteImport } from './routes/start.$slug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -75,6 +81,11 @@ const TaskboardRoute = TaskboardRouteImport.update({
   path: '/taskboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedFeedbackRoute = AuthenticatedFeedbackRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const ApiTutorRoute = ApiTutorRouteImport.update({
   id: '/api/tutor',
   path: '/api/tutor',
@@ -112,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/reference': typeof ReferenceRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/taskboard': typeof TaskboardRoute
+  '/feedback': typeof AuthenticatedFeedbackRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -129,6 +141,7 @@ export interface FileRoutesByTo {
   '/reference': typeof ReferenceRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/taskboard': typeof TaskboardRoute
+  '/feedback': typeof AuthenticatedFeedbackRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -138,6 +151,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/bibliography': typeof BibliographyRoute
@@ -147,6 +161,7 @@ export interface FileRoutesById {
   '/reference': typeof ReferenceRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/taskboard': typeof TaskboardRoute
+  '/_authenticated/feedback': typeof AuthenticatedFeedbackRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -166,6 +181,7 @@ export interface FileRouteTypes {
     | '/reference'
     | '/sitemap.xml'
     | '/taskboard'
+    | '/feedback'
     | '/api/tutor'
     | '/learn/$slug'
     | '/projects/$slug'
@@ -183,6 +199,7 @@ export interface FileRouteTypes {
     | '/reference'
     | '/sitemap.xml'
     | '/taskboard'
+    | '/feedback'
     | '/api/tutor'
     | '/learn/$slug'
     | '/projects/$slug'
@@ -191,6 +208,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
     | '/auth'
     | '/bibliography'
@@ -200,6 +218,7 @@ export interface FileRouteTypes {
     | '/reference'
     | '/sitemap.xml'
     | '/taskboard'
+    | '/_authenticated/feedback'
     | '/api/tutor'
     | '/learn/$slug'
     | '/projects/$slug'
@@ -209,6 +228,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
   BibliographyRoute: typeof BibliographyRoute
@@ -232,6 +252,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -297,6 +324,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TaskboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/feedback': {
+      id: '/_authenticated/feedback'
+      path: '/feedback'
+      fullPath: '/feedback'
+      preLoaderRoute: typeof AuthenticatedFeedbackRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/api/tutor': {
       id: '/api/tutor'
       path: '/api/tutor'
@@ -335,8 +369,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedFeedbackRoute: typeof AuthenticatedFeedbackRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedFeedbackRoute: AuthenticatedFeedbackRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
   BibliographyRoute: BibliographyRoute,

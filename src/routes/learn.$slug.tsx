@@ -11,6 +11,9 @@ import { figuresFor } from "@/content/extras";
 import { FigureBlock } from "@/components/Prose";
 import { LessonTutor } from "@/components/LessonTutor";
 import { canFinish, gotCount, type Verdict } from "@/lib/quiz";
+import { LessonTools } from "@/components/LessonTools";
+import { PracticeExercise } from "@/components/PracticeExercise";
+import { LessonFeedback } from "@/components/LessonFeedback";
 
 export const Route = createFileRoute("/learn/$slug")({
   loader: ({ params }) => {
@@ -113,7 +116,7 @@ function Lesson() {
   }, [prev, next]);
 
   return (
-    <div className="min-h-screen">
+    <div className="lesson-page min-h-screen">
       <SiteHeader />
       <div className="fixed inset-x-0 top-0 z-40 h-1 bg-transparent" aria-hidden>
         <div className="h-full bg-brass transition-[width] duration-150" style={{ width: `${scroll * 100}%` }} />
@@ -131,11 +134,11 @@ function Lesson() {
         </ol>
         <p className="mt-8 text-xs text-muted-foreground">Tip: use ← → keys to move between lessons.</p>
       </aside>
-      <article className="mx-auto min-w-0 max-w-3xl flex-1 py-16">
+      <article id="lesson-content" tabIndex={-1} className="mx-auto min-w-0 max-w-3xl flex-1 py-16">
         <Link to="/curriculum" hash={`part-${c.part.number}`} className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Part {c.part.number} · {c.part.title}</Link>
         {hero && (
           <figure className="mt-6">
-            <img src={hero.url} alt={hero.caption || c.title} className="aspect-[21/9] w-full rounded-xl object-cover" />
+            <img src={hero.url} alt={hero.caption ? `${hero.caption}. Illustration for the lesson ${c.title}` : `Illustration for ${c.title}`} className="aspect-[21/9] w-full rounded-xl object-cover" />
             {hero.caption && <figcaption className="mt-2 text-sm text-muted-foreground">{hero.caption}</figcaption>}
           </figure>
         )}
@@ -146,11 +149,12 @@ function Lesson() {
           {isDone && <span className="inline-flex items-center gap-1.5 font-medium text-accent"><CheckCircle2 className="size-4" /> Finished</span>}
         </p>
         <p className="mt-6 border-l-4 border-accent pl-5 font-serif text-xl italic">{c.question}</p>
+        <LessonTools slug={c.slug} title={c.title} />
 
         <div className="lesson-prose mt-10">
           {c.sections.map((s, si) => (
             <section key={s.heading} id={ids[si]} className="scroll-mt-24">
-              {inline[si - 1] && si > 0 && <FigureBlock {...inline[si - 1]!} />}
+              {inline[si - 1] && si > 0 && <FigureBlock {...inline[si - 1]!} context={c.title} />}
               <h2>{s.heading}</h2>
               {s.paragraphs.map((p, i) => <Para key={i} text={p} />)}
               {s.bullets && s.bullets.length > 0 && <ul>{s.bullets.map((b) => <li key={b}>{b}</li>)}</ul>}
@@ -175,7 +179,7 @@ function Lesson() {
             <Box tone="mistake" label="Common mistakes"><ul className="list-disc space-y-2 pl-5">{c.mistakes.map((m) => <li key={m}>{m}</li>)}</ul></Box>
             <Box tone="ai" label="When AI gets it wrong"><ul className="list-disc space-y-2 pl-5">{c.aiMistakes.map((m) => <li key={m}>{m}</li>)}</ul></Box>
           </div>
-          <Box tone="walk" label="Try it yourself"><ol className="list-decimal space-y-2 pl-5">{c.tryIt.map((t) => <li key={t}>{t}</li>)}</ol></Box>
+          <PracticeExercise chapter={c} />
         </div>
 
         <h2 id="check" className="mt-14 scroll-mt-24 font-serif text-3xl">Check your understanding</h2>
@@ -199,6 +203,8 @@ function Lesson() {
             </>
           )}
         </div>
+
+        <LessonFeedback slug={c.slug} title={c.title} />
 
         <nav className="mt-10 grid gap-4 border-t border-border pt-8 sm:grid-cols-2">
           {prev ? (

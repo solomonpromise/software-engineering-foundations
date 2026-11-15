@@ -37,6 +37,7 @@ export function SiteHeader() {
   const isActive = (m: string) => pathname === m || pathname.startsWith(m + "/");
   return (
     <header className="site-header sticky top-0 z-30">
+      {pathname.startsWith("/learn/") && <a href="#lesson-content" className="sr-only fixed left-4 top-3 z-50 rounded-md bg-background px-4 py-2 font-semibold text-foreground focus:not-sr-only">Skip to lesson content</a>}
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
         <Wordmark />
         <nav className="hidden items-center gap-1 md:flex">
@@ -47,6 +48,7 @@ export function SiteHeader() {
               <Link
                 key={l.label}
                 {...(rest as any)}
+                aria-current={active ? "page" : undefined}
                 className={`rounded-full px-3.5 py-2 text-sm transition-colors ${
                   active
                     ? "bg-header-accent/20 text-header-foreground"
@@ -83,6 +85,7 @@ export function SiteHeader() {
               <Link
                 key={l.label}
                 {...(rest as any)}
+                aria-current={active ? "page" : undefined}
                 onClick={() => setOpen(false)}
                 className={`block border-b border-header-border py-3 font-medium ${
                   active ? "text-header-accent" : "text-header-foreground"

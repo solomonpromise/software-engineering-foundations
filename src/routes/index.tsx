@@ -6,6 +6,7 @@ const conceptIcons = [AppWindow, Workflow, ClipboardList, Network, Bot, Rocket];
 import { useProgress } from "@/lib/progress";
 import { parts, chapters } from "@/content/lessons";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
+import { ContinueLearning } from "@/components/ContinueLearning";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -54,6 +55,8 @@ function Home() {
           {started && <p className="mt-6 text-sm text-primary-foreground/70">{done.length} of {chapters.length} lessons finished</p>}
         </div>
       </section>
+
+      <ContinueLearning />
 
       <section className="mx-auto max-w-6xl px-5 py-20">
         <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent">What you'll understand</p>
