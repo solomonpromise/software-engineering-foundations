@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BibliographyRouteImport } from './routes/bibliography'
+import { Route as CurriculumRouteImport } from './routes/curriculum'
 import { Route as GlossaryRouteImport } from './routes/glossary'
 import { Route as ReferenceRouteImport } from './routes/reference'
 import { Route as ApiTutorRouteImport } from './routes/api/tutor'
@@ -26,6 +27,11 @@ const IndexRoute = IndexRouteImport.update({
 const BibliographyRoute = BibliographyRouteImport.update({
   id: '/bibliography',
   path: '/bibliography',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CurriculumRoute = CurriculumRouteImport.update({
+  id: '/curriculum',
+  path: '/curriculum',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GlossaryRoute = GlossaryRouteImport.update({
@@ -62,6 +68,7 @@ const StartSlugRoute = StartSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bibliography': typeof BibliographyRoute
+  '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
   '/api/tutor': typeof ApiTutorRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bibliography': typeof BibliographyRoute
+  '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
   '/api/tutor': typeof ApiTutorRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/bibliography': typeof BibliographyRoute
+  '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
   '/api/tutor': typeof ApiTutorRoute
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/bibliography'
+    | '/curriculum'
     | '/glossary'
     | '/reference'
     | '/api/tutor'
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/bibliography'
+    | '/curriculum'
     | '/glossary'
     | '/reference'
     | '/api/tutor'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/bibliography'
+    | '/curriculum'
     | '/glossary'
     | '/reference'
     | '/api/tutor'
@@ -126,6 +138,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BibliographyRoute: typeof BibliographyRoute
+  CurriculumRoute: typeof CurriculumRoute
   GlossaryRoute: typeof GlossaryRoute
   ReferenceRoute: typeof ReferenceRoute
   ApiTutorRoute: typeof ApiTutorRoute
@@ -148,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/bibliography'
       fullPath: '/bibliography'
       preLoaderRoute: typeof BibliographyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/curriculum': {
+      id: '/curriculum'
+      path: '/curriculum'
+      fullPath: '/curriculum'
+      preLoaderRoute: typeof CurriculumRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/glossary': {
@@ -198,6 +218,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BibliographyRoute: BibliographyRoute,
+  CurriculumRoute: CurriculumRoute,
   GlossaryRoute: GlossaryRoute,
   ReferenceRoute: ReferenceRoute,
   ApiTutorRoute: ApiTutorRoute,
