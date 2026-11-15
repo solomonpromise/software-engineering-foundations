@@ -49,7 +49,8 @@ ${lesson}`;
     const result = streamText({ model: xai.chat("grok-4-fast-non-reasoning"), system: instructions, messages: modelMessages, abortSignal: request.signal });
     return result.toUIMessageStreamResponse({
       onError: (e) => {
-        const m = e instanceof Error ? e.message : String(e);
+        const x = e as { message?: string; statusCode?: number; responseBody?: string };
+        const m = `${x?.statusCode ?? ""} ${x?.message ?? String(e)} ${x?.responseBody ?? ""}`;
         if (/401|403|invalid|incorrect|api key/i.test(m)) return "Your Grok key was rejected. Check it in tutor settings.";
         if (/429|rate|credit|quota/i.test(m)) return "Your Grok key has hit its limit — wait a bit or check your xAI credits.";
         return "Grok couldn't answer just now. Please try again.";
