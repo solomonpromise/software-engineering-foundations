@@ -31,8 +31,8 @@ function Home() {
     <div className="min-h-screen">
       <SiteHeader />
       <section className="relative overflow-hidden bg-primary text-primary-foreground">
-        <img src={heroImg} alt="A builder planning an app's frontend, backend and database in a notebook beside a laptop with an AI assistant" width={1600} height={1008} className="absolute inset-0 h-full w-full object-cover opacity-35" />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/85 to-primary/30" />
+        <img src={heroImg} alt="A builder planning an app's frontend, backend and database in a notebook beside a laptop with an AI assistant" width={1600} height={1008} className="absolute inset-0 h-full w-full object-cover opacity-60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent" />
         <div className="relative mx-auto max-w-6xl px-5 pb-24 pt-20 md:pb-32 md:pt-28">
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-brass">Free course · No experience needed</p>
           <h1 className="mt-5 max-w-3xl font-serif text-5xl leading-[1.05] md:text-7xl">
