@@ -74,7 +74,7 @@ function ProjectPage() {
         </div>
 
         <Link to="/taskboard" className="mt-6 flex items-center justify-between gap-4 rounded-xl border border-brass bg-secondary/50 p-4 hover:bg-secondary">
-          <span><span className="block font-semibold">Try Taskboard in your browser</span><span className="text-sm text-muted-foreground">A working demo with labels showing which lesson explains each part.</span></span>
+          <span><span className="block font-semibold">Run the real Taskboard</span><span className="text-sm text-muted-foreground">Open it in your browser with one click, or on your own computer.</span></span>
           <ArrowRight className="size-5 shrink-0 text-primary" />
         </Link>
 
