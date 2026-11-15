@@ -154,7 +154,7 @@ function Lesson() {
         <div className="lesson-prose mt-10">
           {c.sections.map((s, si) => (
             <section key={s.heading} id={ids[si]} className="scroll-mt-24">
-              {inline[si - 1] && si > 0 && <FigureBlock {...inline[si - 1]!} />}
+              {inline[si - 1] && si > 0 && <FigureBlock {...inline[si - 1]!} context={c.title} />}
               <h2>{s.heading}</h2>
               {s.paragraphs.map((p, i) => <Para key={i} text={p} />)}
               {s.bullets && s.bullets.length > 0 && <ul>{s.bullets.map((b) => <li key={b}>{b}</li>)}</ul>}
