@@ -21,8 +21,8 @@ export const appearanceBootScript = `try{var a=JSON.parse(localStorage.getItem("
 
 function apply(a: Appearance) {
   const el = document.documentElement;
-  if (a.theme === "forest") delete el.dataset.theme; else el.dataset.theme = a.theme;
-  if (a.size === "normal") delete el.dataset.size; else el.dataset.size = a.size;
+  if (a.theme === "forest") delete el.dataset["theme"]; else el.dataset["theme"] = a.theme;
+  if (a.size === "normal") delete el.dataset["size"]; else el.dataset["size"] = a.size;
 }
 
 export function useAppearance() {
