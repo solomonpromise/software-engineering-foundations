@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, CheckCircle2, Circle, BookOpen } from "lucide-react";
+import { ArrowRight, CheckCircle2, Circle, Layers, AppWindow, Workflow, ClipboardList, Network, Bot, Rocket } from "lucide-react";
+import heroImg from "@/assets/landing-hero.jpg";
+
+const conceptIcons = [AppWindow, Workflow, ClipboardList, Network, Bot, Rocket];
 import { useProgress, resetProgress } from "@/lib/progress";
 import { parts, chapters } from "@/content/lessons";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
@@ -27,33 +30,53 @@ function Home() {
   return (
     <div className="min-h-screen">
       <SiteHeader />
-      <section className="mx-auto max-w-6xl px-5 pb-20 pt-20 md:pt-28">
-        <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent">Free course · No experience needed</p>
-        <h1 className="mt-5 max-w-4xl font-serif text-5xl leading-[1.05] md:text-7xl">
-          You can build apps with AI. <span className="italic text-primary">Now understand them.</span>
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-          {chapters.length || 34} plain-language lessons that take you from your first idea to a live, maintained product — so you can judge what AI builds for you, not just hope it works.
-        </p>
-        <div className="mt-10 flex flex-wrap items-center gap-4">
-        <Link to="/start/$slug" params={{ slug: "about" }} className="rounded-full border border-primary px-7 py-4 font-semibold text-primary">Start here</Link>
-        {first && (
-          <Link to="/learn/$slug" params={{ slug: first.slug }} className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-4 font-semibold text-primary-foreground transition hover:gap-4">
-            Start lesson 1 <ArrowRight className="size-4" />
-          </Link>
-        )}
+      <section className="relative overflow-hidden bg-primary text-primary-foreground">
+        <img src={heroImg} alt="A builder planning an app's frontend, backend and database in a notebook beside a laptop with an AI assistant" width={1600} height={1008} className="absolute inset-0 h-full w-full object-cover opacity-35" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/85 to-primary/30" />
+        <div className="relative mx-auto max-w-6xl px-5 pb-24 pt-20 md:pb-32 md:pt-28">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-brass">Free course · No experience needed</p>
+          <h1 className="mt-5 max-w-3xl font-serif text-5xl leading-[1.05] md:text-7xl">
+            You can build apps with AI. <span className="italic text-brass">Now understand them.</span>
+          </h1>
+          <p className="mt-6 max-w-xl text-lg text-primary-foreground/85">
+            {chapters.length} plain-language lessons that take you from your first idea to a live, maintained product — so you can judge what AI builds for you, not just hope it works.
+          </p>
+          <div className="mt-10 flex flex-wrap items-center gap-4">
+            {first && (
+              <Link to="/learn/$slug" params={{ slug: (started && resume ? resume : first).slug }} className="inline-flex items-center gap-2 rounded-full bg-brass px-7 py-4 font-semibold text-primary transition hover:gap-4">
+                {started && resume ? `Continue · Lesson ${resume.number}` : "Start lesson 1"} <ArrowRight className="size-4" />
+              </Link>
+            )}
+            <Link to="/start/$slug" params={{ slug: "about" }} className="rounded-full border border-primary-foreground/40 px-7 py-4 font-semibold hover:bg-primary-foreground/10">How the course works</Link>
+          </div>
+          {started && <p className="mt-6 text-sm text-primary-foreground/70">{done.length} of {chapters.length} lessons finished</p>}
         </div>
-        {started && resume && (
-          <Link to="/learn/$slug" params={{ slug: resume.slug }} className="group mt-12 flex max-w-2xl items-center gap-5 rounded-2xl border border-border bg-card p-5 shadow-sm transition hover:border-primary">
-            <BookOpen className="size-8 shrink-0 text-accent" />
-            <div className="flex-1">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">Continue reading · {done.length} of {chapters.length} done</p>
-              <p className="mt-1 font-serif text-xl group-hover:text-primary">Lesson {resume.number}: {resume.title}</p>
-              <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-accent" style={{ width: `${(done.length / chapters.length) * 100}%` }} /></div>
-            </div>
-            <ArrowRight className="size-5 transition group-hover:translate-x-1" />
-          </Link>
-        )}
+      </section>
+
+      <section className="mx-auto max-w-6xl px-5 py-20">
+        <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent">What you'll understand</p>
+        <h2 className="mt-3 max-w-2xl font-serif text-4xl">Six ideas every builder needs before trusting AI with their product.</h2>
+        <div className="mt-12 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+          {parts.map((p, i) => {
+            const Icon = conceptIcons[i] ?? Layers;
+            return (
+              <a key={p.number} href="#curriculum" className="group bg-card p-7 transition hover:bg-secondary/50">
+                <div className="flex items-center justify-between">
+                  <Icon className="size-7 text-accent" />
+                  <span className="font-serif text-3xl text-brass">0{p.number}</span>
+                </div>
+                <h3 className="mt-5 font-serif text-2xl group-hover:text-primary">{p.title}</h3>
+                <p className="mt-2 italic text-muted-foreground">{p.question}</p>
+                <p className="mt-4 text-sm text-muted-foreground">{p.chapters.length} lessons · Project: {p.project.title}</p>
+              </a>
+            );
+          })}
+        </div>
+        <div className="mt-14 grid gap-8 md:grid-cols-3">
+          {[["Plain language","Every idea explained without jargon, with everyday examples."],["Learn by building","Each part ends with a hands-on project you can do with AI."],["Ask the tutor","Stuck? Ask questions about any lesson and get answers grounded in it."]].map(([t,d]) => (
+            <div key={t} className="border-t-2 border-brass pt-4"><h3 className="font-serif text-xl">{t}</h3><p className="mt-1 text-muted-foreground">{d}</p></div>
+          ))}
+        </div>
       </section>
 
       <section id="curriculum" className="border-t border-border bg-card">
