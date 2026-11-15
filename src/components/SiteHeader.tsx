@@ -15,8 +15,8 @@ const links = [
 function Wordmark() {
   return (
     <Link to="/" className="flex items-center gap-3">
-      <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-header-accent text-header ring-1 ring-header-foreground/25">
-        <img src={logoAsset.url} alt="" className="size-8" />
+      <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-header-accent text-header ring-1 ring-header-foreground/25">
+        <img src={logoAsset.url} alt="" className="size-9" />
       </span>
       <span className="leading-none">
         <span className="block font-serif text-xl">Software Foundations</span>
