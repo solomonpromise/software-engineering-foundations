@@ -12,6 +12,7 @@ const links = [
   { to: "/reference", label: "Reference", match: "/reference" },
   { to: "/glossary", label: "Glossary", match: "/glossary" },
   { to: "/taskboard", label: "Taskboard", match: "/taskboard" },
+  { to: "/about", label: "About", match: "/about" },
 ] as const;
 
 function Wordmark() {
@@ -100,7 +101,8 @@ export function SiteHeader() {
 export function SiteFooter() {
   return (
     <footer className="border-t border-border py-10 text-center text-sm text-muted-foreground">
-      Free to learn, forever. Based on <em>Software Foundations for Vibe Coders</em> by Solomon Promise.
+      Free to learn, forever. Based on <em>Software Foundations for Vibe Coders</em> by{" "}
+      <Link to="/about" className="underline underline-offset-2 hover:text-foreground">Solomon Promise</Link>.
     </footer>
   );
 }
