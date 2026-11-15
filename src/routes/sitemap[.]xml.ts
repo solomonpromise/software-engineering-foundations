@@ -10,7 +10,7 @@ export const Route = createFileRoute("/sitemap.xml")({
     handlers: {
       GET: () => {
         const paths = [
-          "/", "/curriculum", "/reference", "/glossary", "/bibliography", "/taskboard", "/certificate",
+          "/", "/curriculum", "/reference", "/glossary", "/bibliography", "/taskboard", "/certificate", "/about",
           ...introPages.map((p) => `/start/${p.slug}`),
           ...chapters.map((c) => `/learn/${c.slug}`),
           ...appendices.map((a) => `/reference/${a.slug}`),

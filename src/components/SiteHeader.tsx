@@ -12,6 +12,7 @@ const links = [
   { to: "/reference", label: "Reference", match: "/reference" },
   { to: "/glossary", label: "Glossary", match: "/glossary" },
   { to: "/taskboard", label: "Taskboard", match: "/taskboard" },
+  { to: "/about", label: "About", match: "/about" },
 ] as const;
 
 function Wordmark() {
