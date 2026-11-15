@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, CheckCircle2, Circle, Layers, AppWindow, Workflow, ClipboardList, Network, Bot, Rocket } from "lucide-react";
+import { ArrowRight, Layers, AppWindow, Workflow, ClipboardList, Network, Bot, Rocket } from "lucide-react";
 import heroImg from "@/assets/landing-hero.jpg";
 
 const conceptIcons = [AppWindow, Workflow, ClipboardList, Network, Bot, Rocket];
-import { useProgress, resetProgress } from "@/lib/progress";
+import { useProgress } from "@/lib/progress";
 import { parts, chapters } from "@/content/lessons";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
@@ -60,7 +60,7 @@ function Home() {
           {parts.map((p, i) => {
             const Icon = conceptIcons[i] ?? Layers;
             return (
-              <a key={p.number} href="#curriculum" className="group bg-card p-7 transition hover:bg-secondary/50">
+              <Link key={p.number} to="/curriculum" hash={`part-${p.number}`} className="group bg-card p-7 transition hover:bg-secondary/50">
                 <div className="flex items-center justify-between">
                   <Icon className="size-7 text-accent" />
                   <span className="font-serif text-3xl text-brass">0{p.number}</span>
@@ -68,7 +68,7 @@ function Home() {
                 <h3 className="mt-5 font-serif text-2xl group-hover:text-primary">{p.title}</h3>
                 <p className="mt-2 italic text-muted-foreground">{p.question}</p>
                 <p className="mt-4 text-sm text-muted-foreground">{p.chapters.length} lessons · Project: {p.project.title}</p>
-              </a>
+              </Link>
             );
           })}
         </div>
@@ -79,40 +79,10 @@ function Home() {
         </div>
       </section>
 
-      <section id="curriculum" className="border-t border-border bg-card">
-        <div className="mx-auto max-w-6xl px-5 py-20">
-          <h2 className="font-serif text-4xl">The curriculum</h2>
-          <p className="mt-2 text-muted-foreground">Six parts. Each answers one big question and ends with a hands-on project.</p>
-          <div className="mt-12 space-y-14">
-            {parts.map((p) => (
-              <div key={p.number} className="grid gap-6 md:grid-cols-[260px_1fr]">
-                <div>
-                  <p className="font-serif text-6xl text-accent">0{p.number}</p>
-                  <h3 className="mt-2 font-serif text-2xl">{p.title}</h3>
-                  <p className="mt-2 text-sm italic text-muted-foreground">{p.question}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">{p.intro}</p>
-                  <ul className="mt-5 divide-y divide-border border-y border-border">
-                    {p.chapters.map((c) => (
-                      <li key={c.slug}>
-                        <Link to="/learn/$slug" params={{ slug: c.slug }} className="group flex items-baseline gap-4 py-3">
-                          {doneSet.has(c.slug) ? <CheckCircle2 className="size-4 shrink-0 translate-y-0.5 text-accent" aria-label="Finished" /> : <Circle className="size-4 shrink-0 translate-y-0.5 text-muted-foreground/60" />}
-                          <span className="w-6 font-mono text-xs text-muted-foreground">{String(c.number).padStart(2, "0")}</span>
-                          <span className="flex-1 font-medium group-hover:text-primary">{c.title}</span>
-                          <ArrowRight className="size-4 opacity-0 transition group-hover:opacity-100" />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="mt-3 text-xs text-muted-foreground">{p.chapters.filter((c) => doneSet.has(c.slug)).length} of {p.chapters.length} finished</p>
-                  <p className="mt-1 text-sm"><span className="font-semibold text-accent">Project:</span> {p.project.title}</p>
-                </div>
-              </div>
-            ))}
-            {done.length > 0 && <button onClick={() => confirm("Clear all your reading progress?") && resetProgress()} className="text-sm text-muted-foreground underline">Reset my progress</button>}
-            {parts.length === 0 && <p className="text-muted-foreground">Lessons are being prepared…</p>}
-          </div>
+      <section className="border-t border-border bg-card">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-6 px-5 py-14">
+          <div><h2 className="font-serif text-3xl">Ready to see every lesson?</h2><p className="mt-1 text-muted-foreground">All {chapters.length} lessons, grouped into six parts, with your progress.</p></div>
+          <Link to="/curriculum" className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-4 font-semibold text-primary-foreground transition hover:gap-4">View the curriculum <ArrowRight className="size-4" /></Link>
         </div>
       </section>
       <SiteFooter />

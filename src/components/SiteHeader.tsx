@@ -6,7 +6,7 @@ import { chapters } from "@/content/lessons";
 
 const links = [
   { to: "/start/$slug", params: { slug: "about" }, label: "Start here" },
-  { to: "/", hash: "curriculum", label: "Curriculum" },
+  { to: "/curriculum", label: "Curriculum" },
   { to: "/reference", label: "Reference" },
   { to: "/glossary", label: "Glossary" },
 ] as const;
@@ -33,9 +33,9 @@ export function SiteHeader() {
         <Link to="/" className="font-serif text-xl">Software Foundations<span className="text-accent">.</span></Link>
         <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
           {links.map((l) => (
-            <Link key={l.label} {...(l as any)} className="hover:text-foreground" activeOptions={{ includeHash: true }}>{l.label}</Link>
+            <Link key={l.label} {...(l as any)} className="hover:text-foreground">{l.label}</Link>
           ))}
-          <Link to="/" hash="curriculum" className="flex items-center gap-2 rounded-full border border-border py-1 pl-1 pr-3 hover:border-primary" title="Your progress">
+          <Link to="/curriculum" className="flex items-center gap-2 rounded-full border border-border py-1 pl-1 pr-3 hover:border-primary" title="Your progress">
             <ProgressRing /> <span className="font-medium text-foreground">{done.length}/{chapters.length}</span>
           </Link>
         </nav>
