@@ -14,6 +14,7 @@ import { Route as BibliographyRouteImport } from './routes/bibliography'
 import { Route as CurriculumRouteImport } from './routes/curriculum'
 import { Route as GlossaryRouteImport } from './routes/glossary'
 import { Route as ReferenceRouteImport } from './routes/reference'
+import { Route as TaskboardRouteImport } from './routes/taskboard'
 import { Route as ApiTutorRouteImport } from './routes/api/tutor'
 import { Route as LearnSlugRouteImport } from './routes/learn.$slug'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
@@ -43,6 +44,11 @@ const GlossaryRoute = GlossaryRouteImport.update({
 const ReferenceRoute = ReferenceRouteImport.update({
   id: '/reference',
   path: '/reference',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TaskboardRoute = TaskboardRouteImport.update({
+  id: '/taskboard',
+  path: '/taskboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiTutorRoute = ApiTutorRouteImport.update({
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
+  '/taskboard': typeof TaskboardRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
+  '/taskboard': typeof TaskboardRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
+  '/taskboard': typeof TaskboardRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/curriculum'
     | '/glossary'
     | '/reference'
+    | '/taskboard'
     | '/api/tutor'
     | '/learn/$slug'
     | '/projects/$slug'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/curriculum'
     | '/glossary'
     | '/reference'
+    | '/taskboard'
     | '/api/tutor'
     | '/learn/$slug'
     | '/projects/$slug'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/curriculum'
     | '/glossary'
     | '/reference'
+    | '/taskboard'
     | '/api/tutor'
     | '/learn/$slug'
     | '/projects/$slug'
@@ -153,6 +165,7 @@ export interface RootRouteChildren {
   CurriculumRoute: typeof CurriculumRoute
   GlossaryRoute: typeof GlossaryRoute
   ReferenceRoute: typeof ReferenceRoute
+  TaskboardRoute: typeof TaskboardRoute
   ApiTutorRoute: typeof ApiTutorRoute
   LearnSlugRoute: typeof LearnSlugRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
@@ -195,6 +208,13 @@ declare module '@tanstack/react-router' {
       path: '/reference'
       fullPath: '/reference'
       preLoaderRoute: typeof ReferenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/taskboard': {
+      id: '/taskboard'
+      path: '/taskboard'
+      fullPath: '/taskboard'
+      preLoaderRoute: typeof TaskboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/tutor': {
@@ -241,6 +261,7 @@ const rootRouteChildren: RootRouteChildren = {
   CurriculumRoute: CurriculumRoute,
   GlossaryRoute: GlossaryRoute,
   ReferenceRoute: ReferenceRoute,
+  TaskboardRoute: TaskboardRoute,
   ApiTutorRoute: ApiTutorRoute,
   LearnSlugRoute: LearnSlugRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
