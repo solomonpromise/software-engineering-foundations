@@ -105,7 +105,22 @@ function ProjectPage() {
             );
           })}
         </ol>
-        {doneSteps.size === total && <p className="mt-6 rounded-xl bg-primary p-5 font-serif text-xl text-primary-foreground">Project complete. Well done.</p>}
+        {doneSteps.size === total && doneAssessments.size < assessmentItems.length && <p className="mt-6 rounded-xl bg-secondary p-5">The build steps are ticked. Use the assessment below to check that the result really works.</p>}
+
+        <section aria-labelledby="project-assessment" className="mt-14 rounded-2xl border border-brass/50 bg-card p-6">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Project assessment</p>
+          <h2 id="project-assessment" className="mt-2 font-serif text-3xl">Check the result, not just the setup</h2>
+          <p className="mt-2 text-muted-foreground">Tick a criterion only when you can show evidence for it. These checks are saved with your course progress.</p>
+          <fieldset className="mt-5 space-y-3">
+            <legend className="sr-only">Assessment criteria for {part.project.title}</legend>
+            {assessmentItems.map((criterion, i) => {
+              const checked = doneAssessments.has(i);
+              return <label key={criterion} className={`flex cursor-pointer items-start gap-3 rounded-lg border p-4 ${checked ? "border-primary/40 bg-secondary/50" : "border-border"}`}><input type="checkbox" checked={checked} onChange={() => toggleAssessment(x.slug, i)} className="mt-1 size-4 shrink-0 accent-[var(--primary)]" /><span>{criterion}</span></label>;
+            })}
+          </fieldset>
+          <p className="mt-3 text-sm text-muted-foreground">{doneAssessments.size} of {assessmentItems.length} checks passed</p>
+        </section>
+        {doneSteps.size === total && doneAssessments.size === assessmentItems.length && <p className="mt-6 rounded-xl bg-primary p-5 font-serif text-xl text-primary-foreground">Project built and assessed. Well done.</p>}
 
         <h2 className="mt-14 font-serif text-3xl">Code and templates</h2>
         <div className="mt-6 space-y-8">

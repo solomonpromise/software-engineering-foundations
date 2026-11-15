@@ -149,6 +149,7 @@ function Lesson() {
           {isDone && <span className="inline-flex items-center gap-1.5 font-medium text-accent"><CheckCircle2 className="size-4" /> Finished</span>}
         </p>
         <p className="mt-6 border-l-4 border-accent pl-5 font-serif text-xl italic">{c.question}</p>
+        <LessonTools slug={c.slug} title={c.title} />
 
         <div className="lesson-prose mt-10">
           {c.sections.map((s, si) => (
