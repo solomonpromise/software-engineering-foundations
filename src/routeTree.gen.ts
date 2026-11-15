@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GlossaryRouteImport } from './routes/glossary'
+import { Route as ApiTutorRouteImport } from './routes/api/tutor'
 import { Route as LearnSlugRouteImport } from './routes/learn.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +24,11 @@ const GlossaryRoute = GlossaryRouteImport.update({
   path: '/glossary',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiTutorRoute = ApiTutorRouteImport.update({
+  id: '/api/tutor',
+  path: '/api/tutor',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LearnSlugRoute = LearnSlugRouteImport.update({
   id: '/learn/$slug',
   path: '/learn/$slug',
@@ -32,30 +38,34 @@ const LearnSlugRoute = LearnSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/glossary': typeof GlossaryRoute
+  '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/glossary': typeof GlossaryRoute
+  '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/glossary': typeof GlossaryRoute
+  '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/glossary' | '/learn/$slug'
+  fullPaths: '/' | '/glossary' | '/api/tutor' | '/learn/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/glossary' | '/learn/$slug'
-  id: '__root__' | '/' | '/glossary' | '/learn/$slug'
+  to: '/' | '/glossary' | '/api/tutor' | '/learn/$slug'
+  id: '__root__' | '/' | '/glossary' | '/api/tutor' | '/learn/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GlossaryRoute: typeof GlossaryRoute
+  ApiTutorRoute: typeof ApiTutorRoute
   LearnSlugRoute: typeof LearnSlugRoute
 }
 
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlossaryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/tutor': {
+      id: '/api/tutor'
+      path: '/api/tutor'
+      fullPath: '/api/tutor'
+      preLoaderRoute: typeof ApiTutorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/learn/$slug': {
       id: '/learn/$slug'
       path: '/learn/$slug'
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GlossaryRoute: GlossaryRoute,
+  ApiTutorRoute: ApiTutorRoute,
   LearnSlugRoute: LearnSlugRoute,
 }
 export const routeTree = rootRouteImport
