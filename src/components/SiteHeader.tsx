@@ -85,6 +85,7 @@ export function SiteHeader() {
               <Link
                 key={l.label}
                 {...(rest as any)}
+                aria-current={active ? "page" : undefined}
                 onClick={() => setOpen(false)}
                 className={`block border-b border-header-border py-3 font-medium ${
                   active ? "text-header-accent" : "text-header-foreground"

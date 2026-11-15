@@ -36,6 +36,8 @@ function ProjectPage() {
   const byNum = (n: number) => chapters.find((c) => c.number === n);
   const readyCount = part.chapters.filter((c) => doneLessons.has(c.slug)).length;
   const doneSteps = new Set(steps?.[x.slug] ?? []);
+  const assessmentItems = projectAssessments[partNumber] ?? [];
+  const doneAssessments = new Set(assessments?.[x.slug] ?? []);
   const total = part.project.steps.length;
   const prev = parts.find((p) => p.number === partNumber - 1);
   const next = parts.find((p) => p.number === partNumber + 1);

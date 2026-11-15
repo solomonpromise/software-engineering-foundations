@@ -23,6 +23,7 @@ export function AccountButton() {
           <p className="truncate px-2 py-1 text-xs text-muted-foreground">{user.email}</p>
           <p className="px-2 pb-2 text-xs text-muted-foreground">Your progress is saved to your account.</p>
           <Link to="/certificate" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded px-2 py-1.5 hover:bg-secondary"><Award className="size-4" /> Certificate</Link>
+          {isAdmin && <Link to="/feedback" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded px-2 py-1.5 hover:bg-secondary"><MessageSquareText className="size-4" /> Learner feedback</Link>}
           <button onClick={async () => { setOpen(false); await supabase.auth.signOut(); }} className="flex w-full items-center gap-2 rounded px-2 py-1.5 hover:bg-secondary"><LogOut className="size-4" /> Sign out</button>
         </div>
       )}
