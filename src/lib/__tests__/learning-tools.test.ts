@@ -16,6 +16,6 @@ describe("learning tools survive account merging", () => {
       { done: [], practice: { a: { answer: "my evidence", done: [0] } } },
       { done: [], practice: { a: { answer: "older", done: [1] } } },
     );
-    expect(merged.practice?.a).toEqual({ answer: "my evidence", done: [0, 1] });
+    expect(merged.practice?.["a"]).toEqual({ answer: "my evidence", done: [0, 1] });
   });
 });

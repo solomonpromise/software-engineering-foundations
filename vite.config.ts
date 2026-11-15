@@ -25,7 +25,7 @@ export default defineConfig({
         manifest: false,
         devOptions: { enabled: false },
         workbox: {
-          maximumFileSizeToCacheBytes: 5 * 1024 * 1024,
+          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
           runtimeCaching: [
             {
               urlPattern: ({ request, url }) => request.mode === "navigate" && url.origin === self.location.origin && !url.pathname.startsWith("/~oauth") && !url.pathname.startsWith("/api/"),

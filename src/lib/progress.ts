@@ -103,8 +103,9 @@ export function subscribeProgress(f: () => void) { subs.add(f); return () => { s
 export function setLast(slug: string) { const p = read(); if (p.last !== slug) write({ ...p, last: slug }); }
 /** Clear course completion without deleting the learner's notes, bookmarks or practice answers. */
 export function resetProgress() {
-  const p = read();
-  write({ ...p, done: [], last: undefined, steps: {}, assessments: {} });
+  const p = { ...read() };
+  delete p.last;
+  write({ ...p, done: [], steps: {}, assessments: {} });
 }
 export function useProgress(): Progress {
   return useSyncExternalStore(

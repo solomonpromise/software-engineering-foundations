@@ -1,6 +1,3 @@
-/// <reference types="vite-plugin-pwa/client" />
-import { registerSW } from "virtual:pwa-register";
-
 function isRefusedContext() {
   if (!import.meta.env.PROD || typeof window === "undefined") return true;
   if (window.self !== window.top) return true;
