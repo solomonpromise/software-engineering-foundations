@@ -10,18 +10,32 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BibliographyRouteImport } from './routes/bibliography'
 import { Route as GlossaryRouteImport } from './routes/glossary'
+import { Route as ReferenceRouteImport } from './routes/reference'
 import { Route as ApiTutorRouteImport } from './routes/api/tutor'
 import { Route as LearnSlugRouteImport } from './routes/learn.$slug'
+import { Route as ReferenceSlugRouteImport } from './routes/reference_.$slug'
+import { Route as StartSlugRouteImport } from './routes/start.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BibliographyRoute = BibliographyRouteImport.update({
+  id: '/bibliography',
+  path: '/bibliography',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GlossaryRoute = GlossaryRouteImport.update({
   id: '/glossary',
   path: '/glossary',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReferenceRoute = ReferenceRouteImport.update({
+  id: '/reference',
+  path: '/reference',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiTutorRoute = ApiTutorRouteImport.update({
@@ -34,39 +48,90 @@ const LearnSlugRoute = LearnSlugRouteImport.update({
   path: '/learn/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReferenceSlugRoute = ReferenceSlugRouteImport.update({
+  id: '/reference_/$slug',
+  path: '/reference/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StartSlugRoute = StartSlugRouteImport.update({
+  id: '/start/$slug',
+  path: '/start/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bibliography': typeof BibliographyRoute
   '/glossary': typeof GlossaryRoute
+  '/reference': typeof ReferenceRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
+  '/reference/$slug': typeof ReferenceSlugRoute
+  '/start/$slug': typeof StartSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bibliography': typeof BibliographyRoute
   '/glossary': typeof GlossaryRoute
+  '/reference': typeof ReferenceRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
+  '/reference/$slug': typeof ReferenceSlugRoute
+  '/start/$slug': typeof StartSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bibliography': typeof BibliographyRoute
   '/glossary': typeof GlossaryRoute
+  '/reference': typeof ReferenceRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
+  '/reference_/$slug': typeof ReferenceSlugRoute
+  '/start/$slug': typeof StartSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/glossary' | '/api/tutor' | '/learn/$slug'
+  fullPaths:
+    | '/'
+    | '/bibliography'
+    | '/glossary'
+    | '/reference'
+    | '/api/tutor'
+    | '/learn/$slug'
+    | '/reference/$slug'
+    | '/start/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/glossary' | '/api/tutor' | '/learn/$slug'
-  id: '__root__' | '/' | '/glossary' | '/api/tutor' | '/learn/$slug'
+  to:
+    | '/'
+    | '/bibliography'
+    | '/glossary'
+    | '/reference'
+    | '/api/tutor'
+    | '/learn/$slug'
+    | '/reference/$slug'
+    | '/start/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/bibliography'
+    | '/glossary'
+    | '/reference'
+    | '/api/tutor'
+    | '/learn/$slug'
+    | '/reference_/$slug'
+    | '/start/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BibliographyRoute: typeof BibliographyRoute
   GlossaryRoute: typeof GlossaryRoute
+  ReferenceRoute: typeof ReferenceRoute
   ApiTutorRoute: typeof ApiTutorRoute
   LearnSlugRoute: typeof LearnSlugRoute
+  ReferenceSlugRoute: typeof ReferenceSlugRoute
+  StartSlugRoute: typeof StartSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -78,11 +143,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bibliography': {
+      id: '/bibliography'
+      path: '/bibliography'
+      fullPath: '/bibliography'
+      preLoaderRoute: typeof BibliographyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/glossary': {
       id: '/glossary'
       path: '/glossary'
       fullPath: '/glossary'
       preLoaderRoute: typeof GlossaryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reference': {
+      id: '/reference'
+      path: '/reference'
+      fullPath: '/reference'
+      preLoaderRoute: typeof ReferenceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/tutor': {
@@ -99,14 +178,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reference_/$slug': {
+      id: '/reference_/$slug'
+      path: '/reference/$slug'
+      fullPath: '/reference/$slug'
+      preLoaderRoute: typeof ReferenceSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/start/$slug': {
+      id: '/start/$slug'
+      path: '/start/$slug'
+      fullPath: '/start/$slug'
+      preLoaderRoute: typeof StartSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BibliographyRoute: BibliographyRoute,
   GlossaryRoute: GlossaryRoute,
+  ReferenceRoute: ReferenceRoute,
   ApiTutorRoute: ApiTutorRoute,
   LearnSlugRoute: LearnSlugRoute,
+  ReferenceSlugRoute: ReferenceSlugRoute,
+  StartSlugRoute: StartSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
