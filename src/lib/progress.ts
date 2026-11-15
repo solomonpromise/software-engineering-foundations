@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from "react";
 
 const KEY = "sf:progress:v1";
-export type Progress = { done: string[]; last?: string };
+export type Progress = { done: string[]; last?: string; steps?: Record<string, number[]> };
 const EMPTY: Progress = { done: [] };
 let cache: Progress | null = null;
 const subs = new Set<() => void>();
@@ -22,6 +22,12 @@ export function markDone(slug: string, done = true) {
   const set = new Set(p.done);
   if (done) set.add(slug); else set.delete(slug);
   write({ ...p, done: [...set] });
+}
+export function toggleStep(project: string, i: number) {
+  const p = read();
+  const cur = new Set(p.steps?.[project] ?? []);
+  if (cur.has(i)) cur.delete(i); else cur.add(i);
+  write({ ...p, steps: { ...(p.steps ?? {}), [project]: [...cur] } });
 }
 export function setLast(slug: string) { const p = read(); if (p.last !== slug) write({ ...p, last: slug }); }
 export function resetProgress() { write(EMPTY); }

@@ -16,6 +16,7 @@ import { Route as GlossaryRouteImport } from './routes/glossary'
 import { Route as ReferenceRouteImport } from './routes/reference'
 import { Route as ApiTutorRouteImport } from './routes/api/tutor'
 import { Route as LearnSlugRouteImport } from './routes/learn.$slug'
+import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
 import { Route as ReferenceSlugRouteImport } from './routes/reference_.$slug'
 import { Route as StartSlugRouteImport } from './routes/start.$slug'
 
@@ -54,6 +55,11 @@ const LearnSlugRoute = LearnSlugRouteImport.update({
   path: '/learn/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
+  id: '/projects/$slug',
+  path: '/projects/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReferenceSlugRoute = ReferenceSlugRouteImport.update({
   id: '/reference_/$slug',
   path: '/reference/$slug',
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/reference': typeof ReferenceRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
   '/reference/$slug': typeof ReferenceSlugRoute
   '/start/$slug': typeof StartSlugRoute
 }
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/reference': typeof ReferenceRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
   '/reference/$slug': typeof ReferenceSlugRoute
   '/start/$slug': typeof StartSlugRoute
 }
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/reference': typeof ReferenceRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
   '/reference_/$slug': typeof ReferenceSlugRoute
   '/start/$slug': typeof StartSlugRoute
 }
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/reference'
     | '/api/tutor'
     | '/learn/$slug'
+    | '/projects/$slug'
     | '/reference/$slug'
     | '/start/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/reference'
     | '/api/tutor'
     | '/learn/$slug'
+    | '/projects/$slug'
     | '/reference/$slug'
     | '/start/$slug'
   id:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/reference'
     | '/api/tutor'
     | '/learn/$slug'
+    | '/projects/$slug'
     | '/reference_/$slug'
     | '/start/$slug'
   fileRoutesById: FileRoutesById
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   ReferenceRoute: typeof ReferenceRoute
   ApiTutorRoute: typeof ApiTutorRoute
   LearnSlugRoute: typeof LearnSlugRoute
+  ProjectsSlugRoute: typeof ProjectsSlugRoute
   ReferenceSlugRoute: typeof ReferenceSlugRoute
   StartSlugRoute: typeof StartSlugRoute
 }
@@ -198,6 +211,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/projects/$slug': {
+      id: '/projects/$slug'
+      path: '/projects/$slug'
+      fullPath: '/projects/$slug'
+      preLoaderRoute: typeof ProjectsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reference_/$slug': {
       id: '/reference_/$slug'
       path: '/reference/$slug'
@@ -223,6 +243,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReferenceRoute: ReferenceRoute,
   ApiTutorRoute: ApiTutorRoute,
   LearnSlugRoute: LearnSlugRoute,
+  ProjectsSlugRoute: ProjectsSlugRoute,
   ReferenceSlugRoute: ReferenceSlugRoute,
   StartSlugRoute: StartSlugRoute,
 }

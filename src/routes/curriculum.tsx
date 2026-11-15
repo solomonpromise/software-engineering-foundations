@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Flag } from "lucide-react";
 import { useProgress, resetProgress } from "@/lib/progress";
 import { parts, chapters } from "@/content/lessons";
+import { projectSlug } from "./projects.$slug";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
 export const Route = createFileRoute("/curriculum")({
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/curriculum")({
 });
 
 function Curriculum() {
-  const { done, last } = useProgress();
+  const { done, last, steps } = useProgress();
   const doneSet = new Set(done);
   const total = chapters.length;
   return (
@@ -63,7 +64,7 @@ function Curriculum() {
                   })}
                   <li className="relative">
                     <span className="absolute -left-[3.05rem] top-3 flex size-8 items-center justify-center rounded-full border-2 border-brass bg-brass text-primary"><Flag className="size-4" /></span>
-                    <div className="rounded-xl bg-secondary/60 p-4"><p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Part project</p><p className="font-semibold">{p.project.title}</p></div>
+                    <Link to="/projects/$slug" params={{ slug: projectSlug(p.number) }} className="group flex items-center gap-4 rounded-xl bg-secondary/60 p-4 transition hover:bg-secondary"><div className="flex-1"><p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Part project · {(steps?.[projectSlug(p.number)] ?? []).length} of {p.project.steps.length} steps</p><p className="font-semibold group-hover:text-primary">{p.project.title}</p></div><span className="inline-flex items-center gap-1 text-sm font-semibold text-primary">Open <ArrowRight className="size-4" /></span></Link>
                   </li>
                 </ol>
               </div>
