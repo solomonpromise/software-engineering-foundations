@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { findChapter } from "@/content/lessons";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
+import { LessonTutor } from "@/components/LessonTutor";
 
 export const Route = createFileRoute("/learn/$slug")({
   loader: ({ params }) => {
@@ -102,6 +103,7 @@ function Lesson() {
           )}
         </nav>
       </article>
+      <LessonTutor slug={c.slug} title={c.title} />
       <SiteFooter />
     </div>
   );
