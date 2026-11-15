@@ -48,7 +48,7 @@ function TaskboardPage() {
         <h1 className="mt-2 font-serif text-5xl">Taskboard</h1>
         <p className="mt-3 max-w-2xl text-lg text-muted-foreground">A simple, reliable task tracker built with FastAPI and React. Every idea in the course — the data model, API, sign-in, tests, deployment and backups — exists in it as real, working code.</p>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-2">
+        <div className="mt-10 grid gap-5 md:grid-cols-2 [&>*]:min-w-0">
           <div className="rounded-2xl border border-brass bg-card p-6 shadow-sm">
             <Cloud className="size-6 text-accent" />
             <h2 className="mt-3 font-serif text-2xl">Run it in your browser</h2>
