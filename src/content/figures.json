@@ -75,7 +75,7 @@
   },
   {
    "url": "/__l5e/assets-v1/726dfeee-0e7c-4809-90e1-3737333c51df/turning-requirements-into-a-design-2.jpg",
-   "caption": "shows the shape of Taskboard's",
+   "caption": "",
    "hero": false
   }
  ],
@@ -94,7 +94,7 @@
   },
   {
    "url": "/__l5e/assets-v1/dc750153-dd93-42ba-8334-687ac917f77d/choosing-languages-frameworks-and-services-2.jpg",
-   "caption": "A weighted decision matrix inside an architecture decision record",
+   "caption": "",
    "hero": false
   }
  ],
@@ -106,7 +106,7 @@
   },
   {
    "url": "/__l5e/assets-v1/04868e50-c5aa-4ed7-9cef-2c77d1727abf/designing-data-and-integrations-2.jpg",
-   "caption": "A small API contract",
+   "caption": "",
    "hero": false
   }
  ],
@@ -177,7 +177,7 @@
   },
   {
    "url": "/__l5e/assets-v1/ef17f59e-7751-4440-a23b-5061633df0d7/understanding-deployment-and-hosting-2.jpg",
-   "caption": "A typical hosting platform dashboard",
+   "caption": "",
    "hero": false
   }
  ],
@@ -222,7 +222,7 @@
   },
   {
    "url": "/__l5e/assets-v1/ab568c2e-9290-4a06-a2e3-ae530bb6dda8/programming-foundations-2.jpg",
-   "caption": "Source code is translated and executed by a compiler or runtime before the processor can carry it out",
+   "caption": "",
    "hero": false
   },
   {
@@ -239,7 +239,7 @@
   },
   {
    "url": "/__l5e/assets-v1/f1ca7454-e042-4a3a-8ec1-7a6ab773dc00/the-frontend-and-user-interface-2.jpg",
-   "caption": "puts these parts together on a real screen",
+   "caption": "",
    "hero": false
   },
   {
@@ -256,7 +256,7 @@
   },
   {
    "url": "/__l5e/assets-v1/389d95b8-1255-4fc1-a1bd-bf7358515bf9/the-backend-and-application-logic-2.jpg",
-   "caption": "Backend code runs on servers like these, in data centres you rarely see",
+   "caption": "",
    "hero": false
   }
  ],
@@ -268,7 +268,7 @@
   },
   {
    "url": "/__l5e/assets-v1/56298d64-7fd0-4b37-ac87-d67b8494bab9/networks-http-and-apis-2.jpg",
-   "caption": "The parts of a URL",
+   "caption": "",
    "hero": false
   },
   {
@@ -290,7 +290,7 @@
   },
   {
    "url": "/__l5e/assets-v1/bd348c85-ca81-4b16-b67f-1400e5dd0727/databases-and-persistent-storage-2.jpg",
-   "caption": "A database table looks a little like a spreadsheet, but with strict rules about what each column may contain and how tables connect",
+   "caption": "",
    "hero": false
   },
   {
@@ -319,7 +319,7 @@
   },
   {
    "url": "/__l5e/assets-v1/6e77fca7-26f3-4afd-85d4-67231879220f/users-authentication-and-permissions-3.jpg",
-   "caption": "Taskboard's sign-in screen",
+   "caption": "",
    "hero": false
   },
   {
@@ -367,7 +367,7 @@
   },
   {
    "url": "/__l5e/assets-v1/12a00247-3ca3-47bf-bc89-143e0eb2671e/working-with-git-and-other-contributors-2.jpg",
-   "caption": "A feature branch splits from main , gathers its own commits, and is merged back after review",
+   "caption": "",
    "hero": false
   }
  ],

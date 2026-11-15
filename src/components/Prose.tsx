@@ -29,8 +29,8 @@ export function SectionBlock({ s }: { s: XSection }) {
 export function FigureBlock({ url, caption }: { url: string; caption: string }) {
   return (
     <figure className="my-10">
-      <img src={url} alt={caption} loading="lazy" className="w-full rounded-lg" />
-      <figcaption className="mt-2 text-sm text-muted-foreground">{caption}</figcaption>
+      <img src={url} alt={caption || "Lesson illustration"} loading="lazy" className="w-full rounded-lg" />
+      {caption && <figcaption className="mt-2 text-sm text-muted-foreground">{caption}</figcaption>}
     </figure>
   );
 }
