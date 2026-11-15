@@ -23,5 +23,6 @@ async function unregisterAppWorkers() {
 /** The only app-shell service-worker registrar. Preview, development and ?sw=off always opt out. */
 export function registerOfflineReading() {
   if (isRefusedContext()) { void unregisterAppWorkers(); return; }
-  registerSW({ immediate: true });
+  if (!("serviceWorker" in navigator)) return;
+  void navigator.serviceWorker.register("/sw.js").catch(() => { /* Offline support remains optional. */ });
 }
