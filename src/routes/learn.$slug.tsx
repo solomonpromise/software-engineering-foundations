@@ -3,6 +3,8 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { findChapter } from "@/content/lessons";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
+import { figuresFor } from "@/content/extras";
+import { FigureBlock } from "@/components/Prose";
 import { LessonTutor } from "@/components/LessonTutor";
 
 export const Route = createFileRoute("/learn/$slug")({
@@ -53,18 +55,23 @@ function Check({ q, a }: { q: string; a: string }) {
 
 function Lesson() {
   const { chapter: c, prev, next } = Route.useLoaderData();
+  const figs = figuresFor(c.slug);
+  const hero = figs.find((f) => f.hero);
+  const inline = figs.filter((f) => !f.hero);
   return (
     <div className="min-h-screen">
       <SiteHeader />
       <article className="mx-auto max-w-3xl px-5 py-16">
         <Link to="/" hash="curriculum" className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Part {c.part.number} · {c.part.title}</Link>
+        {hero && <img src={hero.url} alt={c.title} className="mt-6 aspect-[21/9] w-full rounded-xl object-cover" />}
         <p className="mt-6 font-serif text-7xl text-primary/20">{String(c.number).padStart(2, "0")}</p>
         <h1 className="font-serif text-4xl leading-tight md:text-5xl">{c.title}</h1>
         <p className="mt-6 border-l-4 border-accent pl-5 font-serif text-xl italic">{c.question}</p>
 
         <div className="lesson-prose mt-10">
-          {c.sections.map((s) => (
+          {c.sections.map((s, si) => (
             <section key={s.heading}>
+              {inline[si - 1] && si > 0 && <FigureBlock {...inline[si - 1]!} />}
               <h2>{s.heading}</h2>
               {s.paragraphs.map((p, i) => <Para key={i} text={p} />)}
               {s.bullets && s.bullets.length > 0 && <ul>{s.bullets.map((b) => <li key={b}>{b}</li>)}</ul>}

@@ -1,0 +1,1048 @@
+{
+  "intro": [
+    {
+      "slug": "about",
+      "title": "About this course",
+      "sections": [
+        {
+          "heading": "Build understanding, not just a working screen",
+          "paragraphs": [
+            "AI can turn a description into code quickly, but a convincing demo does not tell you whether the data is protected, failures are handled, or future changes will be safe. This free course helps you examine those decisions rather than leave them to a coding tool.",
+            "Andrej Karpathy popularised the term vibe coding in February 2025 for building by telling AI what you want. Here, the aim is to combine that speed with enough software knowledge to judge and maintain the result—not to promise instant engineering expertise."
+          ]
+        },
+        {
+          "heading": "Who should take this course",
+          "paragraphs": [
+            "This course is for newcomers to software development, especially people already experimenting with AI-built applications. You do not need a computing degree; curiosity and a willingness to investigate are more useful starting points."
+          ]
+        },
+        {
+          "heading": "What you will learn to do",
+          "paragraphs": [],
+          "bullets": [
+            "Trace a user action from the interface through server logic to stored data.",
+            "Find your way around source files, configuration, repository history and project documentation.",
+            "Explain simple design choices and their compromises.",
+            "Give AI small, well-scoped tasks whose results you can review.",
+            "Check behaviour with tests, code review and systematic debugging.",
+            "Release an application and keep it secure, usable and dependable."
+          ]
+        },
+        {
+          "heading": "The central principle",
+          "paragraphs": [
+            "Generating code faster makes checking it more important, not less. You remain responsible for understanding whether the software does the right thing."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "how-it-works",
+      "title": "How each lesson works",
+      "sections": [
+        {
+          "heading": "A repeatable six-step approach",
+          "paragraphs": [],
+          "bullets": [
+            "Begin with a practical question: establish the problem before learning the terminology.",
+            "Unpack the idea in everyday language, using a diagram when helpful.",
+            "Locate the idea in Taskboard, the running example.",
+            "Follow a worked scenario in manageable steps.",
+            "Compare common beginner errors with mistakes AI may introduce.",
+            "Try an exercise, then check your understanding."
+          ]
+        },
+        {
+          "heading": "Meet Taskboard",
+          "paragraphs": [
+            "Taskboard is a deliberately modest task tracker: users create accounts, add tasks, assign due dates and mark work complete. Its familiar features let us study accounts, APIs, data storage, access rules, testing and operations without an unusual product getting in the way.",
+            "We start by defining its purpose and users, then explore its internals, make design choices, implement features and prepare it for ongoing use."
+          ]
+        },
+        {
+          "heading": "What the callouts mean",
+          "paragraphs": [],
+          "bullets": [
+            "Key idea: a principle worth pausing to remember.",
+            "In Taskboard (blue): how the topic appears in the example application.",
+            "Walkthrough (grey): a guided example with successive steps.",
+            "Common mistakes (amber): traps people frequently fall into.",
+            "When AI gets it wrong (red): unreliable generated suggestions and ways to detect them."
+          ]
+        },
+        {
+          "heading": "Learn with an AI assistant",
+          "paragraphs": [],
+          "bullets": [
+            "Attempt exercises before asking AI to critique your reasoning.",
+            "Ask for explanations of why a choice makes sense, rather than only requesting code.",
+            "Compare answers with the lesson and actual code; investigate disagreements instead of trusting confident language.",
+            "Keep your own vocabulary list alongside each part’s glossary."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "how-to-use",
+      "title": "How to use this course",
+      "sections": [
+        {
+          "heading": "What to have ready",
+          "paragraphs": [
+            "You should be comfortable installing applications, have tried an AI assistant, and be willing to enter explained terminal commands. Prior programming is not required: lesson 5 introduces reading code, and unfamiliar terms are explained as they arise.",
+            "Use a computer, a free editor such as VS Code, Git and an AI assistant or coding agent. The learning route does not require paid services. Exercises involving hosting, charges or real user information identify that risk and provide a free or local option."
+          ]
+        },
+        {
+          "heading": "Choose your project",
+          "paragraphs": [
+            "You can apply the lessons to your own idea, beginning with an application brief in Part 1, or build and explore Taskboard. The complete working example, including tests and documentation, is at https://github.com/solomonpromise/taskboard and can run locally without a hosting account.",
+            "Teaching examples simplify the screens and code. For their counterparts in the full application, consult docs/book-map.md in the repository. You can implement Taskboard from the brief, design pack and lesson 25 task format, or study the existing implementation as you learn."
+          ]
+        },
+        {
+          "heading": "Choose a starting route",
+          "paragraphs": [],
+          "bullets": [
+            "For a first prototype, focus on lessons 1–3, 5–15, 17 and 24–28. These are the essential lessons marked with a star in the roadmap.",
+            "Then cover lessons 4, 16, 18–23, 29 and 30–34 to deepen design, delivery and maintenance skills. Complete this material before releasing to real users.",
+            "Start at the beginning if the vocabulary is unfamiliar; revisit the reference appendices whenever a command or file type interrupts your progress."
+          ]
+        },
+        {
+          "heading": "Working safely and working alone",
+          "paragraphs": [
+            "Warnings identify exercises that touch external services, money or real data. Choose the local alternative when you do not need those risks. Where a workflow normally involves another reviewer or an approval, use the suggested self-review approach; a team is not a prerequisite."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "roadmap",
+      "title": "The roadmap",
+      "sections": [
+        {
+          "heading": "Part 1: Understand software applications",
+          "paragraphs": [
+            "Lessons 1–4 explore software categories, user problems, requirements and the development lifecycle.",
+            "Practical outcome: Define who the application serves and produce an application brief."
+          ]
+        },
+        {
+          "heading": "Part 2: Understand how applications work",
+          "paragraphs": [
+            "Lessons 5–12 connect programming, interfaces, backend logic, HTTP, APIs, databases, data models and account permissions.",
+            "Practical outcome: Trace an action through your application and draw how its pieces communicate."
+          ]
+        },
+        {
+          "heading": "Part 3: Understand the project",
+          "paragraphs": [
+            "Lessons 13–18 cover folders, repositories, Git collaboration, environments, dependencies, secrets and documentation.",
+            "Practical outcome: Set up a project, explain its organisation and make a controlled change."
+          ]
+        },
+        {
+          "heading": "Part 4: Make design and architecture decisions",
+          "paragraphs": [
+            "Lessons 19–23 turn requirements into boundaries, technology choices, data and integration designs, and quality trade-offs.",
+            "Practical outcome: Create a design pack that explains the structure and the reasons behind it."
+          ]
+        },
+        {
+          "heading": "Part 5: Build with AI",
+          "paragraphs": [
+            "Lessons 24–29 cover coding tools, task preparation, incremental implementation, generated-code review, testing and debugging.",
+            "Practical outcome: Deliver and verify the first genuinely useful version."
+          ]
+        },
+        {
+          "heading": "Part 6: Ship and maintain software",
+          "paragraphs": [
+            "Lessons 30–34 address hosting, releases, production visibility, recovery, data protection and ongoing change.",
+            "Practical outcome: Deploy the application and write a practical maintenance guide."
+          ]
+        },
+        {
+          "heading": "Consolidate each stage",
+          "paragraphs": [
+            "Each part closes with a project, a glossary and answers for checking your work. The appendices provide quick references, reusable planning formats, review lists and directions for further learning."
+          ]
+        }
+      ]
+    }
+  ],
+  "appendices": [
+    {
+      "letter": "A",
+      "slug": "project-files",
+      "title": "Common project files",
+      "intro": "Use this guide to recognise common repository contents and decide what belongs in version control.",
+      "sections": [
+        {
+          "heading": "Files, folders and version control",
+          "paragraphs": [],
+          "table": {
+            "columns": [
+              "Path or pattern",
+              "Role",
+              "Commit?"
+            ],
+            "rows": [
+              [
+                "README.md",
+                "Project overview and setup instructions",
+                "Yes"
+              ],
+              [
+                "AGENTS.md; CLAUDE.md",
+                "Shared instructions for AI development tools",
+                "Yes"
+              ],
+              [
+                "docs/",
+                "Design notes, architectural decisions and operational guides",
+                "Yes"
+              ],
+              [
+                "src/; app/; lib/",
+                "Application source",
+                "Yes"
+              ],
+              [
+                "tests/; *.test.ts; test_*.py",
+                "Automated checks",
+                "Yes"
+              ],
+              [
+                "migrations/",
+                "Ordered changes to the database schema",
+                "Yes"
+              ],
+              [
+                "package.json; pyproject.toml; requirements.txt",
+                "Declared dependencies and project or script configuration",
+                "Yes"
+              ],
+              [
+                "package-lock.json; pnpm-lock.yaml; poetry.lock; uv.lock",
+                "Locked dependency versions for repeatable installation",
+                "Yes"
+              ],
+              [
+                ".env.example",
+                "Setting names and safe example values, never credentials",
+                "Yes"
+              ],
+              [
+                ".env; .env.local",
+                "Private local configuration, potentially including secrets",
+                "No"
+              ],
+              [
+                ".gitignore",
+                "Rules for excluding untracked files from Git",
+                "Yes"
+              ],
+              [
+                ".github/workflows/; .gitlab-ci.yml",
+                "Automated integration and delivery jobs",
+                "Yes"
+              ],
+              [
+                "Dockerfile; docker-compose.yml",
+                "Container image instructions and local service setup",
+                "Yes"
+              ],
+              [
+                ".nvmrc; .python-version",
+                "Expected language runtime version",
+                "Yes"
+              ],
+              [
+                "tsconfig.json; *.config.js; .eslintrc",
+                "Compiler and development-tool settings",
+                "Yes"
+              ],
+              [
+                "node_modules/; .venv/",
+                "Locally installed packages",
+                "No"
+              ],
+              [
+                "dist/; build/; .next/; __pycache__/",
+                "Generated output or caches",
+                "No"
+              ],
+              [
+                "*.sqlite; *.log; uploads/",
+                "Local databases, logs and uploaded content",
+                "No"
+              ],
+              [
+                "LICENSE",
+                "Permission and conditions for reuse",
+                "Yes"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Keep private and generated files out",
+          "paragraphs": [
+            "The commit guidance describes ordinary application repositories. Do not commit actual credentials or private user data. Ignoring a file does not remove an already tracked copy or erase it from history."
+          ]
+        }
+      ]
+    },
+    {
+      "letter": "B",
+      "slug": "git-terminal",
+      "title": "Git and terminal reference",
+      "intro": "Inspect commands before executing them and check repository status frequently. Angle-bracketed values are placeholders to replace.",
+      "sections": [
+        {
+          "heading": "Git commands",
+          "paragraphs": [],
+          "table": {
+            "columns": [
+              "Command",
+              "Effect"
+            ],
+            "rows": [
+              [
+                "git clone <url>",
+                "Download a repository and its history."
+              ],
+              [
+                "git status",
+                "Inspect the branch and staged, modified or untracked files."
+              ],
+              [
+                "git diff",
+                "Inspect edits not yet staged."
+              ],
+              [
+                "git diff --staged",
+                "Inspect the changes prepared for a commit."
+              ],
+              [
+                "git add <file>",
+                "Stage the current contents of a selected file."
+              ],
+              [
+                "git commit -m \"Add …\"",
+                "Save staged work as a named checkpoint."
+              ],
+              [
+                "git log --oneline",
+                "View a compact commit history."
+              ],
+              [
+                "git switch -c <branch>",
+                "Create a branch and move onto it."
+              ],
+              [
+                "git switch main",
+                "Return to the branch named main."
+              ],
+              [
+                "git pull",
+                "Fetch remote work and integrate it into the current branch."
+              ],
+              [
+                "git push",
+                "Send local commits to the configured remote."
+              ],
+              [
+                "git restore <file>",
+                "Discard unstaged edits in a tracked file; inspect first."
+              ],
+              [
+                "git restore --staged <file>",
+                "Remove a file from staging without discarding its working edits."
+              ],
+              [
+                "git revert <commit>",
+                "Record a new commit reversing an earlier change."
+              ],
+              [
+                "git bisect start; git bisect good; git bisect bad; git bisect reset",
+                "Start a bug search, label tested revisions and finish the search. These are separate commands, not a pipeline."
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Terminal commands",
+          "paragraphs": [],
+          "table": {
+            "columns": [
+              "Command",
+              "Effect"
+            ],
+            "rows": [
+              [
+                "pwd",
+                "Display your current directory."
+              ],
+              [
+                "ls; dir on Windows",
+                "List directory contents; use the command appropriate to your shell."
+              ],
+              [
+                "cd <folder>; cd ..",
+                "Enter a folder or move to its parent."
+              ],
+              [
+                "cp .env.example .env",
+                "Create local settings from the supplied example."
+              ],
+              [
+                "node --version; python --version",
+                "Check installed runtime versions."
+              ],
+              [
+                "npm install",
+                "Install JavaScript dependencies, potentially updating the lockfile."
+              ],
+              [
+                "npm ci",
+                "Install from the lockfile without rewriting it; requires a matching manifest."
+              ],
+              [
+                "npm run dev; npm test",
+                "Run the development or test script defined by the project."
+              ],
+              [
+                "python -m venv .venv",
+                "Create an isolated Python environment."
+              ],
+              [
+                "pip install -r requirements.txt",
+                "Install the listed Python packages in the active environment."
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Stop and assess the risk",
+          "paragraphs": [],
+          "bullets": [
+            "rm -rf can delete directory trees without prompting.",
+            "sudo runs with elevated privileges.",
+            "curl … | sh executes downloaded code.",
+            "git push --force can overwrite shared history.",
+            "git reset --hard discards working changes.",
+            "Any production database command deserves an explicit impact check, backup and recovery plan."
+          ]
+        }
+      ]
+    },
+    {
+      "letter": "C",
+      "slug": "http-api-sql",
+      "title": "HTTP, API and SQL reference",
+      "intro": "Quick reminders for reading requests, interpreting responses and working with relational data.",
+      "sections": [
+        {
+          "heading": "HTTP methods and retries",
+          "paragraphs": [],
+          "table": {
+            "columns": [
+              "Method",
+              "Typical purpose",
+              "Retry guidance"
+            ],
+            "rows": [
+              [
+                "GET",
+                "Retrieve a representation; should not alter application data.",
+                "Yes, for a correctly implemented endpoint."
+              ],
+              [
+                "POST",
+                "Create a resource or request an action.",
+                "Only with supported deduplication, such as an idempotency key."
+              ],
+              [
+                "PUT",
+                "Replace the state of a resource.",
+                "Normally yes: repeating the same request has the same intended effect."
+              ],
+              [
+                "PATCH",
+                "Apply a partial update.",
+                "Depends: setting a value and incrementing a value behave differently."
+              ],
+              [
+                "DELETE",
+                "Remove a resource.",
+                "Normally yes in effect, although later responses may differ."
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "HTTP response codes",
+          "paragraphs": [],
+          "table": {
+            "columns": [
+              "Code",
+              "Meaning"
+            ],
+            "rows": [
+              [
+                "200",
+                "OK: request succeeded."
+              ],
+              [
+                "201",
+                "Created: a resource was created."
+              ],
+              [
+                "204",
+                "No Content: success without a response body."
+              ],
+              [
+                "301",
+                "Moved Permanently: use the new location."
+              ],
+              [
+                "304",
+                "Not Modified: a conditional read can reuse its cached representation."
+              ],
+              [
+                "400",
+                "Bad Request: the request is invalid."
+              ],
+              [
+                "401",
+                "Unauthorized: valid authentication is missing or required."
+              ],
+              [
+                "403",
+                "Forbidden: access is refused, often because permissions are insufficient."
+              ],
+              [
+                "404",
+                "Not Found: no visible matching resource; may conceal a resource from an unauthorised caller."
+              ],
+              [
+                "409",
+                "Conflict: the request conflicts with the current resource state."
+              ],
+              [
+                "422",
+                "Unprocessable Content: the request format is understood but its instructions cannot be processed."
+              ],
+              [
+                "429",
+                "Too Many Requests: the client has exceeded a rate limit."
+              ],
+              [
+                "500",
+                "Internal Server Error: the server encountered an unexpected failure."
+              ],
+              [
+                "502",
+                "Bad Gateway: an upstream response was invalid."
+              ],
+              [
+                "503",
+                "Service Unavailable: the service cannot handle the request at present."
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "SQL examples",
+          "paragraphs": [
+            "These examples use PostgreSQL-style placeholders and syntax. The example schema has tasks, labels and task_labels tables."
+          ],
+          "table": {
+            "columns": [
+              "Operation",
+              "SQL"
+            ],
+            "rows": [
+              [
+                "Read tasks",
+                "SELECT id, title FROM tasks WHERE owner_id = $1 ORDER BY due_date NULLS LAST LIMIT 50;"
+              ],
+              [
+                "Create a task",
+                "INSERT INTO tasks (owner_id, title, due_date) VALUES ($1, $2, $3) RETURNING id;"
+              ],
+              [
+                "Complete an owned task",
+                "UPDATE tasks SET is_done = true WHERE id = $1 AND owner_id = $2;"
+              ],
+              [
+                "Delete an owned task",
+                "DELETE FROM tasks WHERE id = $1 AND owner_id = $2;"
+              ],
+              [
+                "Read tasks with labels",
+                "SELECT t.title, l.name FROM tasks t JOIN task_labels tl ON tl.task_id = t.id JOIN labels l ON l.id = tl.label_id WHERE t.owner_id = $1;"
+              ],
+              [
+                "Add a lookup index",
+                "CREATE INDEX tasks_owner_idx ON tasks (owner_id, is_done, due_date);"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Parameters and ownership",
+          "paragraphs": [
+            "Bind $1, $2 and other parameter values through the database driver rather than inserting input into SQL strings. Obtain the owner identity from the authenticated session, and scope user-data operations to that owner. Parameter binding prevents values being interpreted as SQL; it does not replace permission checks."
+          ]
+        }
+      ]
+    },
+    {
+      "letter": "D",
+      "slug": "templates",
+      "title": "Reusable templates",
+      "intro": "Adapt these outlines into repository documents; they are prompts for thinking, not paperwork to complete mechanically.",
+      "sections": [
+        {
+          "heading": "Application brief — Part 1",
+          "paragraphs": [],
+          "table": {
+            "columns": [
+              "Field",
+              "What to record"
+            ],
+            "rows": [
+              [
+                "Name and summary",
+                "Give the application a name and describe its purpose in one line."
+              ],
+              [
+                "Audience",
+                "Identify intended users and people you are not yet serving."
+              ],
+              [
+                "Problem",
+                "Describe the person, task, obstacle and current workaround."
+              ],
+              [
+                "Application category",
+                "State the type of application and why it fits."
+              ],
+              [
+                "User journeys",
+                "List the important sequences of user actions."
+              ],
+              [
+                "First useful release",
+                "Pair the initial features with observable acceptance criteria."
+              ],
+              [
+                "Deferred or excluded work",
+                "Say what comes later and what is deliberately outside scope."
+              ],
+              [
+                "Quality goals",
+                "Record expectations such as privacy, accessibility and reliability."
+              ],
+              [
+                "Unresolved questions",
+                "Keep uncertainties visible."
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "AI implementation task — lesson 25",
+          "paragraphs": [],
+          "table": {
+            "columns": [
+              "Field",
+              "What to record"
+            ],
+            "rows": [
+              [
+                "Goal",
+                "Choose one outcome within a specific feature task."
+              ],
+              [
+                "Context",
+                "Point to relevant files and describe existing behaviour."
+              ],
+              [
+                "Constraints",
+                "List architectural rules, conventions and dependency restrictions."
+              ],
+              [
+                "Acceptance criteria",
+                "Describe testable success and failure cases."
+              ],
+              [
+                "Outside scope",
+                "Name files or behaviours that must remain unchanged."
+              ],
+              [
+                "Working process",
+                "Request a plan and assumptions first, followed by implementation, tests and evidence of results."
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Bug report — lesson 29",
+          "paragraphs": [],
+          "table": {
+            "columns": [
+              "Field",
+              "What to record"
+            ],
+            "rows": [
+              [
+                "Title",
+                "Summarise the visible symptom."
+              ],
+              [
+                "Reproduction",
+                "Number the steps needed to trigger the problem."
+              ],
+              [
+                "Expected behaviour",
+                "Describe the intended result."
+              ],
+              [
+                "Observed behaviour",
+                "Describe the result you actually see."
+              ],
+              [
+                "Evidence",
+                "Attach relevant errors, request details, logs or screenshots without exposing private information."
+              ],
+              [
+                "Environment",
+                "Record the device, browser, account conditions and release."
+              ],
+              [
+                "Possible cause",
+                "Optionally record a hypothesis, clearly separated from observations."
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Architecture decision record — lesson 18",
+          "paragraphs": [],
+          "table": {
+            "columns": [
+              "Field",
+              "What to record"
+            ],
+            "rows": [
+              [
+                "Identifier and title",
+                "Use ADR NNN followed by a short decision name."
+              ],
+              [
+                "Date and status",
+                "Record the date and whether it is proposed, accepted or superseded."
+              ],
+              [
+                "Context",
+                "Explain the problem, constraints and pressures."
+              ],
+              [
+                "Alternatives",
+                "Compare plausible options and their compromises."
+              ],
+              [
+                "Decision",
+                "State the selected approach."
+              ],
+              [
+                "Consequences",
+                "Describe benefits, costs and limitations."
+              ],
+              [
+                "Review trigger",
+                "Specify evidence or changed circumstances that would reopen the decision."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "letter": "E",
+      "slug": "checklists",
+      "title": "Review, release and maintenance checklists",
+      "intro": "Use these lists to make checks repeatable, while adapting them to the risks of your application.",
+      "sections": [
+        {
+          "heading": "Review a change — lesson 27",
+          "paragraphs": [],
+          "bullets": [
+            "Every edited file belongs to the agreed task; unrelated changes have been removed.",
+            "Acceptance checks cover empty input, invalid input, duplicates and attempts to access another user’s data.",
+            "User-data queries enforce ownership, bind input parameters and avoid one database query per list item.",
+            "Credentials stay out of source; the server validates input; logs and browser responses do not leak sensitive information.",
+            "Failures are handled or reported rather than silently ignored.",
+            "Added dependencies exist, are trustworthy and maintained, and solve a real need.",
+            "New configuration is supplied through the environment and documented safely in .env.example.",
+            "The implementation respects existing module boundaries and conventions instead of duplicating helpers.",
+            "Tests exercise the agreed behaviour, the full suite passes and affected documentation is current."
+          ]
+        },
+        {
+          "heading": "Prepare a release — lesson 31",
+          "paragraphs": [],
+          "bullets": [
+            "Automated pipeline checks succeed and the change is small enough to review properly.",
+            "Database changes remain compatible with the running application and a recent production backup exists.",
+            "Migrations have been tried in staging against representative data.",
+            "Quick post-release checks are ready and the rollback procedure has been exercised.",
+            "Monitoring and alerts are active, and the release is recorded."
+          ]
+        },
+        {
+          "heading": "Maintain the application — lesson 34",
+          "paragraphs": [],
+          "table": {
+            "columns": [
+              "Frequency",
+              "Routine"
+            ],
+            "rows": [
+              [
+                "Weekly",
+                "Sort new issues, errors and user feedback; assess dependency-update pull requests."
+              ],
+              [
+                "Monthly",
+                "Practise restoring data; review spending and capacity; reduce some technical debt; verify documentation and AGENTS.md still match reality."
+              ],
+              [
+                "Quarterly",
+                "Check architecture decision review triggers, rotate long-lived credentials and audit access permissions."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "letter": "F",
+      "slug": "further-study",
+      "title": "Further study",
+      "intro": "Once the foundations feel familiar, choose a deeper topic that solves a problem you are actually facing.",
+      "sections": [
+        {
+          "heading": "Directions for continued learning",
+          "paragraphs": [],
+          "table": {
+            "columns": [
+              "Area",
+              "What to explore",
+              "Starting resources"
+            ],
+            "rows": [
+              [
+                "Containers",
+                "Learn image building and local containers before orchestration with Kubernetes. Packaging reduces environment differences but does not remove every platform dependency.",
+                "Docker’s official getting-started material."
+              ],
+              [
+                "Distributed systems",
+                "Study consistency, replication and consensus when several machines must cooperate.",
+                "Kleppmann, Designing Data-Intensive Applications."
+              ],
+              [
+                "Advanced database design",
+                "Explore normalisation, execution plans, indexes and transaction behaviour.",
+                "Use The Index, Luke and PostgreSQL documentation."
+              ],
+              [
+                "Applications using AI models",
+                "Learn model APIs, retrieval-augmented generation, evaluation, cost limits and prompt-injection resistance.",
+                "Your model provider’s documentation and the OWASP Top 10 for LLM Applications."
+              ],
+              [
+                "Security",
+                "Develop threat-modelling skills and learn common application vulnerabilities.",
+                "OWASP Top 10, Shostack’s Threat Modeling and your framework’s secure-coding guidance."
+              ],
+              [
+                "Reliability",
+                "Study monitoring, incident response and service-level objectives.",
+                "Google’s freely available Site Reliability Engineering material at sre.google."
+              ],
+              [
+                "Accessibility",
+                "Combine standards-based design with automated and real screen-reader checks.",
+                "W3C’s WCAG 2.2 quick reference and WAI tutorials."
+              ],
+              [
+                "Software design",
+                "Practise structuring and improving code so that future changes stay manageable.",
+                "Ousterhout’s A Philosophy of Software Design and Fowler’s Refactoring."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "bibliography": [
+    {
+      "group": "Books",
+      "entries": [
+        "Abelson, H., & Sussman, G. J. (1996). Structure and Interpretation of Computer Programs (2nd ed.). MIT Press.",
+        "Agans, D. J. (2002). Debugging: The 9 Indispensable Rules for Finding Even the Most Elusive Software and Hardware Problems. AMACOM.",
+        "Bass, L., Clements, P., & Kazman, R. (2021). Software Architecture in Practice (4th ed.). Addison-Wesley.",
+        "Beck, K. (2002). Test-Driven Development: By Example. Addison-Wesley.",
+        "Beyer, B., Jones, C., Petoff, J., & Murphy, N. R. (Eds.) (2016). Site Reliability Engineering: How Google Runs Production Systems. O'Reilly Media.",
+        "Chacon, S., & Straub, B. (2014). Pro Git (2nd ed.). Apress. Free online at git-scm.com/book",
+        "Christensen, C. M., Hall, T., Dillon, K., & Duncan, D. S. (2016). Competing Against Luck: The Story of Innovation and Customer Choice. Harper Business.",
+        "Cockburn, A. (2004). Crystal Clear: A Human-Powered Methodology for Small Teams. Addison-Wesley.",
+        "Cohn, M. (2004). User Stories Applied: For Agile Software Development. Addison-Wesley.",
+        "Cohn, M. (2009). Succeeding with Agile: Software Development Using Scrum. Addison-Wesley.",
+        "Dijkstra, E. W. (1974). On the role of scientific thought (EWD447). Reprinted in Selected Writings on Computing (1982), Springer.",
+        "Evans, E. (2003). Domain-Driven Design: Tackling Complexity in the Heart of Software. Addison-Wesley.",
+        "Forsgren, N., Humble, J., & Kim, G. (2018). Accelerate: The Science of Lean Software and DevOps. IT Revolution Press.",
+        "Fowler, M. (2002). Patterns of Enterprise Application Architecture. Addison-Wesley.",
+        "Fowler, M. (2018). Refactoring: Improving the Design of Existing Code (2nd ed.). Addison-Wesley.",
+        "Hohpe, G., & Woolf, B. (2003). Enterprise Integration Patterns. Addison-Wesley.",
+        "Humble, J., & Farley, D. (2010). Continuous Delivery: Reliable Software Releases through Build, Test, and Deployment Automation. Addison-Wesley.",
+        "Kleppmann, M. (2017). Designing Data-Intensive Applications. O'Reilly Media.",
+        "Krogh, P. (2009). The DAM Book: Digital Asset Management for Photographers (2nd ed.). O'Reilly Media.",
+        "Kurose, J. F., & Ross, K. W. (2021). Computer Networking: A Top-Down Approach (8th ed.). Pearson.",
+        "Majors, C., Fong-Jones, L., & Miranda, G. (2022). Observability Engineering. O'Reilly Media.",
+        "Martin, R. C. (2008). Clean Code: A Handbook of Agile Software Craftsmanship. Prentice Hall.",
+        "Newman, S. (2019). Monolith to Microservices. O'Reilly Media.",
+        "Ousterhout, J. (2018). A Philosophy of Software Design. Yaknyam Press.",
+        "Patton, J. (2014). User Story Mapping: Discover the Whole Story, Build the Right Product. O'Reilly Media.",
+        "Petzold, C. (2022). Code: The Hidden Language of Computer Hardware and Software (2nd ed.). Microsoft Press.",
+        "Project Management Institute (2021). A Guide to the Project Management Body of Knowledge (PMBOK Guide) (7th ed.). PMI.",
+        "Ries, E. (2011). The Lean Startup. Crown Business.",
+        "Shostack, A. (2014). Threat Modeling: Designing for Security. Wiley.",
+        "Zeller, A. (2009). Why Programs Fail: A Guide to Systematic Debugging (2nd ed.). Morgan Kaufmann."
+      ]
+    },
+    {
+      "group": "Papers, reports and articles",
+      "entries": [
+        "Bacchelli, A., & Bird, C. (2013). Expectations, Outcomes, and Challenges of Modern Code Review. Proceedings of the 35th International Conference on Software Engineering (ICSE).",
+        "Bezos, J. (2016). 2015 Letter to Shareholders. Amazon.com, Inc.",
+        "Brooks, F. P. (1987). No Silver Bullet: Essence and Accidents of Software Engineering. Computer, 20(4), 10–19. First presented in 1986.",
+        "Chen, P. P. (1976). The Entity-Relationship Model: Toward a Unified View of Data. ACM Transactions on Database Systems, 1(1), 9–36.",
+        "Codd, E. F. (1970). A Relational Model of Data for Large Shared Data Banks. Communications of the ACM, 13(6), 377–387.",
+        "Cunningham, W. (1992). The WyCash Portfolio Management System. OOPSLA '92 Experience Report.",
+        "Deutsch, L. P., et al. (c. 1994). The Fallacies of Distributed Computing. Sun Microsystems; widely reproduced.",
+        "Fielding, R. T. (2000). Architectural Styles and the Design of Network-based Software Architectures (Doctoral dissertation). University of California, Irvine.",
+        "GitLab (2017). Postmortem of database outage of January 31. about.gitlab.com/blog",
+        "Glinz, M. (2007). On Non-Functional Requirements. 15th IEEE International Requirements Engineering Conference (RE '07).",
+        "Härder, T., & Reuter, A. (1983). Principles of Transaction-Oriented Database Recovery. ACM Computing Surveys, 15(4), 287–317.",
+        "Ji, Z., et al. (2023). Survey of Hallucination in Natural Language Generation. ACM Computing Surveys, 55(12), 1–38.",
+        "Jia, Y., & Harman, M. (2011). An Analysis and Survey of the Development of Mutation Testing. IEEE Transactions on Software Engineering, 37(5), 649–678.",
+        "Kleppmann, M., Wiggins, A., van Hardenberg, P., & McGranaghan, M. (2019). Local-first software: You own your data, in spite of the cloud. Proceedings of Onward! 2019, ACM. inkandswitch.com/local-first",
+        "Knuth, D. E. (1974). Structured Programming with go to Statements. ACM Computing Surveys, 6(4), 261–301.",
+        "Lehman, M. M. (1980). Programs, Life Cycles, and Laws of Software Evolution. Proceedings of the IEEE, 68(9), 1060–1076.",
+        "METR (2025). Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity. metr.org",
+        "North, D. (2006). Introducing BDD. Better Software magazine. dannorth.net/introducing-bdd",
+        "Parnas, D. L. (1972). On the Criteria To Be Used in Decomposing Systems into Modules. Communications of the ACM, 15(12), 1053–1058.",
+        "Pearce, H., Ahmad, B., Tan, B., Dolan-Gavitt, B., & Karri, R. (2022). Asleep at the Keyboard? Assessing the Security of GitHub Copilot's Code Contributions. IEEE Symposium on Security and Privacy.",
+        "Perry, N., Srivastava, M., Kumar, D., & Boneh, D. (2023). Do Users Write More Insecure Code with AI Assistants? ACM Conference on Computer and Communications Security (CCS).",
+        "Potvin, R., & Levenberg, J. (2016). Why Google Stores Billions of Lines of Code in a Single Repository. Communications of the ACM, 59(7), 78–87.",
+        "Royce, W. W. (1970). Managing the development of large software systems. Proceedings of IEEE WESCON.",
+        "Spracklen, J., et al. (2025). We Have a Package for You! A Comprehensive Analysis of Package Hallucinations by Code Generating LLMs. USENIX Security Symposium.",
+        "U.S. Copyright Office (2025). Copyright and Artificial Intelligence, Part 2: Copyrightability. copyright.gov/ai"
+      ]
+    },
+    {
+      "group": "Standards, specifications and guidelines",
+      "entries": [
+        "Apple Inc. App Review Guidelines. Apple Developer. developer.apple.com/app-store/review/guidelines",
+        "Beck, K., et al. (2001). Manifesto for Agile Software Development. agilemanifesto.org",
+        "Bray, T. (Ed.) (2017). RFC 8259: The JavaScript Object Notation (JSON) Data Interchange Format. IETF.",
+        "Fielding, R., Nottingham, M., & Reschke, J. (Eds.) (2022). RFC 9110: HTTP Semantics. IETF.",
+        "Hardt, D. (Ed.) (2012). RFC 6749: The OAuth 2.0 Authorization Framework. IETF.",
+        "ISO/IEC 25010:2023. Systems and software Quality Requirements and Evaluation (SQuaRE): Product quality model. International Organization for Standardization.",
+        "ISO/IEC/IEEE 12207:2017. Systems and software engineering: Software life cycle processes. International Organization for Standardization.",
+        "ISO/IEC/IEEE 24765:2017. Systems and software engineering: Vocabulary. International Organization for Standardization.",
+        "Jones, M., Bradley, J., & Sakimura, N. (2015). RFC 7519: JSON Web Token (JWT). IETF.",
+        "National Institute of Standards and Technology (2025). NIST Special Publication 800-63B-4: Digital Identity Guidelines: Authentication and Authenticator Management. Supersedes SP 800-63B (2017). pages.nist.gov/800-63-4",
+        "OpenAPI Initiative. OpenAPI Specification. spec.openapis.org",
+        "OWASP Foundation (2025). OWASP Top 10 for Large Language Model Applications (LLM01 Prompt Injection). genai.owasp.org",
+        "OWASP Foundation (2025). OWASP Top 10:2025 (including A01 Broken Access Control and A03 Software Supply Chain Failures). owasp.org/Top10/2025",
+        "OWASP Foundation. Cross-Site Request Forgery Prevention Cheat Sheet. OWASP Cheat Sheet Series. cheatsheetseries.owasp.org",
+        "OWASP Foundation. Input Validation Cheat Sheet. OWASP Cheat Sheet Series. cheatsheetseries.owasp.org",
+        "OWASP Foundation. Logging Cheat Sheet. OWASP Cheat Sheet Series. cheatsheetseries.owasp.org",
+        "OWASP Foundation. Password Storage Cheat Sheet. OWASP Cheat Sheet Series. cheatsheetseries.owasp.org",
+        "OWASP Foundation. Secrets Management Cheat Sheet. OWASP Cheat Sheet Series. cheatsheetseries.owasp.org",
+        "OWASP Foundation. Session Management Cheat Sheet. OWASP Cheat Sheet Series. cheatsheetseries.owasp.org",
+        "OWASP Foundation. SQL Injection Prevention Cheat Sheet. OWASP Cheat Sheet Series. cheatsheetseries.owasp.org",
+        "Preston-Werner, T. Semantic Versioning 2.0.0. semver.org",
+        "Regulation (EU) 2016/679 (General Data Protection Regulation), Article 25 and Articles 32–34; and the UK GDPR. See also the UK Information Commissioner's Office, ico.org.uk",
+        "Sakimura, N., et al. (2014). OpenID Connect Core 1.0. OpenID Foundation.",
+        "Schwaber, K., & Sutherland, J. (2020). The Scrum Guide. scrumguides.org",
+        "Swanson, M., et al. (2010). NIST Special Publication 800-34 Rev. 1: Contingency Planning Guide for Federal Information Systems. National Institute of Standards and Technology.",
+        "W3C (2023). Web Content Accessibility Guidelines (WCAG) 2.2. W3C Recommendation. w3.org/TR/WCAG22",
+        "Wiggins, A. (2011). The Twelve-Factor App (III. Config; V. Build, release, run; X. Dev/prod parity). 12factor.net"
+      ]
+    },
+    {
+      "group": "Online articles and documentation",
+      "entries": [
+        "Anthropic (2025). Claude Code: Best practices for agentic coding. anthropic.com/engineering",
+        "Anthropic. Prompt engineering overview. Claude documentation. docs.claude.com",
+        "Beams, C. (2014). How to Write a Git Commit Message. cbea.ms/git-commit",
+        "Brown, S. The C4 model for visualising software architecture. c4model.com",
+        "Deque Systems. axe-core: Accessibility engine for automated web UI testing. github.com/dequelabs/axe-core",
+        "Django Software Foundation. Django documentation: Writing your first Django app. docs.djangoproject.com",
+        "FinOps Foundation. What is FinOps? finops.org",
+        "Fowler, M. (2006, revised 2024). Continuous Integration. martinfowler.com/articles/continuousIntegration.html",
+        "Fowler, M. (2009). TechnicalDebtQuadrant. martinfowler.com/bliki/TechnicalDebtQuadrant.html",
+        "Fowler, M. (2014). SacrificialArchitecture. martinfowler.com/bliki/SacrificialArchitecture.html",
+        "Fowler, M. (2014). UtilityVsStrategicDichotomy. martinfowler.com/bliki",
+        "Fowler, M. (2015). MonolithFirst. martinfowler.com/bliki/MonolithFirst.html",
+        "GitGuardian. The State of Secrets Sprawl (annual report). gitguardian.com",
+        "Google. Google Engineering Practices: The Code Reviewer's Guide. google.github.io/eng-practices",
+        "Karpathy, A. (2025, 2 February). \"There's a new kind of coding I call 'vibe coding'…\" Post on X (formerly Twitter).",
+        "Let's Encrypt (Internet Security Research Group). How It Works. letsencrypt.org",
+        "Make a README. Because no one can read your mind (yet). makeareadme.com",
+        "Martin, R. C. (2011). Screaming Architecture. The Clean Code Blog. blog.cleancoder.com",
+        "McKinley, D. (2015). Choose Boring Technology. mcfunley.com/choose-boring-technology",
+        "Miller, J., & Osmani, A. (2019). Rendering on the Web. web.dev/articles/rendering-on-the-web",
+        "MongoDB, Inc. Introduction to MongoDB: Documents. mongodb.com/docs",
+        "Mozilla, An overview of HTTP, MDN Web Docs.",
+        "Mozilla, JavaScript Guide, MDN Web Docs. developer.mozilla.org",
+        "Mozilla. Learn web development. MDN Web Docs. developer.mozilla.org/en-US/docs/Learn",
+        "Mozilla. Progressive web apps. MDN Web Docs. developer.mozilla.org/en-US/docs/Web/Progressive_web_apps",
+        "Mozilla. Server-side website programming. MDN Web Docs. developer.mozilla.org/en-US/docs/Learn/Server-side",
+        "Mozilla. Web Storage API. MDN Web Docs. developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API",
+        "Nielsen, J. (1994; revised since). 10 Usability Heuristics for User Interface Design. Nielsen Norman Group. nngroup.com",
+        "npm, Inc. npm Docs: package.json and package-lock.json. docs.npmjs.com",
+        "Nygard, M. (2011). Documenting Architecture Decisions. Cognitect blog. cognitect.com/blog",
+        "OpenTelemetry Authors. Traces. OpenTelemetry Documentation. opentelemetry.io/docs/concepts/signals/traces",
+        "Procida, D. Diátaxis: A systematic approach to technical documentation authoring. diataxis.fr",
+        "Python Software Foundation. The Python Tutorial. docs.python.org/3/tutorial",
+        "Python Software Foundation. venv: Creation of virtual environments. docs.python.org/3/library/venv.html",
+        "Sadalage, P., & Fowler, M. (2016). Evolutionary Database Design. martinfowler.com/articles/evodb.html",
+        "Sato, D. (2014). ParallelChange. martinfowler.com/bliki/ParallelChange.html",
+        "Stripe. API reference: Idempotent requests. docs.stripe.com/api/idempotent_requests",
+        "Vercel. Next.js Docs: Project Structure. nextjs.org/docs",
+        "Vocke, H. (2018). The Practical Test Pyramid. martinfowler.com",
+        "WebAIM. The WebAIM Million: An annual accessibility analysis of the top 1,000,000 home pages. webaim.org/projects/million",
+        "Winand, M. Use The Index, Luke: A Guide to Database Performance for Developers. use-the-index-luke.com"
+      ]
+    },
+    {
+      "group": "Photograph credits in the source edition",
+      "entries": [
+        "Unsplash. Photographs. unsplash.com. Licensed under the Unsplash License."
+      ]
+    }
+  ]
+}
