@@ -11,6 +11,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import { appearanceBootScript } from "../lib/appearance";
+import { LOGO_SVG } from "@/components/Logo";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
