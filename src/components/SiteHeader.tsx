@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { AppearanceMenu } from "@/components/AppearanceMenu";
 import { useProgress } from "@/lib/progress";
 import { chapters } from "@/content/lessons";
 
@@ -9,6 +10,7 @@ const links = [
   { to: "/curriculum", label: "Curriculum" },
   { to: "/reference", label: "Reference" },
   { to: "/glossary", label: "Glossary" },
+  { to: "/taskboard", label: "Taskboard" },
 ] as const;
 
 export function ProgressRing({ size = 28 }: { size?: number }) {
@@ -38,10 +40,12 @@ export function SiteHeader() {
           <Link to="/curriculum" className="flex items-center gap-2 rounded-full border border-border py-1 pl-1 pr-3 hover:border-primary" title="Your progress">
             <ProgressRing /> <span className="font-medium text-foreground">{done.length}/{chapters.length}</span>
           </Link>
+          <AppearanceMenu />
         </nav>
+        <div className="flex items-center gap-3 md:hidden"><AppearanceMenu />
         <button className="md:hidden" onClick={() => setOpen(!open)} aria-label={open ? "Close menu" : "Open menu"}>
           {open ? <X className="size-6" /> : <Menu className="size-6" />}
-        </button>
+        </button></div>
       </div>
       {open && (
         <nav className="border-t border-border px-5 pb-5 md:hidden">

@@ -149,7 +149,7 @@ function Lesson() {
               <p className="text-sm text-muted-foreground">See it in the real code: {lessonRepo[c.number]!.note}</p>
               <div className="mt-2 flex flex-wrap gap-2">{lessonRepo[c.number]!.links.map((l) => <a key={l.label + l.path} href={linkHref(l)} target="_blank" rel="noopener noreferrer" className="rounded-full border border-border bg-card px-3 py-1 font-mono text-xs hover:border-primary hover:text-primary">{l.label || "repository"} ↗</a>)}</div>
             </div>}
-            <p className="mt-3 text-sm"><Link to="/taskboard" className="font-semibold text-primary underline">Try the Taskboard demo</Link> while you read.</p>
+            <p className="mt-3 text-sm"><Link to="/taskboard" className="font-semibold text-primary underline">Run Taskboard</Link> and follow along in the real code.</p>
             {c.part.project && <p className="mt-3 text-sm">This lesson is used in <Link to="/projects/$slug" params={{ slug: projectSlug(c.part.number) }} className="font-semibold text-primary underline">Project {c.part.number}: {c.part.project.title}</Link>.</p>}
           </Box>
           <Box tone="walk" label={`Walkthrough · ${c.walkthrough.title}`}>
