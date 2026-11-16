@@ -58,10 +58,13 @@ ON public.community_feedback (created_at DESC);
 --   1. Authentication → Users → Add user → Create new user (your email + a strong password,
 --      tick "Auto Confirm User").
 --   2. Authentication → Sign In / Providers → turn OFF "Allow new users to sign up".
---   3. Run this once in the SQL Editor, with your email:
+--   3. Run this once in the SQL Editor, with your email (capital letters don't matter):
 --        INSERT INTO public.admins (user_id)
---        SELECT id FROM auth.users WHERE email = 'you@example.com'
+--        SELECT id FROM auth.users WHERE lower(email) = lower('you@example.com')
 --        ON CONFLICT DO NOTHING;
+--      Check it worked (is_admin should be true for your account):
+--        SELECT u.email, (a.user_id IS NOT NULL) AS is_admin
+--        FROM auth.users u LEFT JOIN public.admins a ON a.user_id = u.id;
 -- Your email stays in your database; it is never written into the public repository.
 -- ---------------------------------------------------------------------------------------------
 
