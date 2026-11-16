@@ -36,9 +36,13 @@ npm run dev        # or: bun run dev
 Open <http://localhost:8080/software-engineering-foundations/>. Lessons, glossary, projects and
 progress tracking work from your machine; progress is saved in your browser.
 
-The lesson tutor uses each learner's own xAI (Grok) key, added in the tutor's settings, and talks to
-xAI straight from the browser. Accounts, synced progress and the feedback forms use the Supabase
-project in `.env` (publishable keys only); extra tables are in `docs/database/`.
+There are no accounts: learners' progress, notes and settings stay in their own browser. The lesson
+tutor uses each learner's own xAI (Grok) key and talks to xAI straight from the browser.
+
+The feedback forms save anonymous messages to a Supabase database. To try them locally, copy
+`.env.example` to `.env` and fill in a Supabase project's URL and publishable key, after running
+`docs/database/schema.sql` in that project. Without a `.env`, everything else works and the forms
+stay switched off.
 
 ```bash
 npm test           # run the tests
@@ -52,7 +56,8 @@ The site is static and hosted on GitHub Pages. Every push to `main` runs
 `.github/workflows/deploy.yml`, which builds the site (every page prerendered to HTML) and deploys
 it. To serve it from your own domain instead of the `github.io` sub-path, set the repository
 variable `BASE_PATH` to `/`, add the domain in **Settings → Pages**, and update `siteUrl` in
-`src/config/community.ts`.
+`src/config/community.ts`. The feedback forms read the repository variables `VITE_SUPABASE_URL`
+and `VITE_SUPABASE_PUBLISHABLE_KEY` at build time.
 
 ## Where things live
 

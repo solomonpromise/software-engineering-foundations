@@ -1,12 +1,10 @@
 import { MessageSquareText, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useUser } from "@/lib/account";
+import { supabase } from "@/lib/supabase";
 
 const KEY = "sf:lesson-feedback:v1";
 
 export function LessonFeedback({ slug, title }: { slug: string; title: string }) {
-  const { user } = useUser();
   const [helpful, setHelpful] = useState<boolean | null>(null);
   const [comment, setComment] = useState("");
   const [busy, setBusy] = useState(false);
@@ -18,13 +16,12 @@ export function LessonFeedback({ slug, title }: { slug: string; title: string })
   }, [slug]);
 
   const submit = async () => {
-    if (helpful === null) return;
+    if (helpful === null || !supabase) return;
     setBusy(true); setError("");
     const { error: saveError } = await supabase.from("lesson_feedback").insert({
       lesson_slug: slug,
       helpful,
       comment: comment.trim().slice(0, 1000),
-      user_id: user?.id ?? null,
     });
     setBusy(false);
     if (saveError) { setError("Your feedback could not be saved. Please check your connection and try again."); return; }
@@ -35,6 +32,7 @@ export function LessonFeedback({ slug, title }: { slug: string; title: string })
     setSent(true);
   };
 
+  if (!supabase) return null;
   return (
     <section className="mt-10 rounded-xl border border-border bg-card p-6 print:hidden" aria-labelledby={`feedback-${slug}`}>
       <div className="flex items-center gap-3">

@@ -1,13 +1,12 @@
-import type { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
+import type { PostgrestError } from "@supabase/supabase-js";
+import { supabase as db } from "@/lib/supabase";
 import { feedbackSchema, fieldErrors, type FeedbackResult } from "./feedback";
 
 const TABLE = "community_feedback";
 
-// community_feedback comes from docs/database/community_feedback.sql and is not in the generated
-// database types, so it is used untyped. Row-level security lets visitors add messages but never
-// read them; the table's CHECK constraints repeat the limits validated here.
-const db = supabase as unknown as SupabaseClient;
+// The community_feedback table is created by docs/database/schema.sql. Row-level security lets
+// visitors add messages but never read them; the table's CHECK constraints repeat the limits
+// validated here. Messages are read in the Supabase dashboard.
 
 /** True when the table has not been created yet. */
 export const tableMissing = (e: PostgrestError | null) =>
@@ -16,6 +15,7 @@ export const tableMissing = (e: PostgrestError | null) =>
 
 /** Whether messages can be saved, so the page never shows a form that can't submit. */
 export async function feedbackReady(): Promise<boolean> {
+  if (!db) return false;
   // A normal read, not a HEAD request: HEAD responses hide the "table missing" error.
   const { error } = await db.from(TABLE).select("id").limit(1);
   return !tableMissing(error);
@@ -33,6 +33,7 @@ export async function sendFeedback(input: unknown): Promise<FeedbackResult> {
   const { website, ...row } = parsed.data;
   // Honeypot filled in: a bot. Pretend it worked and store nothing.
   if (website) return { ok: true };
+  if (!db) return { ok: false, unavailable: true, error: "Feedback can't be saved right now." };
   const { error } = await db.from(TABLE).insert(row);
   if (!error) return { ok: true };
   if (tableMissing(error))

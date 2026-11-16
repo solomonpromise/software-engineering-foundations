@@ -1,8 +1,7 @@
 # Project notes for coding agents
 
 Software Engineering Foundations is an open, community-driven learning site. The code lives at
-<https://github.com/solomonpromise/software-engineering-foundations> and is no longer connected to
-Lovable: don't push to the old `lovable` remote.
+<https://github.com/solomonpromise/software-engineering-foundations>.
 
 ## Hosting
 
@@ -19,23 +18,22 @@ Lovable: don't push to the old `lovable` remote.
 
 ## Data and privacy
 
-- Learner progress lives in localStorage (`src/lib/progress.ts`) and, when signed in, is merged
-  (union) into `public.learner_progress` by `useProgressSync` in `__root` — local-first so the site
-  works without an account.
+- There are no accounts and no sign-in. Everything a learner does (progress, notes, bookmarks,
+  practice answers, certificate name, tutor key and chats) stays in their own browser
+  (`src/lib/progress.ts`, `src/lib/tutorKey.ts`). Don't add features that need a login.
 - The lesson tutor works only with the learner's own xAI key, kept in their browser and sent only to
   api.x.ai (`src/lib/ai/tutor.ts`). The project has no shared AI cost and never sees the key.
-- Lesson feedback and community feedback accept anonymous or signed-in submissions but are readable
-  only by an admin role in `public.user_roles`; never expose them through public select policies.
-- The Supabase project is still the one Lovable Cloud created. Schema changes go in
-  `docs/database/` as SQL to apply by hand until the project has its own Supabase project and
-  migration workflow. Don't edit `src/integrations/supabase/types.ts` or `client.ts` by hand
-  (generated). Only publishable keys belong in the repo.
+- Supabase is used only to collect anonymous feedback (`lesson_feedback`, `community_feedback`).
+  The public key may insert but never read; there are no SELECT policies, and the maintainer reads
+  feedback in the Supabase dashboard. Schema lives in `docs/database/schema.sql`.
+- Supabase values come from `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` (local `.env`,
+  GitHub repository variables in CI). Never commit `.env` or any secret / service-role key.
 
 ## Offline reading
 
 - `scripts/postbuild.mjs` generates the Workbox service worker (NetworkFirst for pages and images,
   StaleWhileRevalidate for code). `src/lib/pwa.ts` is the only registrar and must keep the
-  development, iframe, preview and `?sw=off` opt-outs.
+  development, iframe and `?sw=off` opt-outs.
 
 ## Community and licensing
 

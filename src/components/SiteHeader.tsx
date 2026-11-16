@@ -3,7 +3,6 @@ import { Github, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AppearanceMenu } from "@/components/AppearanceMenu";
 import { SiteSearch } from "@/components/SiteSearch";
-import { AccountButton } from "@/components/AccountButton";
 import logoUrl from "@/assets/course-logo.png";
 import { githubLinks, licenses, project } from "@/config/community";
 
@@ -90,16 +89,12 @@ export function SiteHeader() {
             );
           })}
           <SiteSearch hotkey />
-          <GitHubIconLink className="hidden xl:flex" />
+          <GitHubIconLink />
           <AppearanceMenu />
-          <AccountButton />
         </nav>
         <div className="flex shrink-0 items-center gap-2 sm:gap-3 lg:hidden">
           <SiteSearch />
           <AppearanceMenu />
-          <span className="hidden sm:block">
-            <AccountButton />
-          </span>
           <button
             className="flex size-9 items-center justify-center rounded-full border border-header-accent/45 text-header-foreground hover:bg-header-accent/15"
             onClick={() => setOpen(!open)}
@@ -143,10 +138,6 @@ export function SiteHeader() {
               <Github className="size-4" aria-hidden /> GitHub
             </a>
           )}
-          <div className="flex items-center justify-between pt-4 sm:hidden">
-            <span className="text-sm text-header-muted">Your account</span>
-            <AccountButton />
-          </div>
         </nav>
       )}
     </header>

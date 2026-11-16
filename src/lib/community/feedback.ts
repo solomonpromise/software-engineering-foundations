@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-/** Kinds of message the community feedback form accepts. Keep in sync with docs/database/community_feedback.sql. */
+/** Kinds of message the community feedback form accepts. Keep in sync with docs/database/schema.sql. */
 export const feedbackCategories = [
   {
     value: "lesson-correction",

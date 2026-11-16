@@ -10,6 +10,8 @@ export type Progress = {
   notes?: Record<string, string>;
   assessments?: Record<string, number[]>;
   practice?: Record<string, Practice>;
+  /** Name the learner wants on their certificate. */
+  certificateName?: string;
 };
 const EMPTY: Progress = { done: [] };
 let cache: Progress | null = null;
@@ -96,6 +98,10 @@ export function mergeProgress(a: Progress, b: Progress): Progress {
     assessments: mergeIndexes(a.assessments, b.assessments),
     practice,
   };
+}
+export function setCertificateName(name: string) {
+  const p = read();
+  write({ ...p, certificateName: name.slice(0, 80) });
 }
 export function getProgress() { return read(); }
 export function replaceProgress(p: Progress) { write(p); }
