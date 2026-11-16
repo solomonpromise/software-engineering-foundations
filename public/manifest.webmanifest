@@ -1,7 +1,7 @@
 {
-  "name": "Software Foundations for Vibe Coders",
-  "short_name": "Software Foundations",
-  "description": "Free, beginner-friendly software engineering lessons for people building with AI.",
+  "name": "Software Engineering Foundations",
+  "short_name": "SE Foundations",
+  "description": "An open, community-driven learning resource on the software engineering foundations needed to build reliable software with AI.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

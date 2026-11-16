@@ -22,7 +22,7 @@ export const Route = createFileRoute("/learn/$slug")({
     return r;
   },
   head: ({ loaderData }) => {
-    const t = loaderData ? `${loaderData.chapter.title} — Software Foundations` : "Lesson — Software Foundations";
+    const t = loaderData ? `${loaderData.chapter.title} — Software Engineering Foundations` : "Lesson — Software Engineering Foundations";
     const d = loaderData?.chapter.summary ?? "A free lesson for AI builders.";
     return { meta: [
       { title: t }, { name: "description", content: d },
@@ -205,6 +205,11 @@ function Lesson() {
         </div>
 
         <LessonFeedback slug={c.slug} title={c.title} />
+        <p className="mt-4 text-sm text-muted-foreground print:hidden">
+          Spotted an error or something out of date?{" "}
+          <Link to="/contribute" search={{ category: "lesson-correction", related: `Lesson ${c.number}: ${c.title}` }} hash="feedback" className="font-semibold text-primary underline underline-offset-4">Suggest a correction</Link>
+          {" "}· This resource is <Link to="/contribute" className="underline underline-offset-4 hover:text-foreground">open to contributions</Link>.
+        </p>
 
         <nav className="mt-10 grid gap-4 border-t border-border pt-8 sm:grid-cols-2">
           {prev ? (

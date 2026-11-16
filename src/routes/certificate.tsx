@@ -12,10 +12,10 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/certificate")({
   head: () => ({ meta: [
-    { title: "Certificate of completion — Software Foundations" },
-    { name: "description", content: "Finish all 34 lessons and six projects to earn your Software Foundations certificate." },
-    { property: "og:title", content: "Certificate of completion — Software Foundations" },
-    { property: "og:description", content: "Finish all 34 lessons and six projects to earn your Software Foundations certificate." },
+    { title: "Certificate of completion — Software Engineering Foundations" },
+    { name: "description", content: "Finish all 34 lessons and six projects to earn your Software Engineering Foundations certificate." },
+    { property: "og:title", content: "Certificate of completion — Software Engineering Foundations" },
+    { property: "og:description", content: "Finish all 34 lessons and six projects to earn your Software Engineering Foundations certificate." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
   ] }),
@@ -81,7 +81,7 @@ function CertificatePage() {
                 <p className="mt-4 text-xs font-bold uppercase tracking-[0.3em] text-accent">Certificate of completion</p>
                 <p className="mt-6 text-muted-foreground">This certifies that</p>
                 <p className="mt-2 font-serif text-4xl sm:text-5xl">{name || "Your name"}</p>
-                <p className="mx-auto mt-4 max-w-lg text-muted-foreground">has completed all 34 lessons and six projects of <span className="font-semibold text-foreground">Software Foundations for Vibe Coders</span>, by Solomon Promise.</p>
+                <p className="mx-auto mt-4 max-w-lg text-muted-foreground">has completed all 34 lessons and six projects of <span className="font-semibold text-foreground">Software Engineering Foundations</span>, an open learning resource founded by Solomon Promise.</p>
                 <p className="mt-8 text-sm text-muted-foreground">{date}</p>
               </div>
             </section>

@@ -15,12 +15,16 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BibliographyRouteImport } from './routes/bibliography'
 import { Route as CertificateRouteImport } from './routes/certificate'
+import { Route as ContributeRouteImport } from './routes/contribute'
 import { Route as CurriculumRouteImport } from './routes/curriculum'
 import { Route as GlossaryRouteImport } from './routes/glossary'
 import { Route as ReferenceRouteImport } from './routes/reference'
+import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TaskboardRouteImport } from './routes/taskboard'
 import { Route as AuthenticatedFeedbackRouteImport } from './routes/_authenticated/feedback'
+import { Route as AboutMaintainerRouteImport } from './routes/about_.maintainer'
+import { Route as ApiCommunityFeedbackRouteImport } from './routes/api/community-feedback'
 import { Route as ApiTutorRouteImport } from './routes/api/tutor'
 import { Route as LearnSlugRouteImport } from './routes/learn.$slug'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
@@ -56,6 +60,11 @@ const CertificateRoute = CertificateRouteImport.update({
   path: '/certificate',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContributeRoute = ContributeRouteImport.update({
+  id: '/contribute',
+  path: '/contribute',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CurriculumRoute = CurriculumRouteImport.update({
   id: '/curriculum',
   path: '/curriculum',
@@ -69,6 +78,11 @@ const GlossaryRoute = GlossaryRouteImport.update({
 const ReferenceRoute = ReferenceRouteImport.update({
   id: '/reference',
   path: '/reference',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoadmapRoute = RoadmapRouteImport.update({
+  id: '/roadmap',
+  path: '/roadmap',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -85,6 +99,16 @@ const AuthenticatedFeedbackRoute = AuthenticatedFeedbackRouteImport.update({
   id: '/feedback',
   path: '/feedback',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AboutMaintainerRoute = AboutMaintainerRouteImport.update({
+  id: '/about_/maintainer',
+  path: '/about/maintainer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCommunityFeedbackRoute = ApiCommunityFeedbackRouteImport.update({
+  id: '/api/community-feedback',
+  path: '/api/community-feedback',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiTutorRoute = ApiTutorRouteImport.update({
   id: '/api/tutor',
@@ -118,12 +142,16 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/bibliography': typeof BibliographyRoute
   '/certificate': typeof CertificateRoute
+  '/contribute': typeof ContributeRoute
   '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
+  '/roadmap': typeof RoadmapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/taskboard': typeof TaskboardRoute
   '/feedback': typeof AuthenticatedFeedbackRoute
+  '/about/maintainer': typeof AboutMaintainerRoute
+  '/api/community-feedback': typeof ApiCommunityFeedbackRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -136,12 +164,16 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/bibliography': typeof BibliographyRoute
   '/certificate': typeof CertificateRoute
+  '/contribute': typeof ContributeRoute
   '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
+  '/roadmap': typeof RoadmapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/taskboard': typeof TaskboardRoute
   '/feedback': typeof AuthenticatedFeedbackRoute
+  '/about/maintainer': typeof AboutMaintainerRoute
+  '/api/community-feedback': typeof ApiCommunityFeedbackRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -156,12 +188,16 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/bibliography': typeof BibliographyRoute
   '/certificate': typeof CertificateRoute
+  '/contribute': typeof ContributeRoute
   '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
+  '/roadmap': typeof RoadmapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/taskboard': typeof TaskboardRoute
   '/_authenticated/feedback': typeof AuthenticatedFeedbackRoute
+  '/about_/maintainer': typeof AboutMaintainerRoute
+  '/api/community-feedback': typeof ApiCommunityFeedbackRoute
   '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -176,12 +212,16 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bibliography'
     | '/certificate'
+    | '/contribute'
     | '/curriculum'
     | '/glossary'
     | '/reference'
+    | '/roadmap'
     | '/sitemap.xml'
     | '/taskboard'
     | '/feedback'
+    | '/about/maintainer'
+    | '/api/community-feedback'
     | '/api/tutor'
     | '/learn/$slug'
     | '/projects/$slug'
@@ -194,12 +234,16 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bibliography'
     | '/certificate'
+    | '/contribute'
     | '/curriculum'
     | '/glossary'
     | '/reference'
+    | '/roadmap'
     | '/sitemap.xml'
     | '/taskboard'
     | '/feedback'
+    | '/about/maintainer'
+    | '/api/community-feedback'
     | '/api/tutor'
     | '/learn/$slug'
     | '/projects/$slug'
@@ -213,12 +257,16 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bibliography'
     | '/certificate'
+    | '/contribute'
     | '/curriculum'
     | '/glossary'
     | '/reference'
+    | '/roadmap'
     | '/sitemap.xml'
     | '/taskboard'
     | '/_authenticated/feedback'
+    | '/about_/maintainer'
+    | '/api/community-feedback'
     | '/api/tutor'
     | '/learn/$slug'
     | '/projects/$slug'
@@ -233,11 +281,15 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BibliographyRoute: typeof BibliographyRoute
   CertificateRoute: typeof CertificateRoute
+  ContributeRoute: typeof ContributeRoute
   CurriculumRoute: typeof CurriculumRoute
   GlossaryRoute: typeof GlossaryRoute
   ReferenceRoute: typeof ReferenceRoute
+  RoadmapRoute: typeof RoadmapRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TaskboardRoute: typeof TaskboardRoute
+  AboutMaintainerRoute: typeof AboutMaintainerRoute
+  ApiCommunityFeedbackRoute: typeof ApiCommunityFeedbackRoute
   ApiTutorRoute: typeof ApiTutorRoute
   LearnSlugRoute: typeof LearnSlugRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
@@ -289,6 +341,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CertificateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contribute': {
+      id: '/contribute'
+      path: '/contribute'
+      fullPath: '/contribute'
+      preLoaderRoute: typeof ContributeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/curriculum': {
       id: '/curriculum'
       path: '/curriculum'
@@ -308,6 +367,13 @@ declare module '@tanstack/react-router' {
       path: '/reference'
       fullPath: '/reference'
       preLoaderRoute: typeof ReferenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roadmap': {
+      id: '/roadmap'
+      path: '/roadmap'
+      fullPath: '/roadmap'
+      preLoaderRoute: typeof RoadmapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -330,6 +396,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/feedback'
       preLoaderRoute: typeof AuthenticatedFeedbackRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/about_/maintainer': {
+      id: '/about_/maintainer'
+      path: '/about/maintainer'
+      fullPath: '/about/maintainer'
+      preLoaderRoute: typeof AboutMaintainerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/community-feedback': {
+      id: '/api/community-feedback'
+      path: '/api/community-feedback'
+      fullPath: '/api/community-feedback'
+      preLoaderRoute: typeof ApiCommunityFeedbackRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/tutor': {
       id: '/api/tutor'
@@ -387,11 +467,15 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BibliographyRoute: BibliographyRoute,
   CertificateRoute: CertificateRoute,
+  ContributeRoute: ContributeRoute,
   CurriculumRoute: CurriculumRoute,
   GlossaryRoute: GlossaryRoute,
   ReferenceRoute: ReferenceRoute,
+  RoadmapRoute: RoadmapRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TaskboardRoute: TaskboardRoute,
+  AboutMaintainerRoute: AboutMaintainerRoute,
+  ApiCommunityFeedbackRoute: ApiCommunityFeedbackRoute,
   ApiTutorRoute: ApiTutorRoute,
   LearnSlugRoute: LearnSlugRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,

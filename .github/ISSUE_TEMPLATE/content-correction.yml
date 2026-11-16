@@ -1,0 +1,33 @@
+name: Content correction
+description: Report an error, an unclear explanation or outdated information in a lesson, or share a technical review.
+title: "[Correction] "
+labels: ["content", "correction"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping keep the lessons accurate. Be as specific as you can.
+  - type: input
+    id: lesson
+    attributes:
+      label: Lesson or page
+      description: The lesson title or the page address (URL).
+      placeholder: "Lesson 12: ..."
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's wrong or unclear?
+      description: Quote the sentence or section if you can.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested fix
+      description: How would you rewrite or correct it?
+  - type: textarea
+    id: sources
+    attributes:
+      label: References
+      description: Links to documentation, standards or other reliable sources that support the change.

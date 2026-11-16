@@ -5,14 +5,15 @@ import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 import { chapters } from "@/content/lessons";
 import { supabase } from "@/integrations/supabase/client";
 import { useUser } from "@/lib/account";
+import { CommunityMessages } from "@/components/community/CommunityMessages";
 
 type FeedbackRow = { id: string; lesson_slug: string; helpful: boolean; comment: string; created_at: string };
 
 export const Route = createFileRoute("/_authenticated/feedback")({
   head: () => ({ meta: [
-    { title: "Learner feedback — Software Foundations" },
+    { title: "Learner feedback — Software Engineering Foundations" },
     { name: "description", content: "Private lesson ratings and comments for the course creator." },
-    { property: "og:title", content: "Learner feedback — Software Foundations" },
+    { property: "og:title", content: "Learner feedback — Software Engineering Foundations" },
     { property: "og:description", content: "Private lesson ratings and comments for the course creator." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
@@ -81,6 +82,7 @@ function FeedbackDashboard() {
           </>
         )}
         {error && <p className="mt-8 text-destructive" role="alert">{error}</p>}
+        {status === "admin" && <CommunityMessages />}
         <p className="mt-12 flex items-center gap-2 border-t border-border pt-5 text-xs text-muted-foreground"><MessageSquareText className="size-4" /> Only your creator account can read these responses.</p>
       </main>
       <SiteFooter />

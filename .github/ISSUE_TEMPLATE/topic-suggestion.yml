@@ -1,0 +1,41 @@
+name: Topic suggestion
+description: Suggest a new topic, lesson, exercise, case study or project.
+title: "[Topic] "
+labels: ["content", "suggestion"]
+body:
+  - type: input
+    id: topic
+    attributes:
+      label: Topic
+      placeholder: "e.g. Database migrations"
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it matters for people building with AI
+      description: What goes wrong when builders don't understand this?
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of contribution is it?
+      options:
+        - New lesson
+        - Addition to an existing lesson
+        - Practical exercise
+        - Case study
+        - Project
+        - Translation
+        - Other
+  - type: textarea
+    id: resources
+    attributes:
+      label: Useful references
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Can you help?
+      options:
+        - label: I'd like to help write or review this.

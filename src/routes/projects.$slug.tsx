@@ -20,7 +20,7 @@ export const Route = createFileRoute("/projects/$slug")({
   },
   head: ({ loaderData }) => {
     const p = parts.find((x) => x.number === loaderData?.partNumber);
-    const t = `Project ${p?.number ?? ""}: ${p?.project.title ?? "Project"} — Software Foundations`;
+    const t = `Project ${p?.number ?? ""}: ${p?.project.title ?? "Project"} — Software Engineering Foundations`;
     const d = p?.project.summary.slice(0, 155) ?? "A hands-on course project.";
     return { meta: [{ title: t }, { name: "description", content: d }, { property: "og:title", content: t }, { property: "og:description", content: d }, { property: "og:type", content: "article" }, { name: "twitter:card", content: "summary_large_image" }] };
   },

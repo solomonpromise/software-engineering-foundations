@@ -14,10 +14,10 @@ export const Route = createFileRoute("/start/$slug")({
     return { page: introPages[i]!, next: introPages[i + 1] };
   },
   head: ({ loaderData }) => {
-    const t = `${loaderData?.page.title ?? "Start here"} — Software Foundations`;
+    const t = `${loaderData?.page.title ?? "Start here"} — Software Engineering Foundations`;
     const first = loaderData?.page.sections.find((s) => s.paragraphs?.length)?.paragraphs?.[0] ?? "";
     const clean = first.replace(/\s+/g, " ").trim();
-    const d = clean ? (clean.length > 155 ? clean.slice(0, clean.lastIndexOf(" ", 152)) + "…" : clean) : `${loaderData?.page.title ?? "Start here"}: an introduction to the free Software Foundations course.`;
+    const d = clean ? (clean.length > 155 ? clean.slice(0, clean.lastIndexOf(" ", 152)) + "…" : clean) : `${loaderData?.page.title ?? "Start here"}: an introduction to the free Software Engineering Foundations resource.`;
     return { meta: [{ title: t }, { name: "description", content: d }, { property: "og:title", content: t }, { property: "og:description", content: d }, { property: "og:type", content: "article" }, { name: "twitter:card", content: "summary_large_image" }] };
   },
   component: IntroView,

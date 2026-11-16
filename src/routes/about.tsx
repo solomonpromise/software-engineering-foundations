@@ -1,160 +1,176 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Github, Linkedin, Mail, Globe } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import portrait from "@/assets/creator-portrait.jpg.asset.json";
-import { chapters } from "@/content/lessons";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
+import { principles } from "@/content/community";
+import { licenses, project } from "@/config/community";
 
-const SITE = "https://softwareengineeringfoundations.lovable.app";
-const PORTRAIT_URL = `${SITE}${portrait.url}`;
-
-const stats = [
-  { value: "1,000+", label: "learners trained across Nigeria, the US, India and South Africa" },
-  { value: "4+", label: "years teaching data science, machine learning and AI" },
-  { value: "4.6/5", label: "average learner rating" },
-  { value: "2,804", label: "health facilities covered by one of his readiness dashboards" },
-];
-
-const roles = [
-  { org: "Synterra Digital", when: "Now", title: "Data Scientist, Full-Stack AI Engineering & Application Development", note: "Builds the dashboards and decision-support tools public-health programmes in Nigeria use to see what is working — from national primary health care performance to zero-dose immunisation." },
-  { org: "Simplilearn", when: "Now", title: "Instructor, Data Science, Machine Learning & Deep Learning", note: "Teaches live workshops and recorded sessions, from first LLM apps to machine-learning career roads." },
-  { org: "AfriTech Digital Hub", when: "Now", title: "Co-founder", note: "An EdTech company building structured, age-appropriate technology education for African learners, so children grow up creating with technology, not just consuming it." },
-  { org: "Omdena Ibadan", when: "Jun 2024 – May 2025", title: "Chapter Lead", note: "Led an AI-powered traffic management project built with contributors from around the world." },
-  { org: "Univelcity", when: "", title: "Machine learning & data analysis trainer", note: "" },
-  { org: "Seedbuilders", when: "", title: "Tech mentor", note: "" },
-];
-
-const links = [
-  { label: "GitHub", href: "https://github.com/solomonpromise", icon: Github, handle: "solomonpromise" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/solomon-promise-etiyeme/", icon: Linkedin, handle: "in/solomon-promise-etiyeme" },
-  { label: "Email", href: "mailto:solomonpromise51@gmail.com?subject=Let%E2%80%99s%20talk", icon: Mail, handle: "solomonpromise51@gmail.com" },
-  { label: "Portfolio", href: "https://solomon-promise.lovable.app", icon: Globe, handle: "solomon-promise.lovable.app" },
+const values = [
+  "Free to learn",
+  "Open to contributions",
+  "Community-driven",
+  "Practical and accessible",
+  "Grounded in software engineering fundamentals",
+  "Continuously evolving",
 ];
 
 export const Route = createFileRoute("/about")({
   head: () => {
-    const t = "About the creator — Software Foundations";
-    const d = "Solomon E. Promise builds AI and data products and teaches people to build them. He wrote Software Foundations for Vibe Coders so builders without an engineering background can judge what AI makes for them.";
-    return { meta: [
-      { title: t },
-      { name: "description", content: d },
-      { property: "og:title", content: t },
-      { property: "og:description", content: d },
-      { property: "og:type", content: "profile" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:image", content: PORTRAIT_URL },
-      { name: "twitter:image", content: PORTRAIT_URL },
-    ] };
+    const t = `About the project — ${project.name}`;
+    const d = project.description;
+    return {
+      meta: [
+        { title: t },
+        { name: "description", content: d },
+        { property: "og:title", content: t },
+        { property: "og:description", content: d },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary" },
+      ],
+    };
   },
   component: About,
 });
 
 function About() {
-  const first = chapters[0];
   return (
     <div className="min-h-screen">
       <SiteHeader />
-      <article className="mx-auto max-w-4xl px-5 py-16">
-        <div className="grid items-center gap-10 md:grid-cols-[1fr_15rem]">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">About the creator</p>
-            <h1 className="mt-3 font-serif text-5xl leading-[1.05] md:text-6xl">Solomon E. Promise</h1>
-            <p className="mt-4 text-lg italic text-muted-foreground">AI engineer &amp; educator · I build, I teach, I keep learning.</p>
-            <p className="mt-5 max-w-xl text-lg">
-              I build AI and data products, and teach people to build them. From public-health systems to
-              classrooms, my work is about expanding what people can do with technology.
-            </p>
-          </div>
-          <figure className="justify-self-center">
-            <div className="rounded-xl border border-brass/60 bg-card p-2 shadow-md">
-              <img src={portrait.url} alt="Solomon E. Promise" width={880} height={1100} className="w-full rounded-lg" />
-            </div>
-            <figcaption className="mt-2 text-center text-xs text-muted-foreground">Solomon E. Promise</figcaption>
-          </figure>
-        </div>
+      <main className="mx-auto max-w-4xl px-5 py-16">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
+          About the project
+        </p>
+        <h1 className="mt-3 font-serif text-4xl leading-tight md:text-6xl">{project.name}</h1>
+        <p className="mt-2 font-serif text-2xl italic text-muted-foreground">
+          {project.descriptor}
+        </p>
+        <p className="mt-6 max-w-2xl text-lg">{project.description}</p>
 
-        <div className="mt-14 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.value} className="bg-card p-5">
-              <p className="font-serif text-3xl text-primary">{s.value}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
-            </div>
-          ))}
-        </div>
+        <blockquote className="mt-10 border-l-4 border-brass pl-6">
+          <p className="font-serif text-2xl italic leading-snug md:text-3xl">
+            &ldquo;AI is changing how we build software, but understanding the foundations of
+            software engineering remains valuable and indispensable.&rdquo;
+          </p>
+        </blockquote>
 
-        <div className="lesson-prose mt-14">
-          <h2>Why this course exists</h2>
+        <div className="lesson-prose mt-10">
+          <h2>An open learning resource</h2>
           <p>
-            AI coding tools have changed who can build software. You can describe an idea in plain language and,
-            minutes later, have something that looks like a working application. That is genuinely exciting, and it
-            is also where many new builders get stuck: an application that looks finished is not the same as one
-            that is finished.
+            This is not a course published by one person and left alone. It is an open educational
+            resource that software engineers, AI engineers, technical educators and AI-assisted
+            builders can learn from, contribute to and improve together, as AI keeps changing how
+            software is built.
           </p>
           <p>
-            Behind every screen there are decisions about where data is stored, who is allowed to see it, what
-            happens when something fails, and how the application will be updated next month without breaking. AI
-            tools make those decisions for you whenever you don&rsquo;t make them yourself, and they don&rsquo;t always
-            make good ones. This course gives you the foundations to take those decisions back.
-          </p>
-          <p>
-            I teach this material to learners in several countries, and the same question keeps coming up: it works
-            on my machine, so what now? The lessons here follow one small application, Taskboard, from the first
-            idea to a live, maintained product, so every idea arrives attached to something you can open and
+            The lessons follow one small application, Taskboard, from the first idea to a live,
+            maintained product, so every idea arrives attached to something you can open and
             inspect.
           </p>
         </div>
 
-        <h2 className="mt-14 font-serif text-3xl">Where I work</h2>
-        <ol className="relative mt-6 space-y-6 border-l-2 border-border pl-9">
-          {roles.map((r) => (
-            <li key={r.org + r.title} className="relative">
-              <span className="absolute -left-[2.6rem] top-2 size-3 rounded-full border-2 border-brass bg-background" />
-              <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <p className="font-serif text-xl">{r.org}</p>
-                {r.when && <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">{r.when}</p>}
-              </div>
-              <p className="text-sm font-semibold text-muted-foreground">{r.title}</p>
-              {r.note && <p className="mt-1 max-w-2xl text-muted-foreground">{r.note}</p>}
+        <ul className="mt-8 flex flex-wrap gap-2" aria-label="What the project stands for">
+          {values.map((v) => (
+            <li key={v} className="rounded-full border border-border px-3.5 py-1.5 text-sm">
+              {v}
             </li>
           ))}
-        </ol>
+        </ul>
 
-        <blockquote className="mt-14 rounded-xl border-l-4 border-brass bg-card p-6">
-          <p className="font-serif text-2xl italic leading-snug">
-            &ldquo;I believe Africa&rsquo;s future belongs to those who can learn, build, and lead with technology.&rdquo;
-          </p>
-        </blockquote>
+        <section id="principles" aria-labelledby="principles-title" className="mt-16 scroll-mt-24">
+          <h2 id="principles-title" className="font-serif text-3xl md:text-4xl">
+            Our Community Principles
+          </h2>
+          <ol className="mt-6 grid gap-x-10 sm:grid-cols-2">
+            {principles.map((p, i) => (
+              <li key={p.title} className="flex gap-4 border-t border-border py-5">
+                <span className="font-serif text-2xl leading-none text-brass" aria-hidden>
+                  {i + 1}
+                </span>
+                <span>
+                  <span className="block font-semibold">{p.title}</span>
+                  <span className="mt-1 block text-muted-foreground">{p.text}</span>
+                </span>
+              </li>
+            ))}
+          </ol>
+        </section>
 
-        <h2 className="mt-14 font-serif text-3xl">Say hello</h2>
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          {links.map((l) => (
+        <section aria-labelledby="open-title" className="mt-14">
+          <h2 id="open-title" className="font-serif text-3xl">
+            Open by design
+          </h2>
+          <p className="mt-3 max-w-2xl text-muted-foreground">
+            The course content is shared under{" "}
             <a
-              key={l.label}
-              href={l.href}
-              {...(l.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="group flex items-center gap-4 rounded-xl border border-border bg-card p-4 transition hover:border-primary"
+              href={licenses.content.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline underline-offset-4"
             >
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-secondary text-primary">
-                <l.icon className="size-5" />
-              </span>
-              <span className="min-w-0">
-                <span className="block font-semibold group-hover:text-primary">{l.label}</span>
-                <span className="block truncate text-sm text-muted-foreground">{l.handle}</span>
-              </span>
+              {licenses.content.title}
             </a>
-          ))}
-        </div>
-
-        <div className="mt-14 flex flex-wrap items-center gap-4 border-t border-border pt-8">
-          {first && (
-            <Link to="/learn/$slug" params={{ slug: first.slug }} className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground transition hover:gap-4">
-              Start lesson 1 <ArrowRight className="size-4" />
+            : you may share and adapt it with credit, for non-commercial purposes, under the same
+            terms. The website&rsquo;s code is released under the{" "}
+            <a
+              href={licenses.code.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline underline-offset-4"
+            >
+              {licenses.code.title}
+            </a>
+            .
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link
+              to="/contribute"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-6 py-2.5 font-semibold text-primary-foreground"
+            >
+              Contribute <ArrowRight className="size-4" aria-hidden />
             </Link>
-          )}
-          <Link to="/curriculum" className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 font-semibold hover:bg-secondary">
-            See the curriculum <ArrowRight className="size-4" />
-          </Link>
-        </div>
-      </article>
+            <Link
+              to="/roadmap"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-6 py-2.5 font-semibold hover:border-primary hover:text-primary"
+            >
+              See the roadmap
+            </Link>
+          </div>
+        </section>
+
+        <section aria-labelledby="maintainer-title" className="mt-16 border-t border-border pt-10">
+          <h2
+            id="maintainer-title"
+            className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground"
+          >
+            Founding maintainer
+          </h2>
+          <div className="mt-5 flex flex-col gap-5 sm:flex-row sm:items-start">
+            <img
+              src={portrait.url}
+              alt={project.founder.name}
+              width={80}
+              height={100}
+              loading="lazy"
+              className="h-24 w-20 shrink-0 rounded-md border border-border object-cover"
+            />
+            <div className="max-w-2xl">
+              <p className="font-serif text-2xl">{project.founder.name}</p>
+              <p className="mt-2 text-muted-foreground">
+                Founded by {project.founder.name}, a Tech Educator passionate about democratising
+                access to technology education and helping more people develop the knowledge
+                required to build meaningful technology solutions. The project grew out of the book{" "}
+                <em>{project.book.title}</em>.
+              </p>
+              <Link
+                to="/about/maintainer"
+                className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-primary underline underline-offset-4"
+              >
+                More about the founding maintainer <ArrowRight className="size-3.5" aria-hidden />
+              </Link>
+            </div>
+          </div>
+        </section>
+      </main>
       <SiteFooter />
     </div>
   );

@@ -14,7 +14,7 @@ export function AccountButton() {
     void supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin").maybeSingle().then(({ data }) => setIsAdmin(Boolean(data)));
   }, [user]);
   if (!ready) return <span className="size-9" />;
-  if (!user) return <Link to="/auth" className="rounded-full border border-header-accent/45 px-3 py-1.5 text-sm text-header-foreground hover:bg-header-accent/15">Sign in</Link>;
+  if (!user) return <Link to="/auth" className="whitespace-nowrap rounded-full border border-header-accent/45 px-3 py-1.5 text-sm text-header-foreground hover:bg-header-accent/15">Sign in</Link>;
   return (
     <div className="relative">
       <button onClick={() => setOpen(!open)} aria-label="Your account" className="flex size-9 items-center justify-center rounded-full border border-header-accent/45 text-header-foreground hover:bg-header-accent/15"><UserRound className="size-4" /></button>

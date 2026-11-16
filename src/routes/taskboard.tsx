@@ -8,9 +8,9 @@ import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 export const Route = createFileRoute("/taskboard")({
   head: () => ({
     meta: [
-      { title: "Run Taskboard — Software Foundations" },
+      { title: "Run Taskboard — Software Engineering Foundations" },
       { name: "description", content: "Run the real Taskboard app from the course in one click, and see exactly where every lesson lives in its code." },
-      { property: "og:title", content: "Run Taskboard — Software Foundations" },
+      { property: "og:title", content: "Run Taskboard — Software Engineering Foundations" },
       { property: "og:description", content: "The course's companion app: FastAPI + React, tested, documented, and mapped lesson by lesson." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

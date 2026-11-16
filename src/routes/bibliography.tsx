@@ -4,9 +4,9 @@ import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
 export const Route = createFileRoute("/bibliography")({
   head: () => ({ meta: [
-    { title: "Bibliography — Software Foundations" },
-    { name: "description", content: "The books, standards and articles behind the Software Foundations course." },
-    { property: "og:title", content: "Bibliography — Software Foundations" },
+    { title: "Bibliography — Software Engineering Foundations" },
+    { name: "description", content: "The books, standards and articles behind Software Engineering Foundations." },
+    { property: "og:title", content: "Bibliography — Software Engineering Foundations" },
     { property: "og:description", content: "Sources and further reading for the course." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
   ] }),

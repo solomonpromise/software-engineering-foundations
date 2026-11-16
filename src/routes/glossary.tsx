@@ -6,9 +6,9 @@ import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 export const Route = createFileRoute("/glossary")({
   head: () => ({
     meta: [
-      { title: "Glossary — Software Foundations" },
+      { title: "Glossary — Software Engineering Foundations" },
       { name: "description", content: "Plain-language definitions of every software term used in the course." },
-      { property: "og:title", content: "Glossary — Software Foundations" },
+      { property: "og:title", content: "Glossary — Software Engineering Foundations" },
       { property: "og:description", content: "Every software term in the course, explained simply." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

@@ -8,9 +8,9 @@ import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 export const Route = createFileRoute("/curriculum")({
   head: () => ({
     meta: [
-      { title: "Curriculum — Software Foundations" },
-      { name: "description", content: "All 34 lessons of the free Software Foundations course, in six parts, each ending with a hands-on project." },
-      { property: "og:title", content: "Curriculum — Software Foundations" },
+      { title: "Curriculum — Software Engineering Foundations" },
+      { name: "description", content: "All 34 lessons of the free Software Engineering Foundations resource, in six parts, each ending with a hands-on project." },
+      { property: "og:title", content: "Curriculum — Software Engineering Foundations" },
       { property: "og:description", content: "Six parts, 34 lessons, six hands-on projects for builders using AI." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

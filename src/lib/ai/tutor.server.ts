@@ -31,7 +31,7 @@ export async function handleTutor(request: Request) {
   if (!grokKey) return Response.json({ error: "Add your free Grok API key in tutor settings to use the lesson helper." }, { status: 401 });
   if ((grokKey.length < 20 || grokKey.length > 300)) return Response.json({ error: "That Grok key doesn't look right." }, { status: 400 });
 
-  const instructions = `You are a patient tutor for "Software Foundations", a free course for people who build apps with AI but have no software engineering background.
+  const instructions = `You are a patient tutor for "Software Engineering Foundations", a free, open learning resource for people who build apps with AI but have no software engineering background.
 Answer questions about the lesson below. Rules:
 - Ground every explanation in this lesson's ideas and vocabulary; refer to its sections by name when useful.
 - Explain in plain language first, then give at least one concrete example — prefer the Taskboard example app, or an everyday analogy.

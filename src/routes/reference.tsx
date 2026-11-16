@@ -4,9 +4,9 @@ import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
 export const Route = createFileRoute("/reference")({
   head: () => ({ meta: [
-    { title: "Reference — Software Foundations" },
+    { title: "Reference — Software Engineering Foundations" },
     { name: "description", content: "Quick-reference guides: project files, Git commands, HTTP and SQL, templates, checklists and further study." },
-    { property: "og:title", content: "Reference — Software Foundations" },
+    { property: "og:title", content: "Reference — Software Engineering Foundations" },
     { property: "og:description", content: "Cheat sheets, templates and checklists for AI builders." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
   ] }),
@@ -28,6 +28,11 @@ function RefIndex() {
               {a.intro && <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{a.intro}</p>}
             </Link>
           ))}
+          <Link to="/glossary" className="rounded-xl border border-border bg-card p-6 transition hover:border-primary">
+            <span className="font-serif text-4xl text-accent">Aa</span>
+            <p className="mt-2 font-semibold">Glossary</p>
+            <p className="mt-1 text-sm text-muted-foreground">Plain-language definitions of every term the course uses.</p>
+          </Link>
           <Link to="/bibliography" className="rounded-xl border border-border bg-card p-6 transition hover:border-primary">
             <span className="font-serif text-4xl text-accent">✦</span>
             <p className="mt-2 font-semibold">Bibliography</p>

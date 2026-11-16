@@ -7,9 +7,9 @@ import { useUser } from "@/lib/account";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({ meta: [
-    { title: "Sign in — Software Foundations" },
+    { title: "Sign in — Software Engineering Foundations" },
     { name: "description", content: "Sign in to save your course progress and pick up on any device." },
-    { property: "og:title", content: "Sign in — Software Foundations" },
+    { property: "og:title", content: "Sign in — Software Engineering Foundations" },
     { property: "og:description", content: "Sign in to save your course progress and pick up on any device." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },

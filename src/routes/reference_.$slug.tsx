@@ -10,7 +10,7 @@ export const Route = createFileRoute("/reference_/$slug")({
     return a;
   },
   head: ({ loaderData }) => {
-    const t = `${loaderData ? `Appendix ${loaderData.letter}: ${loaderData.title}` : "Reference"} — Software Foundations`;
+    const t = `${loaderData ? `Appendix ${loaderData.letter}: ${loaderData.title}` : "Reference"} — Software Engineering Foundations`;
     const d = loaderData?.intro ?? "Quick reference for AI builders.";
     return { meta: [{ title: t }, { name: "description", content: d }, { property: "og:title", content: t }, { property: "og:description", content: d }, { property: "og:type", content: "article" }, { name: "twitter:card", content: "summary_large_image" }] };
   },

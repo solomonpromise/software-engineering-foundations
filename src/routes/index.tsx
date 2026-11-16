@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Layers, AppWindow, Workflow, ClipboardList, Network, Bot, Rocket } from "lucide-react";
+import { project } from "@/config/community";
 import heroImg from "@/assets/landing-hero.jpg";
 
 const conceptIcons = [AppWindow, Workflow, ClipboardList, Network, Bot, Rocket];
@@ -11,10 +12,10 @@ import { ContinueLearning } from "@/components/ContinueLearning";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Software Foundations — Free lessons for AI builders" },
-      { name: "description", content: "A free course for people building apps with AI and no engineering background: understand, judge and maintain what you build." },
-      { property: "og:title", content: "Software Foundations — Free lessons for AI builders" },
-      { property: "og:description", content: "Understand, judge and maintain the apps you build with AI. Free, beginner-friendly lessons." },
+      { title: "Software Engineering Foundations — For the AI Building Era" },
+      { name: "description", content: "An open learning resource helping people understand the principles, concepts and practices of software engineering required to build reliable software with AI." },
+      { property: "og:title", content: "Software Engineering Foundations — For the AI Building Era" },
+      { property: "og:description", content: "Free to learn, open to contributions: the software engineering foundations you need to build reliable software with AI." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { property: "og:image", content: "https://softwareengineeringfoundations.lovable.app/__l5e/assets-v1/465bdbc2-a754-462e-9529-c2be40e63cf0/course-share.jpg" },
@@ -37,7 +38,7 @@ function Home() {
         <img src={heroImg} alt="A builder planning an app's frontend, backend and database in a notebook beside a laptop with an AI assistant" width={1600} height={1008} className="absolute inset-0 h-full w-full object-cover opacity-60" />
         <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent" />
         <div className="relative mx-auto max-w-6xl px-5 pb-24 pt-20 md:pb-32 md:pt-28">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-brass">Free course · No experience needed</p>
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-brass">Free and open · No experience needed</p>
           <h1 className="mt-5 max-w-3xl font-serif text-5xl leading-[1.05] md:text-7xl">
             You can build apps with AI. <span className="italic text-brass">Now understand them.</span>
           </h1>
@@ -81,6 +82,25 @@ function Home() {
           {[["Plain language","Every idea explained without jargon, with everyday examples."],["Learn by building","Each part ends with a hands-on project you can do with AI."],["Ask the tutor","Stuck? Ask questions about any lesson and get answers grounded in it."]].map(([t,d]) => (
             <div key={t} className="border-t-2 border-brass pt-4"><h3 className="font-serif text-xl">{t}</h3><p className="mt-1 text-muted-foreground">{d}</p></div>
           ))}
+        </div>
+      </section>
+
+      <section aria-labelledby="open-resource" className="border-t border-border">
+        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 md:grid-cols-[1.2fr_1fr] md:items-center">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent">An open learning resource</p>
+            <h2 id="open-resource" className="mt-3 font-serif text-4xl">Built in the open, improved by the community.</h2>
+            <p className="mt-4 max-w-xl text-muted-foreground">{project.description} Software engineers, AI engineers, educators and learners can review lessons, suggest topics, recommend resources and report errors.</p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link to="/contribute" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground transition hover:gap-3">Contribute <ArrowRight className="size-4" /></Link>
+              <Link to="/roadmap" className="inline-flex items-center rounded-full border border-border px-6 py-3 font-semibold hover:border-primary hover:text-primary">See the roadmap</Link>
+            </div>
+          </div>
+          <ul className="grid gap-px overflow-hidden rounded-xl border border-border bg-border text-sm">
+            {[["Free to learn","Every lesson, project and reference page, with no paywall."],["Open to contributions","Anyone can propose improvements; maintainers review every change."],["Continuously evolving","Lessons are revisited as tools and good practice change."]].map(([t,d]) => (
+              <li key={t} className="bg-card p-5"><p className="font-serif text-xl">{t}</p><p className="mt-1 text-muted-foreground">{d}</p></li>
+            ))}
+          </ul>
         </div>
       </section>
 
