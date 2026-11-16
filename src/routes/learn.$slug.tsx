@@ -3,7 +3,14 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 import { useNavigate } from "@tanstack/react-router";
-import { markDone, setLast, useProgress } from "@/lib/progress";
+import { getProgress, localDay, markDone, recordReadingDay, setLast, setReview, useProgress } from "@/lib/progress";
+import { finishOnTrail, heartbeat, ordinal, pulse, useMe } from "@/lib/engagement/reader";
+import { touchReminders } from "@/lib/engagement/reminders";
+import { scheduleLesson } from "@/lib/engagement/review";
+import { MarginRiver, RiverSummary } from "@/components/engagement/LessonRiver";
+import { LeaveALetter, LettersForLesson } from "@/components/engagement/Letters";
+import { ReminderCard } from "@/components/engagement/ReminderCard";
+import { ShareMilestone } from "@/components/engagement/ShareMilestone";
 import { findChapter } from "@/content/lessons";
 import { lessonRepo, linkHref } from "@/content/taskboard";
 import { projectSlug } from "./projects.$slug";
@@ -91,7 +98,26 @@ function Lesson() {
   const minutes = Math.max(3, Math.round(words / 220));
   const ids = c.sections.map((_, i) => `s${i + 1}`);
 
-  useEffect(() => { setLast(c.slug); }, [c.slug]);
+  useEffect(() => {
+    setLast(c.slug);
+    recordReadingDay();
+    pulse(c.slug, 0);
+    void touchReminders(c.slug);
+    return heartbeat(c.slug);
+  }, [c.slug]);
+  const me = useMe();
+  const rank = me.ranks?.[c.slug];
+  // A part is complete when every one of its lessons is finished.
+  const partDone = c.part.chapters.every((x) => done.includes(x.slug));
+  const finish = () => {
+    markDone(c.slug);
+    setReview(scheduleLesson(getProgress().review, c.slug, localDay()));
+    trackEvent(`lesson-finished/${c.slug}`, `Finished: ${c.title}`);
+    void finishOnTrail(c.slug);
+    void touchReminders(c.slug, true);
+  };
+  // Lessons finished before counting existed still get their place once the page opens.
+  useEffect(() => { if (isDone && !rank) void finishOnTrail(c.slug); }, [isDone, rank, c.slug]);
   // Counts once per visit when a reader scrolls to the end of the lesson (the project's north-star metric).
   const readToEnd = useRef<string | null>(null);
   useEffect(() => {
@@ -99,6 +125,7 @@ function Lesson() {
       const h = document.documentElement;
       const pct = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
       setScroll(pct);
+      if (e) pulse(c.slug, pct * 100);
       // Only real scrolling counts, not the position left over from the previous page.
       if (e && pct >= 0.9 && readToEnd.current !== c.slug) {
         readToEnd.current = c.slug;
@@ -158,6 +185,7 @@ function Lesson() {
         </p>
         <p className="mt-6 border-l-4 border-accent pl-5 font-serif text-xl italic">{c.question}</p>
         <LessonTools slug={c.slug} title={c.title} />
+        {c.number === 1 && <LettersForLesson slug={c.slug} course />}
 
         <div className="lesson-prose mt-10">
           {c.sections.map((s, si) => (
@@ -193,24 +221,46 @@ function Lesson() {
         <h2 id="check" className="mt-14 scroll-mt-24 font-serif text-3xl">Check your understanding</h2>
         <ul className="mt-6 space-y-3">{c.check.map((x, i) => <Check key={x.q} n={i + 1} {...x} verdict={verdicts[i]} onVerdict={(v) => setVerdicts((p) => ({ ...p, [i]: v }))} />)}</ul>
 
-        <div className="mt-14 flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-8 text-center">
+        <LettersForLesson slug={c.slug} />
+        <RiverSummary slug={c.slug} />
+
+        <div className="mt-8 flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-8 text-center">
           {isDone ? (
             <>
               <CheckCircle2 className="size-10 text-accent" />
-              <p className="font-serif text-2xl">Lesson finished. Nice work.</p>
-              <div className="flex flex-wrap justify-center gap-3">
+              {partDone ? (
+                <>
+                  <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent">Part {c.part.number} complete</p>
+                  <p className="font-serif text-3xl">You finished &ldquo;{c.part.title}&rdquo;.</p>
+                </>
+              ) : (
+                <p className="font-serif text-2xl">Lesson finished. Nice work.</p>
+              )}
+              {rank && <p className="text-muted-foreground">You&rsquo;re the <span className="font-semibold text-foreground">{ordinal(rank)}</span> reader to finish this lesson.</p>}
+              <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
                 {next && <Link to="/learn/$slug" params={{ slug: next.slug }} className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground">Next lesson <ArrowRight className="size-4" /></Link>}
-                <button onClick={() => markDone(c.slug, false)} className="text-sm text-muted-foreground underline">Mark as not finished</button>
+                <ShareMilestone
+                  milestone={partDone ? { kind: "part", number: c.part.number, title: c.part.title } : { kind: "lesson", number: c.number, title: c.title }}
+                  label={partDone ? `Share Part ${c.part.number}` : "Share this milestone"}
+                />
               </div>
+              <button onClick={() => markDone(c.slug, false)} className="text-sm text-muted-foreground underline">Mark as not finished</button>
             </>
           ) : (
             <>
               <p className="font-serif text-2xl">Done with this lesson?</p>
               <p className="text-sm text-muted-foreground">{passed ? "You've answered every question. Mark it finished to track your progress." : `Answer the questions above first: ${gotCount(verdicts)} of ${c.check.length} got it.`}</p>
-              <button disabled={!passed} onClick={() => { markDone(c.slug); trackEvent(`lesson-finished/${c.slug}`, `Finished: ${c.title}`); }} className="disabled:cursor-not-allowed disabled:opacity-50 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground"><CheckCircle2 className="size-4" /> Mark as finished</button>
+              <button disabled={!passed} onClick={finish} className="disabled:cursor-not-allowed disabled:opacity-50 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground"><CheckCircle2 className="size-4" /> Mark as finished</button>
             </>
           )}
         </div>
+
+        {isDone && (
+          <div className="mt-6 grid gap-4 text-left md:grid-cols-2 print:hidden">
+            <LeaveALetter slug={c.slug} />
+            <ReminderCard slug={c.slug} compact />
+          </div>
+        )}
 
         <LessonFeedback slug={c.slug} title={c.title} />
         <p className="mt-4 text-sm text-muted-foreground print:hidden">
@@ -235,6 +285,7 @@ function Lesson() {
         </nav>
       </article>
       </div>
+      <MarginRiver slug={c.slug} scroll={scroll} />
       <LessonTutor slug={c.slug} title={c.title} />
       <SiteFooter />
     </div>

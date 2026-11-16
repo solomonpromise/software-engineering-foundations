@@ -69,6 +69,46 @@ One-time setup:
    the contents of `supabase/functions/analytics/index.ts`, and deploy. (Or, with the Supabase CLI:
    `supabase functions deploy analytics --project-ref <your-project-ref>`.)
 
+## Reader counts, letters and reminders
+
+These features drive engagement without accounts:
+
+- **Reader counts**: the home page shows how many people have opened a lesson and how many are
+  reading right now. Lessons show a "reading river" of how far other readers got, finishers see
+  "you're the 418th reader to finish this lesson", and the certificate shows the reader's number.
+- **Letters to the next reader**: notes readers leave after a lesson, published only after a
+  maintainer approves them on `/admin` (**Readers & letters** tab).
+- **Reading reminders**: opt-in browser notifications after 1, 4 and 11 days away, worded from
+  the reader's own goal and next lesson. No email.
+- **Daily refresh** (`/review`), **weekly rhythm** and **milestone share cards** run entirely in
+  the browser and need no setup.
+
+One-time setup in Supabase:
+
+1. **SQL Editor**: run `docs/database/engagement.sql` (after `schema.sql`). Reader counts and letters
+   work from this point.
+2. **Edge Functions → Secrets**: add `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` and
+   `REMINDER_SECRET`. The public key must match `reminders.vapidPublicKey` in
+   `src/config/community.ts`. To make a new pair: `npx web-push generate-vapid-keys`; for
+   `REMINDER_SECRET`, any long random string.
+3. **Edge Functions → Deploy a new function → Via Editor**: name it `reminders`, add both files
+   from `supabase/functions/reminders/` (`index.ts` and `push.ts`), turn **off** "Verify JWT", and
+   deploy. (CLI: `supabase functions deploy reminders --no-verify-jwt`.)
+4. **Integrations → Cron** (enable the `pg_cron` and `pg_net` extensions if asked), then run in the
+   SQL Editor, with your project reference and secret:
+
+   ```sql
+   select cron.schedule('reading-reminders', '5 * * * *', $$
+     select net.http_post(
+       url := 'https://<project-ref>.supabase.co/functions/v1/reminders',
+       headers := jsonb_build_object('Content-Type', 'application/json',
+                                     'x-reminder-secret', '<REMINDER_SECRET>'),
+       body := '{}'::jsonb)
+   $$);
+   ```
+
+   It runs hourly and reminds each reader at the hour they chose.
+
 ## How it's published
 
 The site is static and hosted on GitHub Pages. Every push to `main` runs
@@ -84,6 +124,8 @@ and `VITE_SUPABASE_PUBLISHABLE_KEY` at build time.
 - `src/config/community.ts` — project name, GitHub repository and license settings
 - `src/routes/` — one file per page
 - `src/lib/progress.ts` — reading progress (browser storage)
+- `src/lib/engagement/` and `src/components/engagement/` — reader counts, letters, reminders, daily refresh, share cards
+- `supabase/functions/` — Edge Functions (`analytics` for /admin, `reminders` for notifications)
 - `src/lib/appearance.ts` — themes and text size
 - `docs/database/` — SQL for tables the site needs
 - `scripts/postbuild.mjs` — 404 page and offline service worker for GitHub Pages

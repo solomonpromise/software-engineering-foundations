@@ -229,3 +229,18 @@ html[data-size="xlarge"] { font-size: 125%; }
   .lesson-page img { max-height: 110mm; object-fit: contain; }
   .lesson-page a { color: inherit; text-decoration: none; }
 }
+
+/* Letters to the next reader: notes on lined paper, held by a strip of tape. */
+:root {
+  --paper: oklch(0.975 0.018 88);
+  --paper-ink: oklch(0.3 0.03 60);
+  --paper-line: oklch(0.88 0.03 85);
+  --tape: oklch(0.84 0.13 84 / 0.45);
+}
+.paper-note {
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 1.95rem, var(--paper-line) 1.95rem 2rem),
+    var(--paper);
+  color: var(--paper-ink);
+  box-shadow: 0 1px 1px oklch(0.2 0.02 60 / 0.08), 0 14px 30px -14px oklch(0.2 0.03 60 / 0.45);
+}

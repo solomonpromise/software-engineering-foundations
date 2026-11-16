@@ -12,6 +12,10 @@ export type Progress = {
   practice?: Record<string, Practice>;
   /** Name the learner wants on their certificate. */
   certificateName?: string;
+  /** Local dates (YYYY-MM-DD) the learner read on, newest last; used for the weekly rhythm. */
+  days?: string[];
+  /** Spaced review of check questions: "slug#index" → box (1–5) and the date it's next due. */
+  review?: Record<string, { box: number; due: string }>;
 };
 const EMPTY: Progress = { done: [] };
 let cache: Progress | null = null;
@@ -97,11 +101,27 @@ export function mergeProgress(a: Progress, b: Progress): Progress {
     notes,
     assessments: mergeIndexes(a.assessments, b.assessments),
     practice,
+    days: [...new Set([...(a.days ?? []), ...(b.days ?? [])])].sort().slice(-400),
+    review: { ...(b.review ?? {}), ...(a.review ?? {}) },
   };
 }
 export function setCertificateName(name: string) {
   const p = read();
   write({ ...p, certificateName: name.slice(0, 80) });
+}
+/** A local calendar date, "2026-11-16". */
+export function localDay(d = new Date()) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+/** Notes that the learner read today (for the weekly rhythm). */
+export function recordReadingDay() {
+  const p = read();
+  const today = localDay();
+  if (p.days?.[p.days.length - 1] === today || p.days?.includes(today)) return;
+  write({ ...p, days: [...(p.days ?? []), today].slice(-400) });
+}
+export function setReview(review: Progress["review"]) {
+  write({ ...read(), review: review ?? {} });
 }
 export function getProgress() { return read(); }
 export function replaceProgress(p: Progress) { write(p); }

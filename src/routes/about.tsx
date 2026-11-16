@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { CountMe } from "@/components/engagement/CountMe";
 import { ArrowRight } from "lucide-react";
 import portraitUrl from "@/assets/creator-portrait.jpg";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
@@ -149,8 +150,26 @@ function About() {
               <a href="https://www.goatcounter.com" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-4">
                 GoatCounter
               </a>{" "}
-              to count page views and a few anonymous course events, such as a lesson being read to the end. It sets
+              to count page views and a few anonymous course events, such as a lesson being read to the end or a
+              milestone being shared. It sets
               no cookies and doesn&rsquo;t identify you.
+            </li>
+            <li>
+              <span className="font-semibold text-foreground">Reader counts.</span> When you open a lesson, your browser
+              gets a random reader number (no name, no email). We record which lesson you&rsquo;re on and how far down
+              each lesson you read, so the site can show honest counts like &ldquo;212 readers got this far&rdquo;. Only
+              totals are ever shown. To stop being counted, use the switch below; it also deletes your record.
+              <CountMe />
+            </li>
+            <li>
+              <span className="font-semibold text-foreground">Letters to the next reader.</span> Notes you leave after a
+              lesson are read by the maintainer before they appear publicly, with only the first name and place you chose
+              to add.
+            </li>
+            <li>
+              <span className="font-semibold text-foreground">Reading reminders.</span> Only if you turn them on: we keep
+              your browser&rsquo;s notification address, the goal you typed, your preferred hour and time zone, and which
+              lesson you&rsquo;re on. Turning reminders off deletes all of it.
             </li>
             <li>
               <span className="font-semibold text-foreground">Feedback.</span> Ratings and messages you send are stored

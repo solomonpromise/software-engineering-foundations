@@ -8,6 +8,8 @@ import {
   MessageSquareText,
   RefreshCw,
   Search,
+  Check,
+  EyeOff,
   ThumbsDown,
   ThumbsUp,
   Trash2,
@@ -18,6 +20,7 @@ import { analytics as analyticsConfig } from "@/config/community";
 import { chapters } from "@/content/lessons";
 import { project } from "@/config/community";
 import { feedbackCategories } from "@/lib/community/feedback";
+import { seasonName } from "@/lib/engagement/reader";
 import {
   adminAvailable,
   deleteFeedback,
@@ -26,12 +29,16 @@ import {
   isAdmin,
   loadAnalytics,
   loadFeedback,
+  loadLetters,
+  loadReaderSummary,
   onSessionChange,
+  setLetterApproved,
   signIn,
   signOut,
   type CommunityRow,
   type FeedbackTable,
   type LessonRow,
+  type LetterRow,
   type Analytics,
   type AnalyticsResult,
 } from "@/lib/admin";
@@ -210,7 +217,7 @@ function Inboxes() {
   const [data, setData] = useState<Data | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [tab, setTab] = useState<"community" | "lessons" | "analytics">("community");
+  const [tab, setTab] = useState<"community" | "lessons" | "letters" | "analytics">("community");
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -258,9 +265,10 @@ function Inboxes() {
   const tabs: { id: typeof tab; label: string; count?: number }[] = [
     { id: "community", label: "Community messages", count: data.community.length },
     { id: "lessons", label: "Lesson ratings", count: data.lessons.length },
+    { id: "letters", label: "Readers & letters" },
     { id: "analytics", label: "Site analytics" },
   ];
-  const feedbackTab = tab !== "analytics";
+  const feedbackTab = tab === "community" || tab === "lessons";
 
   return (
     <>
@@ -320,6 +328,8 @@ function Inboxes() {
       <div role="tabpanel" className="mt-6">
         {tab === "analytics" ? (
           <AnalyticsPanel />
+        ) : tab === "letters" ? (
+          <LettersPanel />
         ) : tab === "community" ? (
           <CommunityInbox
             rows={data.community}
@@ -885,5 +895,143 @@ function RankedList({
         </ol>
       )}
     </section>
+  );
+}
+
+function LettersPanel() {
+  const [rows, setRows] = useState<LetterRow[] | null | undefined>(undefined);
+  const [summary, setSummary] = useState<Awaited<ReturnType<typeof loadReaderSummary>> | null>(null);
+  const [error, setError] = useState("");
+  const [show, setShow] = useState<"pending" | "approved" | "all">("pending");
+  const [loading, setLoading] = useState(false);
+
+  const refresh = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const [letters, sum] = await Promise.all([loadLetters(), loadReaderSummary()]);
+      setRows(letters);
+      setSummary(sum);
+    } catch {
+      setError("Letters could not be loaded. Check your connection and try again.");
+    }
+    setLoading(false);
+  }, []);
+  useEffect(() => {
+    void refresh();
+  }, [refresh]);
+
+  const approve = async (id: string, approved: boolean) => {
+    const row = await setLetterApproved(id, approved);
+    if (!row) {
+      setError("That letter couldn't be updated. Try again.");
+      return;
+    }
+    setRows((r) => r?.map((x) => (x.id === id ? row : x)));
+  };
+  const remove = async (id: string) => {
+    if (!window.confirm("Delete this letter permanently? This can't be undone.")) return;
+    if (!(await deleteFeedback("reader_letters", id))) {
+      setError("That letter couldn't be deleted. Try again.");
+      return;
+    }
+    setRows((r) => r?.filter((x) => x.id !== id));
+  };
+
+  if (rows === undefined && !error) {
+    return (
+      <p className="flex items-center gap-2 text-muted-foreground" role="status">
+        <Loader2 className="size-4 animate-spin motion-reduce:animate-none" aria-hidden /> Loading letters…
+      </p>
+    );
+  }
+  if (rows === null) {
+    return (
+      <Notice>
+        Reader counts, letters and reminders aren&rsquo;t set up in the database yet. Run{" "}
+        <code>docs/database/engagement.sql</code> in the Supabase SQL Editor, then refresh.
+      </Notice>
+    );
+  }
+  const list = rows ?? [];
+  const pending = list.filter((r) => !r.approved);
+  const shown = show === "pending" ? pending : show === "approved" ? list.filter((r) => r.approved) : list;
+  const season = summary?.seasons.at(-1);
+
+  return (
+    <>
+      <div className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border lg:grid-cols-4">
+        <Stat label="Readers so far" value={summary?.readers == null ? "—" : summary.readers.toLocaleString("en")} />
+        <Stat label="Reading right now" value={summary?.readingNow == null ? "—" : String(summary.readingNow)} />
+        <Stat
+          label={season ? `Started in ${seasonName(season.season)}` : "Started this month"}
+          value={season ? `${season.readers}` : "0"}
+        />
+        <Stat label="Readers with reminders on" value={summary?.reminders == null ? "—" : String(summary.reminders)} />
+      </div>
+
+      <div className="mt-8 flex flex-wrap items-center gap-2">
+        <Chip active={show === "pending"} onClick={() => setShow("pending")}>Waiting for approval ({pending.length})</Chip>
+        <Chip active={show === "approved"} onClick={() => setShow("approved")}>Published ({list.length - pending.length})</Chip>
+        <Chip active={show === "all"} onClick={() => setShow("all")}>All ({list.length})</Chip>
+        <button
+          type="button"
+          onClick={() => void refresh()}
+          disabled={loading}
+          className="ml-auto inline-flex min-h-9 items-center gap-1.5 rounded-full border border-border px-3.5 text-sm hover:border-primary hover:text-primary disabled:opacity-60"
+        >
+          <RefreshCw className={`size-4 ${loading ? "animate-spin motion-reduce:animate-none" : ""}`} aria-hidden /> Refresh
+        </button>
+      </div>
+      <p className="mt-3 text-sm text-muted-foreground">
+        Published letters appear at the end of their lesson, and on the home page. Letters
+        &ldquo;to someone just starting&rdquo; appear at the top of Lesson 1.
+      </p>
+      {error && (
+        <p role="alert" className="mt-4 rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+          {error}
+        </p>
+      )}
+      {shown.length === 0 ? (
+        <Empty>{show === "pending" ? "No letters waiting. You're all caught up." : "No letters here yet."}</Empty>
+      ) : (
+        <ul className="mt-6 space-y-4">
+          {shown.map((r) => (
+            <li key={r.id} className={`rounded-xl border bg-card p-5 ${r.approved ? "border-border" : "border-brass"}`}>
+              <div className="flex flex-wrap items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="font-semibold">
+                    {r.lesson_slug === "course" ? "To someone just starting" : lessonTitle(r.lesson_slug)}
+                    <span className={`ml-2 rounded-full px-2 py-0.5 text-xs font-normal ${r.approved ? "bg-accent/15 text-accent" : "bg-brass/20"}`}>
+                      {r.approved ? "Published" : "Waiting"}
+                    </span>
+                  </p>
+                  <time className="text-xs text-muted-foreground" dateTime={r.created_at}>
+                    {when(r.created_at)}
+                  </time>
+                </div>
+                <div className="flex items-center gap-1">
+                  {r.approved ? (
+                    <button type="button" onClick={() => void approve(r.id, false)} className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-border px-3.5 text-sm hover:border-primary">
+                      <EyeOff className="size-4" aria-hidden /> Hide
+                    </button>
+                  ) : (
+                    <button type="button" onClick={() => void approve(r.id, true)} className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-primary px-3.5 text-sm font-semibold text-primary-foreground">
+                      <Check className="size-4" aria-hidden /> Publish
+                    </button>
+                  )}
+                  <DeleteButton onClick={() => void remove(r.id)} />
+                </div>
+              </div>
+              <p className="mt-3 whitespace-pre-wrap break-words font-serif text-lg italic">&ldquo;{r.message}&rdquo;</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                — {r.name || "No name"}
+                {r.place ? `, ${r.place}` : ""}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
   );
 }

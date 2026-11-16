@@ -32,6 +32,18 @@ export const analytics = {
   goatcounter: "https://software-engineering-foundations.goatcounter.com/count" as string | null,
 };
 
+/**
+ * Reading reminders (browser notifications). The VAPID public key is public by design; its private
+ * half lives only in the Supabase "reminders" function's secrets. Set to null to hide reminders.
+ */
+export const reminders = {
+  vapidPublicKey:
+    "BANpZYELPSWRumDVUpedIeYCTKlIMbyHNEE3B-57oO4YImCgY64erD5_f8BG_ZqzLbJBJQcMTFEzriLCy_ivfV8" as string | null,
+};
+
+/** Readers with a number up to this are "founding readers" (shown on the certificate). */
+export const FOUNDING_READERS = 1000;
+
 export const licenses = {
   content: {
     name: "CC BY-NC-SA 4.0",

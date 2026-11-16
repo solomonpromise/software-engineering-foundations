@@ -21,7 +21,18 @@ export type LessonRow = {
   created_at: string;
 };
 
-export type FeedbackTable = "community_feedback" | "lesson_feedback";
+export type FeedbackTable = "community_feedback" | "lesson_feedback" | "reader_letters";
+
+export type LetterRow = {
+  id: string;
+  lesson_slug: string;
+  message: string;
+  name: string | null;
+  place: string | null;
+  approved: boolean;
+  approved_at: string | null;
+  created_at: string;
+};
 
 const LIMIT = 2000;
 
@@ -87,6 +98,42 @@ export async function loadFeedback() {
 export async function deleteFeedback(table: FeedbackTable, id: string) {
   const { data, error } = await db().from(table).delete().eq("id", id).select("id");
   return !error && (data?.length ?? 0) > 0;
+}
+
+/** Letters to the next reader, newest first. null when the letters table hasn't been set up yet. */
+export async function loadLetters(): Promise<LetterRow[] | null> {
+  const { data, error } = await db()
+    .from("reader_letters")
+    .select("id,lesson_slug,message,name,place,approved,approved_at,created_at")
+    .order("created_at", { ascending: false })
+    .limit(LIMIT);
+  if (error) {
+    if (error.code === "PGRST205" || error.code === "42P01") return null;
+    throw new Error("Letters could not be loaded.");
+  }
+  return (data ?? []) as LetterRow[];
+}
+
+/** Approves (publishes) or hides a letter. Resolves to the updated row, or null if it failed. */
+export async function setLetterApproved(id: string, approved: boolean) {
+  const { data, error } = await db()
+    .from("reader_letters")
+    .update({ approved, approved_at: approved ? new Date().toISOString() : null })
+    .eq("id", id)
+    .select("id,lesson_slug,message,name,place,approved,approved_at,created_at");
+  return !error && data?.[0] ? (data[0] as LetterRow) : null;
+}
+
+/** Reader totals and reminders (counts only). */
+export async function loadReaderSummary() {
+  const [trail, reminders] = await Promise.all([db().rpc("reader_stats"), db().rpc("reminder_count")]);
+  const t = trail.data as { readers: number; reading_now: number; seasons: { season: string; readers: number; active: number }[] } | null;
+  return {
+    readers: t?.readers ?? null,
+    readingNow: t?.reading_now ?? null,
+    seasons: t?.seasons ?? [],
+    reminders: typeof reminders.data === "number" ? reminders.data : reminders.data == null ? null : Number(reminders.data),
+  };
 }
 
 /** Turns rows into a CSV file and starts a download in the browser. */

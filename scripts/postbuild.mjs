@@ -2,7 +2,8 @@
 //  - 404.html: the client-rendered shell, so addresses that weren't prerendered still load the app
 //  - .nojekyll: serve files and folders that start with "_" as they are
 //  - folder/index.html copies where a page and a folder share a name (about.html + about/)
-//  - sw.js: the offline-reading service worker (registered by src/lib/pwa.ts)
+//  - sw.js: the offline-reading service worker (registered by src/lib/pwa.ts), which also loads
+//    public/push-handler.js to show reading reminders
 import { copyFile, readdir, stat, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { generateSW } from "workbox-build";
@@ -33,6 +34,7 @@ const { count, size, warnings } = await generateSW({
   globPatterns: ["manifest.webmanifest", "favicon.png", "icon-192.png"],
   modifyURLPrefix: { "": base },
   swDest: `${out}/sw.js`,
+  importScripts: ["push-handler.js"],
   clientsClaim: true,
   skipWaiting: true,
   cleanupOutdatedCaches: true,

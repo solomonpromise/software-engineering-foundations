@@ -6,6 +6,10 @@ import { chapters, parts } from "@/content/lessons";
 import { projectSlug } from "./projects.$slug";
 import { setCertificateName, useProgress } from "@/lib/progress";
 import { certificateStatus } from "@/lib/certificate";
+import { FOUNDING_READERS } from "@/config/community";
+import { seasonName, useMe } from "@/lib/engagement/reader";
+import { LeaveALetter } from "@/components/engagement/Letters";
+import { ShareMilestone } from "@/components/engagement/ShareMilestone";
 
 export const Route = createFileRoute("/certificate")({
   head: () => ({ meta: [
@@ -26,6 +30,8 @@ function CertificatePage() {
   const st = certificateStatus(progress, chapters.map((c) => c.slug), projects);
   const name = progress.certificateName ?? "";
   const date = new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+  const me = useMe();
+  const founding = !!me.number && me.number <= FOUNDING_READERS;
 
   return (
     <div className="min-h-screen bg-background">
@@ -53,6 +59,7 @@ function CertificatePage() {
                 <input value={name} onChange={(e) => setCertificateName(e.target.value)} maxLength={80} autoComplete="name" className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2" />
               </label>
               <button onClick={() => window.print()} className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"><Printer className="size-4" /> Download / print</button>
+              <ShareMilestone milestone={{ kind: "course" }} label="Share" className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-semibold hover:border-primary" />
             </div>
             <section className="mt-8 aspect-[1.414] w-full rounded-lg border-[6px] border-double border-brass bg-card p-10 text-center shadow-lg print:mt-0 print:shadow-none">
               <div className="flex h-full flex-col items-center justify-center">
@@ -62,8 +69,16 @@ function CertificatePage() {
                 <p className="mt-2 font-serif text-4xl sm:text-5xl">{name || "Your name"}</p>
                 <p className="mx-auto mt-4 max-w-lg text-muted-foreground">has completed all 34 lessons and six projects of <span className="font-semibold text-foreground">Software Engineering Foundations</span>, an open learning resource founded by Solomon Promise.</p>
                 <p className="mt-8 text-sm text-muted-foreground">{date}</p>
+                {me.number && (
+                  <p className="mt-2 text-xs uppercase tracking-[0.2em] text-accent">
+                    {founding ? "Founding reader · " : ""}Reader #{me.number.toLocaleString("en")}{me.season ? ` · joined ${seasonName(me.season)}` : ""}
+                  </p>
+                )}
               </div>
             </section>
+            <div className="mt-10 print:hidden">
+              <LeaveALetter slug="course" course />
+            </div>
           </>
         )}
       </main>

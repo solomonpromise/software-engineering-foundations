@@ -1,5 +1,7 @@
 -- Software Engineering Foundations: database setup
 --
+-- (Engagement features — the reader trail, letters and reminders — are in engagement.sql.)
+--
 -- Run this once in your Supabase project: Dashboard → SQL Editor → New query → paste → Run.
 -- It is safe to run again.
 --

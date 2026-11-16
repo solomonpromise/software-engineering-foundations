@@ -10,7 +10,7 @@ const conceptIcons = [AppWindow, Workflow, ClipboardList, Network, Bot, Rocket];
 import { useProgress } from "@/lib/progress";
 import { parts, chapters } from "@/content/lessons";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
-import { ContinueLearning } from "@/components/ContinueLearning";
+import { useReaderStats } from "@/lib/engagement/reader";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -41,7 +41,7 @@ function Home() {
         <img src={heroImg} alt="A builder planning an app's frontend, backend and database in a notebook beside a laptop with an AI assistant" width={1600} height={1008} className="absolute inset-0 h-full w-full object-cover opacity-60" />
         <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent" />
         <div className="relative mx-auto max-w-6xl px-5 pb-24 pt-20 md:pb-32 md:pt-28">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-brass">Free and open · No experience needed</p>
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-brass">Free and open · No experience needed<ReaderTotal /></p>
           <h1 className="mt-5 max-w-3xl font-serif text-5xl leading-[1.05] md:text-7xl">
             You can build apps with AI. <span className="italic text-brass">Now understand them.</span>
           </h1>
@@ -60,7 +60,7 @@ function Home() {
         </div>
       </section>
 
-      <ContinueLearning />
+
 
       <section className="mx-auto max-w-6xl px-5 py-20">
         <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent">What you'll understand</p>
@@ -116,4 +116,11 @@ function Home() {
       <SiteFooter />
     </div>
   );
+}
+
+/** " · 1,284 readers" in the hero's top line, once there are readers to count. */
+function ReaderTotal() {
+  const stats = useReaderStats();
+  if (!stats || stats.readers < 1) return null;
+  return <> · {stats.readers.toLocaleString("en")} {stats.readers === 1 ? "reader" : "readers"}</>;
 }

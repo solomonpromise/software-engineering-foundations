@@ -3,6 +3,7 @@ import { Github, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AppearanceMenu } from "@/components/AppearanceMenu";
 import { SiteSearch } from "@/components/SiteSearch";
+import { MyLearningButton, MyLearningPanel, openMyLearning } from "@/components/engagement/MyLearning";
 import logoUrl from "@/assets/course-logo.png";
 import { githubLinks, licenses, project } from "@/config/community";
 
@@ -88,11 +89,13 @@ export function SiteHeader() {
               </Link>
             );
           })}
+          <MyLearningButton />
           <SiteSearch hotkey />
           <GitHubIconLink />
           <AppearanceMenu />
         </nav>
         <div className="flex shrink-0 items-center gap-2 sm:gap-3 lg:hidden">
+          <MyLearningButton compact />
           <SiteSearch />
           <AppearanceMenu />
           <button
@@ -140,6 +143,7 @@ export function SiteHeader() {
           )}
         </nav>
       )}
+      <MyLearningPanel />
     </header>
   );
 }
@@ -150,6 +154,7 @@ const footerGroups = [
     links: [
       { to: "/start/$slug", params: { slug: "about" }, label: "Start here" },
       { to: "/curriculum", label: "Curriculum" },
+      { to: "/review", label: "Daily refresh" },
       { to: "/glossary", label: "Glossary" },
       { to: "/reference", label: "Reference" },
       { to: "/bibliography", label: "Bibliography" },
@@ -211,6 +216,17 @@ export function SiteFooter() {
                   </Link>
                 </li>
               ))}
+              {g.title === "Community" && (
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => openMyLearning("letters")}
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    Letters from readers
+                  </button>
+                </li>
+              )}
             </ul>
           </nav>
         ))}

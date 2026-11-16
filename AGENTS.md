@@ -31,12 +31,27 @@ Software Engineering Foundations is an open, community-driven learning site. The
 - Supabase values come from `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` (local `.env`,
   GitHub repository variables in CI). Never commit `.env` or any secret / service-role key.
 
+## Engagement features
+
+- Reader counts (`src/lib/engagement/reader.ts`) gives each browser a random reader ID. The
+  database (`docs/database/engagement.sql`) only returns totals through functions such as
+  `reader_stats()`; tables are never readable with the public key. Readers can opt out (and delete
+  their record) on `/about#privacy`. Counting runs only on the built site, outside iframes.
+- Letters to the next reader are inserted unapproved; only `approved_letters()` is public, and
+  maintainers approve them on `/admin`. Keep the "no links, no email addresses" check.
+- Reading reminders are Web Push notifications, not email. `supabase/functions/reminders` sends
+  them (hourly via Supabase Cron, secret header) using hand-written templates in `push.ts` — no AI
+  and no shared AI cost. The VAPID private key exists only in Supabase secrets; the public key is
+  in `src/config/community.ts`. `public/push-handler.js` is loaded by the service worker.
+- Daily refresh, weekly rhythm and share cards are browser-only (`progress.days`, `progress.review`).
+- Numbers shown to readers must be real. Never pad, round up or invent counts.
+
 ## Analytics
 
 - GoatCounter (no cookies) via `src/lib/analytics.ts`; the endpoint is in `src/config/community.ts`.
   Page views are sent from `__root.tsx` on each route change; course events use `trackEvent`
   (`lesson-read-to-end/<slug>`, `lesson-finished/<slug>`, `lesson-rated/*`, `feedback-sent/*`,
-  `tutor-question`). Never send personal data or free text in events. `/admin` is never counted.
+  `tutor-question`, `letter-sent/*`, `reminders-on`, `daily-refresh-done`, `milestone-*`). Never send personal data or free text in events. `/admin` is never counted.
   Describe any new tracking in the Privacy section of `/about`.
 - The `/admin` "Site analytics" tab reads GoatCounter through the Supabase Edge Function
   `supabase/functions/analytics` (Deno), which holds the `GOATCOUNTER_API_KEY` secret and only

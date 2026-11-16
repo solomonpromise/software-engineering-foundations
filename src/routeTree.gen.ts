@@ -18,6 +18,7 @@ import { Route as ContributeRouteImport } from './routes/contribute'
 import { Route as CurriculumRouteImport } from './routes/curriculum'
 import { Route as GlossaryRouteImport } from './routes/glossary'
 import { Route as ReferenceRouteImport } from './routes/reference'
+import { Route as ReviewRouteImport } from './routes/review'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TaskboardRouteImport } from './routes/taskboard'
@@ -72,6 +73,11 @@ const ReferenceRoute = ReferenceRouteImport.update({
   path: '/reference',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReviewRoute = ReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RoadmapRoute = RoadmapRouteImport.update({
   id: '/roadmap',
   path: '/roadmap',
@@ -123,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
+  '/review': typeof ReviewRoute
   '/roadmap': typeof RoadmapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/taskboard': typeof TaskboardRoute
@@ -142,6 +149,7 @@ export interface FileRoutesByTo {
   '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
+  '/review': typeof ReviewRoute
   '/roadmap': typeof RoadmapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/taskboard': typeof TaskboardRoute
@@ -162,6 +170,7 @@ export interface FileRoutesById {
   '/curriculum': typeof CurriculumRoute
   '/glossary': typeof GlossaryRoute
   '/reference': typeof ReferenceRoute
+  '/review': typeof ReviewRoute
   '/roadmap': typeof RoadmapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/taskboard': typeof TaskboardRoute
@@ -183,6 +192,7 @@ export interface FileRouteTypes {
     | '/curriculum'
     | '/glossary'
     | '/reference'
+    | '/review'
     | '/roadmap'
     | '/sitemap.xml'
     | '/taskboard'
@@ -202,6 +212,7 @@ export interface FileRouteTypes {
     | '/curriculum'
     | '/glossary'
     | '/reference'
+    | '/review'
     | '/roadmap'
     | '/sitemap.xml'
     | '/taskboard'
@@ -221,6 +232,7 @@ export interface FileRouteTypes {
     | '/curriculum'
     | '/glossary'
     | '/reference'
+    | '/review'
     | '/roadmap'
     | '/sitemap.xml'
     | '/taskboard'
@@ -241,6 +253,7 @@ export interface RootRouteChildren {
   CurriculumRoute: typeof CurriculumRoute
   GlossaryRoute: typeof GlossaryRoute
   ReferenceRoute: typeof ReferenceRoute
+  ReviewRoute: typeof ReviewRoute
   RoadmapRoute: typeof RoadmapRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TaskboardRoute: typeof TaskboardRoute
@@ -316,6 +329,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReferenceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/review': {
+      id: '/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof ReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/roadmap': {
       id: '/roadmap'
       path: '/roadmap'
@@ -385,6 +405,7 @@ const rootRouteChildren: RootRouteChildren = {
   CurriculumRoute: CurriculumRoute,
   GlossaryRoute: GlossaryRoute,
   ReferenceRoute: ReferenceRoute,
+  ReviewRoute: ReviewRoute,
   RoadmapRoute: RoadmapRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TaskboardRoute: TaskboardRoute,
