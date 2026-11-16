@@ -677,6 +677,8 @@ const SETUP_HELP: Record<Exclude<AnalyticsResult, { ok: true }>["reason"], strin
     "This account isn't allowed to view analytics. Check that it is listed in the admins table.",
   "missing-key":
     "The Edge Function is deployed but has no GoatCounter API key. Add the secret GOATCOUNTER_API_KEY in Supabase (Edge Functions → Secrets).",
+  "bad-key":
+    'GoatCounter rejected the API key. In GoatCounter, create a key with "Read statistics" permission, update the GOATCOUNTER_API_KEY secret in Supabase, and refresh.',
   unavailable: "GoatCounter couldn't be reached just now. Try again in a minute.",
 };
 
@@ -736,7 +738,14 @@ function AnalyticsPanel() {
           analytics…
         </p>
       ) : !result.ok ? (
-        <Notice>{SETUP_HELP[result.reason]}</Notice>
+        <Notice>
+          {SETUP_HELP[result.reason]}
+          {result.detail && (
+            <span className="mt-2 block text-sm text-muted-foreground">
+              GoatCounter said: <code>{result.detail}</code>
+            </span>
+          )}
+        </Notice>
       ) : (
         <AnalyticsView data={result.data} />
       )}

@@ -120,24 +120,29 @@ export type Analytics = {
 };
 export type AnalyticsResult =
   | { ok: true; data: Analytics }
-  | { ok: false; reason: "not-deployed" | "forbidden" | "missing-key" | "unavailable" };
+  | {
+      ok: false;
+      reason: "not-deployed" | "forbidden" | "missing-key" | "bad-key" | "unavailable";
+      /** GoatCounter's own explanation, when it gave one. */
+      detail?: string;
+    };
 
 /** Visitor statistics from GoatCounter, fetched through the admin-only "analytics" Edge Function. */
 export async function loadAnalytics(days: 7 | 30 | 90): Promise<AnalyticsResult> {
   const { data, error } = await db().functions.invoke<Analytics>("analytics", { body: { days } });
   if (!error && data) return { ok: true, data };
   const status = (error as { context?: Response } | null)?.context?.status;
-  let code = "";
+  let body: { error?: string; detail?: string } = {};
   try {
-    code =
-      ((await (error as { context?: Response }).context?.clone().json()) as { error?: string })
-        ?.error ?? "";
+    body = ((await (error as { context?: Response }).context?.clone().json()) ?? {}) as typeof body;
   } catch {
     /* not JSON */
   }
+  const detail = body.detail ? { detail: body.detail } : {};
   if (status === 404 || (error && /relay|failed to send/i.test(error.message) && !status))
     return { ok: false, reason: "not-deployed" };
   if (status === 401 || status === 403) return { ok: false, reason: "forbidden" };
-  if (code === "missing_api_key") return { ok: false, reason: "missing-key" };
-  return { ok: false, reason: "unavailable" };
+  if (body.error === "missing_api_key") return { ok: false, reason: "missing-key" };
+  if (body.error === "goatcounter_auth") return { ok: false, reason: "bad-key", ...detail };
+  return { ok: false, reason: "unavailable", ...detail };
 }

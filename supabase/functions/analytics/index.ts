@@ -20,12 +20,42 @@ const json = (body: unknown, status = 200) =>
 type Hit = { path: string; title: string; event: boolean; count: number };
 type Stat = { name: string; count: number };
 
+class GoatError extends Error {
+  status: number;
+  constructor(status: number, message: string) {
+    super(message);
+    this.status = status;
+  }
+}
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+// GoatCounter allows 4 API requests a second: space requests out and retry when told to slow down.
 async function goat<T>(path: string, params: Record<string, string>): Promise<T> {
   const url = new URL(`/api/v0/${path}`, SITE);
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
-  const res = await fetch(url, { headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" } });
-  if (!res.ok) throw new Error(`goatcounter ${path}: ${res.status}`);
-  return (await res.json()) as T;
+  for (let attempt = 1; ; attempt++) {
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
+    });
+    if (res.ok) {
+      await sleep(300);
+      return (await res.json()) as T;
+    }
+    if (res.status === 429 && attempt < 4) {
+      const reset = Number(res.headers.get("X-Rate-Limit-Reset") ?? "1");
+      await sleep(Math.max(1, reset) * 1000);
+      continue;
+    }
+    let reason = "";
+    try {
+      const body = await res.json();
+      reason = body?.error ?? (body?.errors ? JSON.stringify(body.errors) : "");
+    } catch {
+      /* not JSON */
+    }
+    throw new GoatError(res.status, `${path}: ${res.status}${reason ? ` ${reason}` : ""}`);
+  }
 }
 
 Deno.serve(async (req) => {
@@ -52,10 +82,12 @@ Deno.serve(async (req) => {
   const hour = 3600_000;
   const end = new Date(Math.ceil(Date.now() / hour) * hour);
   const start = new Date(end.getTime() - days * 24 * hour);
-  const range = { start: start.toISOString(), end: end.toISOString() };
+  // Whole hours, without milliseconds: "2026-11-16T12:00:00Z".
+  const iso = (d: Date) => d.toISOString().replace(/\.\d{3}Z$/, "Z");
+  const range = { start: iso(start), end: iso(end) };
 
   try {
-    // GoatCounter allows 4 requests a second, so these run one after another.
+    // One after another, to stay within GoatCounter's rate limit.
     const total = await goat<{ total: number; total_events: number; stats: { day: string; daily: number }[] }>(
       "stats/total",
       range,
@@ -80,6 +112,9 @@ Deno.serve(async (req) => {
     });
   } catch (e) {
     console.error(e);
-    return json({ error: "goatcounter_unavailable" }, 502);
+    const detail = e instanceof Error ? e.message : String(e);
+    // 401/403 from GoatCounter: the API key is wrong or lacks "Read statistics" permission.
+    const auth = e instanceof GoatError && (e.status === 401 || e.status === 403);
+    return json({ error: auth ? "goatcounter_auth" : "goatcounter_unavailable", detail }, 502);
   }
 });
