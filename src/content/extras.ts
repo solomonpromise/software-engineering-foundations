@@ -10,4 +10,6 @@ export type Figure = { url: string; caption: string; hero: boolean };
 export const introPages = data.intro as IntroPage[];
 export const appendices = data.appendices as Appendix[];
 export const bibliography = data.bibliography as { group?: string; entries: string[] }[];
-export const figuresFor = (slug: string): Figure[] => (figs as Record<string, Figure[]>)[slug] ?? [];
+/** Lesson images live in public/figures; prefix them with the site's base path (e.g. GitHub Pages sub-path). */
+export const figuresFor = (slug: string): Figure[] =>
+  ((figs as Record<string, Figure[]>)[slug] ?? []).map((f) => ({ ...f, url: `${import.meta.env.BASE_URL}${f.url}` }));

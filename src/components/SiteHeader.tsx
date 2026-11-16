@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AppearanceMenu } from "@/components/AppearanceMenu";
 import { SiteSearch } from "@/components/SiteSearch";
 import { AccountButton } from "@/components/AccountButton";
-import logoAsset from "@/assets/course-logo.png.asset.json";
+import logoUrl from "@/assets/course-logo.png";
 import { githubLinks, licenses, project } from "@/config/community";
 
 const links = [
@@ -40,7 +40,7 @@ function Wordmark() {
   return (
     <Link to="/" className="flex min-w-0 items-center gap-3">
       <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-header-accent text-header ring-1 ring-header-foreground/25 sm:size-11">
-        <img src={logoAsset.url} alt="" className="size-8 sm:size-9" />
+        <img src={logoUrl} alt="" className="size-8 sm:size-9" />
       </span>
       <span className="min-w-0 leading-none">
         <span className="block font-serif text-base leading-tight sm:text-xl">{project.name}</span>

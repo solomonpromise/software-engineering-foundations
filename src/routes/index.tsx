@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Layers, AppWindow, Workflow, ClipboardList, Network, Bot, Rocket } from "lucide-react";
-import { project } from "@/config/community";
+import { absoluteUrl, project } from "@/config/community";
+import shareImg from "@/assets/course-share.jpg";
+
+const SHARE_IMAGE = absoluteUrl(shareImg);
 import heroImg from "@/assets/landing-hero.jpg";
 
 const conceptIcons = [AppWindow, Workflow, ClipboardList, Network, Bot, Rocket];
@@ -18,8 +21,8 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "Free to learn, open to contributions: the software engineering foundations you need to build reliable software with AI." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:image", content: "https://softwareengineeringfoundations.lovable.app/__l5e/assets-v1/465bdbc2-a754-462e-9529-c2be40e63cf0/course-share.jpg" },
-      { name: "twitter:image", content: "https://softwareengineeringfoundations.lovable.app/__l5e/assets-v1/465bdbc2-a754-462e-9529-c2be40e63cf0/course-share.jpg" },
+      { property: "og:image", content: SHARE_IMAGE },
+      { name: "twitter:image", content: SHARE_IMAGE },
     ],
   }),
   component: Home,

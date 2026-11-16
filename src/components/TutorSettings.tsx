@@ -9,7 +9,7 @@ export function TutorSettings({ onDone }: { onDone?: () => void }) {
   return (
     <div className="space-y-3 text-sm">
       <div className="flex items-center gap-2 font-semibold"><KeyRound className="size-4 text-accent" /> Use your own Grok key</div>
-      <p className="text-muted-foreground">Paste a free API key from the Grok console, and the tutor will answer using your own account. The key stays in this browser only.</p>
+      <p className="text-muted-foreground">Paste a free API key from the Grok console, and the tutor will answer using your own account. The key stays in this browser and is sent only to xAI when you ask a question.</p>
       <a href="https://console.x.ai" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-primary underline">Get a free key at console.x.ai <ExternalLink className="size-3" /></a>
       {saved ? (
         <div className="flex items-center justify-between rounded-md border border-border bg-card px-3 py-2">

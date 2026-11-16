@@ -65,7 +65,7 @@ You need [Node.js 20+](https://nodejs.org) and Git.
 
 ```bash
 npm install
-npm run dev      # starts the site, usually at http://localhost:8080
+npm run dev      # starts the site at http://localhost:8080/software-engineering-foundations/
 npm test         # runs the tests
 npm run lint     # checks code style
 ```
@@ -76,6 +76,7 @@ Pull request checklist:
 - Run `npm test` and `npm run lint`, and check your change in the browser, including on a phone-sized screen.
 - Don't commit secrets, API keys or personal data.
 - Keep the site usable without an account and on slow connections.
+- The site is static (GitHub Pages): don't add server-only code that pages depend on.
 
 ## Licensing of contributions
 

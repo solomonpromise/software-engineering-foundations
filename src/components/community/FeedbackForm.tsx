@@ -8,9 +8,8 @@ import {
   fieldErrors,
   type FeedbackCategory,
   type FeedbackFieldErrors,
-  type FeedbackResult,
-  type FeedbackStatus,
 } from "@/lib/community/feedback";
+import { feedbackReady, sendFeedback } from "@/lib/community/feedback-client";
 import { ActionLink } from "./ActionLink";
 
 type Availability = "checking" | "ready" | "unavailable";
@@ -49,9 +48,8 @@ export function FeedbackForm({
 
   useEffect(() => {
     let alive = true;
-    fetch("/api/community-feedback")
-      .then((r) => (r.ok ? (r.json() as Promise<FeedbackStatus>) : { ready: false }))
-      .then((s) => alive && setAvailability(s.ready ? "ready" : "unavailable"))
+    feedbackReady()
+      .then((ready) => alive && setAvailability(ready ? "ready" : "unavailable"))
       .catch(() => alive && setAvailability("ready")); // Offline or flaky: let them try; errors are handled on send.
     return () => {
       alive = false;
@@ -78,12 +76,7 @@ export function FeedbackForm({
     }
     setPhase("sending");
     try {
-      const res = await fetch("/api/community-feedback", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-      const result = (await res.json().catch(() => ({ ok: false, error: "" }))) as FeedbackResult;
+      const result = await sendFeedback(values);
       if (result.ok) {
         setPhase("sent");
         requestAnimationFrame(() => statusRef.current?.focus());

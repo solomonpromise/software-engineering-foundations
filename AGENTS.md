@@ -1,34 +1,43 @@
-<!-- LOVABLE:BEGIN -->
-> [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
->
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
+# Project notes for coding agents
 
-## What Lovable manages
+Software Engineering Foundations is an open, community-driven learning site. The code lives at
+<https://github.com/solomonpromise/software-engineering-foundations> and is no longer connected to
+Lovable: don't push to the old `lovable` remote.
 
-Rules outside this block are the project's own. Change the pieces below in
-Lovable, not by hand. With the [Lovable MCP](https://mcp.lovable.dev)
-connected, `send_message` asks Lovable to do it; otherwise ask the user to
-use the editor.
+## Hosting
 
-- **Database.** Do not add or edit `supabase/migrations/` or `drizzle/`.
-  Ask Lovable to change the schema.
-- **Generated files.** Do not edit a file whose header says it is automatically
-  generated.
-- **AI gateway.** Keep model calls on Lovable's gateway, and keep
-  `LOVABLE_API_KEY` out of browser code.
-- **Connectors.** Lovable provides native connectors. `list_connectors` shows
-  which are enabled; `add_connector` only returns the dashboard link. When a
-  connector is enabled, calls go through the connector gateway and need
-  `LOVABLE_API_KEY`. When Lovable does not provide one, users can bring their
-  own key and store it in Secrets.
-- **Secrets.** Lovable manages them. Do not put secret values in the repo.
-<!-- LOVABLE:END -->
-- Learner progress lives in localStorage (src/lib/progress.ts) and, when signed in, is merged (union) into public.learner_progress by useProgressSync in __root — local-first so the site works without an account.
-- The lesson tutor works only with the learner's own xAI key (sent per request, never stored server-side); /api/tutor rejects requests without one — owner chose no shared AI cost.
-- Offline reading uses vite-plugin-pwa generateSW with NetworkFirst page caching; src/lib/pwa.ts is the only registrar and must keep development, iframe, preview and ?sw=off opt-outs.
-- Lesson feedback accepts anonymous or signed-in submissions but is readable only by an admin role in public.user_roles; never expose it through public select policies.
+- The site is fully static, hosted on GitHub Pages at
+  <https://solomonpromise.github.io/software-engineering-foundations/>. `.github/workflows/deploy.yml`
+  builds and deploys on every push to `main`.
+- `npm run build` prerenders every page (TanStack Start `prerender` in `vite.config.ts`), then
+  `scripts/postbuild.mjs` writes `404.html`, `.nojekyll` and the service worker into `dist/client`.
+- There is no server at runtime. Don't add server routes (`server.handlers`) or server functions
+  that pages depend on; do the work in the browser or at build time.
+- The site lives under a base path (`BASE_PATH`, default `/software-engineering-foundations/`).
+  Use TanStack `Link` for internal links, and `import.meta.env.BASE_URL` for files in `public/`.
+  Never hard-code root paths like `/favicon.png`.
+
+## Data and privacy
+
+- Learner progress lives in localStorage (`src/lib/progress.ts`) and, when signed in, is merged
+  (union) into `public.learner_progress` by `useProgressSync` in `__root` — local-first so the site
+  works without an account.
+- The lesson tutor works only with the learner's own xAI key, kept in their browser and sent only to
+  api.x.ai (`src/lib/ai/tutor.ts`). The project has no shared AI cost and never sees the key.
+- Lesson feedback and community feedback accept anonymous or signed-in submissions but are readable
+  only by an admin role in `public.user_roles`; never expose them through public select policies.
+- The Supabase project is still the one Lovable Cloud created. Schema changes go in
+  `docs/database/` as SQL to apply by hand until the project has its own Supabase project and
+  migration workflow. Don't edit `src/integrations/supabase/types.ts` or `client.ts` by hand
+  (generated). Only publishable keys belong in the repo.
+
+## Offline reading
+
+- `scripts/postbuild.mjs` generates the Workbox service worker (NetworkFirst for pages and images,
+  StaleWhileRevalidate for code). `src/lib/pwa.ts` is the only registrar and must keep the
+  development, iframe, preview and `?sw=off` opt-outs.
+
+## Community and licensing
+
+- Repository links, project name and licenses are set in `src/config/community.ts`.
+- Course content is CC BY-NC-SA 4.0 (`LICENSE-CONTENT.md`); code is MIT (`LICENSE`).

@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import portrait from "@/assets/creator-portrait.jpg.asset.json";
+import portraitUrl from "@/assets/creator-portrait.jpg";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 import { principles } from "@/content/community";
 import { licenses, project } from "@/config/community";
@@ -146,7 +146,7 @@ function About() {
           </h2>
           <div className="mt-5 flex flex-col gap-5 sm:flex-row sm:items-start">
             <img
-              src={portrait.url}
+              src={portraitUrl}
               alt={project.founder.name}
               width={80}
               height={100}

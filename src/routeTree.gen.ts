@@ -24,8 +24,6 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TaskboardRouteImport } from './routes/taskboard'
 import { Route as AuthenticatedFeedbackRouteImport } from './routes/_authenticated/feedback'
 import { Route as AboutMaintainerRouteImport } from './routes/about_.maintainer'
-import { Route as ApiCommunityFeedbackRouteImport } from './routes/api/community-feedback'
-import { Route as ApiTutorRouteImport } from './routes/api/tutor'
 import { Route as LearnSlugRouteImport } from './routes/learn.$slug'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
 import { Route as ReferenceSlugRouteImport } from './routes/reference_.$slug'
@@ -105,16 +103,6 @@ const AboutMaintainerRoute = AboutMaintainerRouteImport.update({
   path: '/about/maintainer',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiCommunityFeedbackRoute = ApiCommunityFeedbackRouteImport.update({
-  id: '/api/community-feedback',
-  path: '/api/community-feedback',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiTutorRoute = ApiTutorRouteImport.update({
-  id: '/api/tutor',
-  path: '/api/tutor',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LearnSlugRoute = LearnSlugRouteImport.update({
   id: '/learn/$slug',
   path: '/learn/$slug',
@@ -151,8 +139,6 @@ export interface FileRoutesByFullPath {
   '/taskboard': typeof TaskboardRoute
   '/feedback': typeof AuthenticatedFeedbackRoute
   '/about/maintainer': typeof AboutMaintainerRoute
-  '/api/community-feedback': typeof ApiCommunityFeedbackRoute
-  '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/reference/$slug': typeof ReferenceSlugRoute
@@ -173,8 +159,6 @@ export interface FileRoutesByTo {
   '/taskboard': typeof TaskboardRoute
   '/feedback': typeof AuthenticatedFeedbackRoute
   '/about/maintainer': typeof AboutMaintainerRoute
-  '/api/community-feedback': typeof ApiCommunityFeedbackRoute
-  '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/reference/$slug': typeof ReferenceSlugRoute
@@ -197,8 +181,6 @@ export interface FileRoutesById {
   '/taskboard': typeof TaskboardRoute
   '/_authenticated/feedback': typeof AuthenticatedFeedbackRoute
   '/about_/maintainer': typeof AboutMaintainerRoute
-  '/api/community-feedback': typeof ApiCommunityFeedbackRoute
-  '/api/tutor': typeof ApiTutorRoute
   '/learn/$slug': typeof LearnSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/reference_/$slug': typeof ReferenceSlugRoute
@@ -221,8 +203,6 @@ export interface FileRouteTypes {
     | '/taskboard'
     | '/feedback'
     | '/about/maintainer'
-    | '/api/community-feedback'
-    | '/api/tutor'
     | '/learn/$slug'
     | '/projects/$slug'
     | '/reference/$slug'
@@ -243,8 +223,6 @@ export interface FileRouteTypes {
     | '/taskboard'
     | '/feedback'
     | '/about/maintainer'
-    | '/api/community-feedback'
-    | '/api/tutor'
     | '/learn/$slug'
     | '/projects/$slug'
     | '/reference/$slug'
@@ -266,8 +244,6 @@ export interface FileRouteTypes {
     | '/taskboard'
     | '/_authenticated/feedback'
     | '/about_/maintainer'
-    | '/api/community-feedback'
-    | '/api/tutor'
     | '/learn/$slug'
     | '/projects/$slug'
     | '/reference_/$slug'
@@ -289,8 +265,6 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TaskboardRoute: typeof TaskboardRoute
   AboutMaintainerRoute: typeof AboutMaintainerRoute
-  ApiCommunityFeedbackRoute: typeof ApiCommunityFeedbackRoute
-  ApiTutorRoute: typeof ApiTutorRoute
   LearnSlugRoute: typeof LearnSlugRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
   ReferenceSlugRoute: typeof ReferenceSlugRoute
@@ -404,20 +378,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutMaintainerRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/community-feedback': {
-      id: '/api/community-feedback'
-      path: '/api/community-feedback'
-      fullPath: '/api/community-feedback'
-      preLoaderRoute: typeof ApiCommunityFeedbackRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/tutor': {
-      id: '/api/tutor'
-      path: '/api/tutor'
-      fullPath: '/api/tutor'
-      preLoaderRoute: typeof ApiTutorRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/learn/$slug': {
       id: '/learn/$slug'
       path: '/learn/$slug'
@@ -475,8 +435,6 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TaskboardRoute: TaskboardRoute,
   AboutMaintainerRoute: AboutMaintainerRoute,
-  ApiCommunityFeedbackRoute: ApiCommunityFeedbackRoute,
-  ApiTutorRoute: ApiTutorRoute,
   LearnSlugRoute: LearnSlugRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
   ReferenceSlugRoute: ReferenceSlugRoute,

@@ -14,13 +14,13 @@ bibliography, progress tracking, an optional AI lesson tutor, and links into the
 [Taskboard](https://github.com/solomonpromise/taskboard). It grew out of the book
 *Software Foundations for Vibe Coders* by Solomon Promise, the project's founding maintainer.
 
-Website: <https://softwareengineeringfoundations.lovable.app>
+Website: <https://solomonpromise.github.io/software-engineering-foundations/>
 
 ## Contribute
 
 Improve a lesson, review a technical explanation, suggest a topic, recommend a resource, report an
 error, help translate, or work on the website. Start with [CONTRIBUTING.md](CONTRIBUTING.md). The
-project's direction is on the [roadmap](https://softwareengineeringfoundations.lovable.app/roadmap).
+project's direction is on the [roadmap](https://solomonpromise.github.io/software-engineering-foundations/roadmap).
 
 ## Run it on your own computer
 
@@ -33,18 +33,26 @@ npm install        # or: bun install
 npm run dev        # or: bun run dev
 ```
 
-Open the address it prints (usually http://localhost:8080). Lessons, glossary, projects and progress
-tracking work offline from your machine; progress is saved in your browser.
+Open <http://localhost:8080/software-engineering-foundations/>. Lessons, glossary, projects and
+progress tracking work from your machine; progress is saved in your browser.
 
-The lesson tutor uses each learner's own xAI (Grok) key, added in the tutor's settings. Accounts,
-synced progress and the feedback forms need a Supabase project (see `.env` for the variable names and
-`docs/database/` for extra tables).
+The lesson tutor uses each learner's own xAI (Grok) key, added in the tutor's settings, and talks to
+xAI straight from the browser. Accounts, synced progress and the feedback forms use the Supabase
+project in `.env` (publishable keys only); extra tables are in `docs/database/`.
 
 ```bash
 npm test           # run the tests
 npm run lint       # check code style
-npm run build      # build for production
+npm run build      # build the static site into dist/client
 ```
+
+## How it's published
+
+The site is static and hosted on GitHub Pages. Every push to `main` runs
+`.github/workflows/deploy.yml`, which builds the site (every page prerendered to HTML) and deploys
+it. To serve it from your own domain instead of the `github.io` sub-path, set the repository
+variable `BASE_PATH` to `/`, add the domain in **Settings → Pages**, and update `siteUrl` in
+`src/config/community.ts`.
 
 ## Where things live
 
@@ -54,6 +62,7 @@ npm run build      # build for production
 - `src/lib/progress.ts` — reading progress (browser storage)
 - `src/lib/appearance.ts` — themes and text size
 - `docs/database/` — SQL for tables the site needs
+- `scripts/postbuild.mjs` — 404 page and offline service worker for GitHub Pages
 
 ## License
 

@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://softwareengineeringfoundations.lovable.app/sitemap.xml
+Sitemap: https://solomonpromise.github.io/software-engineering-foundations/sitemap.xml

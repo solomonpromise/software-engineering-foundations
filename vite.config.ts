@@ -1,54 +1,45 @@
-// @lovable.dev/vite-tanstack-config already includes the following — do NOT add them manually
-// or the app will break with duplicate plugins:
-//   - TanStack devtools (dev-only, first), tanstackStart, viteReact, tailwindcss, tsConfigPaths,
-//     nitro (build-only using cloudflare as a default target), VITE_* env injection, @ path alias,
-//     React/TanStack dedupe, error logger plugins, and sandbox detection (port/host/strictPort).
-// Never set ssr.external or resolve.external: the Worker has no runtime module resolution, so
-// the build fails. Never add compression (compressPublicAssets, vite-plugin-compression):
-// hosting already compresses at the edge.
-// You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
-import { VitePWA } from "vite-plugin-pwa";
+// Static build for GitHub Pages: every page is prerendered to HTML at build time, and the site
+// is served from a sub-path (BASE_PATH). There is no server at runtime. scripts/postbuild.mjs then
+// adds 404.html and the offline service worker.
+import { defineConfig } from "vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import viteReact from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import tsConfigPaths from "vite-tsconfig-paths";
+
+/** Where the site lives, e.g. "/software-engineering-foundations/" on GitHub Pages, or "/" for a custom domain. */
+const base = (process.env["BASE_PATH"] ?? "/software-engineering-foundations/").replace(
+  /\/?$/,
+  "/",
+);
 
 export default defineConfig({
-  tanstackStart: {
-    // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // nitro/vite builds from this
-    server: { entry: "server" },
-  },
-  vite: {
-    plugins: [
-      VitePWA({
-        registerType: "autoUpdate",
-        injectRegister: null,
-        filename: "sw.js",
-        manifest: false,
-        devOptions: { enabled: false },
-        workbox: {
-          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
-          runtimeCaching: [
-            {
-              urlPattern: ({ request, url }) => request.mode === "navigate" && url.origin === self.location.origin && !url.pathname.startsWith("/~oauth") && !url.pathname.startsWith("/api/"),
-              handler: "NetworkFirst",
-              options: {
-                cacheName: "sf-lesson-pages",
-                networkTimeoutSeconds: 3,
-                cacheableResponse: { statuses: [200] },
-                expiration: { maxEntries: 80, maxAgeSeconds: 60 * 60 * 24 * 30 },
-              },
-            },
-            {
-              urlPattern: ({ request, url }) => request.destination === "image" && url.origin === self.location.origin,
-              handler: "NetworkFirst",
-              options: {
-                cacheName: "sf-lesson-images",
-                cacheableResponse: { statuses: [200] },
-                expiration: { maxEntries: 120, maxAgeSeconds: 60 * 60 * 24 * 30 },
-              },
-            },
-          ],
-        },
-      }),
-    ],
-  },
+  base,
+  server: { port: 8080, strictPort: true },
+  resolve: { dedupe: ["react", "react-dom", "@tanstack/react-router", "@tanstack/react-start"] },
+  plugins: [
+    tsConfigPaths({ projects: ["./tsconfig.json"] }),
+    tailwindcss(),
+    tanstackStart({
+      server: { entry: "server" },
+      router: { basepath: base.replace(/\/$/, "") || "/" },
+      prerender: {
+        enabled: true,
+        crawlLinks: true,
+        autoSubfolderIndex: true,
+        failOnError: true,
+        // Links like /contribute?category=… are the same page; prerendering them would overwrite it.
+        filter: ({ path }) => !path.includes("?") && !path.includes("#"),
+      },
+      // Pages not reachable by following links from the home page.
+      pages: [
+        { path: "/sitemap.xml", prerender: { enabled: true, outputPath: "/sitemap.xml" } },
+        { path: "/feedback", prerender: { enabled: true } },
+      ],
+      // A client-rendered shell, copied to 404.html so unknown addresses still load the app.
+      spa: { enabled: true },
+      sitemap: { enabled: false },
+    }),
+    viteReact(),
+  ],
 });

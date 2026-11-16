@@ -83,7 +83,6 @@ export function fieldErrors(error: z.ZodError): FeedbackFieldErrors {
   return out;
 }
 
-/** Responses from /api/community-feedback. */
-export type FeedbackStatus = { ready: boolean };
+/** Result of sending a message (see feedback-client.ts). */
 export type FeedbackResult =
   { ok: true } | { ok: false; error: string; fields?: FeedbackFieldErrors; unavailable?: boolean };

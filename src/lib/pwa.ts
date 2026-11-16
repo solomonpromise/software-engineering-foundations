@@ -17,12 +17,12 @@ function isRefusedContext() {
 async function unregisterAppWorkers() {
   if (!("serviceWorker" in navigator)) return;
   const registrations = await navigator.serviceWorker.getRegistrations();
-  await Promise.allSettled(registrations.filter((r) => new URL(r.active?.scriptURL ?? r.waiting?.scriptURL ?? r.installing?.scriptURL ?? "", window.location.origin).pathname === "/sw.js").map((r) => r.unregister()));
+  await Promise.allSettled(registrations.filter((r) => new URL(r.active?.scriptURL ?? r.waiting?.scriptURL ?? r.installing?.scriptURL ?? "", window.location.origin).pathname === `${import.meta.env.BASE_URL}sw.js`).map((r) => r.unregister()));
 }
 
 /** The only app-shell service-worker registrar. Preview, development and ?sw=off always opt out. */
 export function registerOfflineReading() {
   if (isRefusedContext()) { void unregisterAppWorkers(); return; }
   if (!("serviceWorker" in navigator)) return;
-  void navigator.serviceWorker.register("/sw.js").catch(() => { /* Offline support remains optional. */ });
+  void navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`, { scope: import.meta.env.BASE_URL }).catch(() => { /* Offline support remains optional. */ });
 }

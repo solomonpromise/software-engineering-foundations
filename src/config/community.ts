@@ -11,7 +11,8 @@ export const project = {
   descriptor: "For the AI Building Era",
   description:
     "An open learning resource helping people understand the principles, concepts, and practices of software engineering required to build reliable software with AI.",
-  siteUrl: "https://softwareengineeringfoundations.lovable.app",
+  /** Public address of the site, without a trailing slash (GitHub Pages project site). */
+  siteUrl: "https://solomonpromise.github.io/software-engineering-foundations",
   book: { title: "Software Foundations for Vibe Coders", author: "Solomon Promise" },
   founder: { name: "Solomon Promise" },
 } as const;
@@ -21,9 +22,9 @@ export const github = {
   repo: "software-engineering-foundations",
   defaultBranch: "main",
   /** Leave false until the repository exists and is public, so no button points at a missing page. */
-  repositoryIsPublic: false,
+  repositoryIsPublic: true,
   /** Set true once Discussions are switched on in the repository settings. */
-  discussionsEnabled: false,
+  discussionsEnabled: true,
 } as const;
 
 export const licenses = {
@@ -34,6 +35,13 @@ export const licenses = {
   },
   code: { name: "MIT", title: "MIT License", url: "https://opensource.org/license/mit" },
 } as const;
+
+/**
+ * Turns a path from Vite (which already includes the base path, e.g. an imported image) into an
+ * absolute URL, for metadata like og:image that must be absolute.
+ */
+export const absoluteUrl = (pathWithBase: string) =>
+  new URL(pathWithBase, new URL(project.siteUrl).origin).toString();
 
 const repoUrl = `https://github.com/${github.owner}/${github.repo}`;
 

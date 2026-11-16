@@ -1,11 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Github, Linkedin, Mail, Globe } from "lucide-react";
-import portrait from "@/assets/creator-portrait.jpg.asset.json";
+import portraitUrl from "@/assets/creator-portrait.jpg";
+import { absoluteUrl } from "@/config/community";
 import { chapters } from "@/content/lessons";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
-const SITE = "https://softwareengineeringfoundations.lovable.app";
-const PORTRAIT_URL = `${SITE}${portrait.url}`;
+const PORTRAIT_URL = absoluteUrl(portraitUrl);
 
 const stats = [
   { value: "1,000+", label: "learners trained across Nigeria, the US, India and South Africa" },
@@ -69,7 +69,7 @@ function About() {
           </div>
           <figure className="justify-self-center">
             <div className="rounded-xl border border-brass/60 bg-card p-2 shadow-md">
-              <img src={portrait.url} alt="Solomon E. Promise" width={880} height={1100} className="w-full rounded-lg" />
+              <img src={portraitUrl} alt="Solomon E. Promise" width={880} height={1100} className="w-full rounded-lg" />
             </div>
             <figcaption className="mt-2 text-center text-xs text-muted-foreground">Solomon E. Promise</figcaption>
           </figure>

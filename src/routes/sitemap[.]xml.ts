@@ -3,7 +3,9 @@ import { chapters } from "@/content/lessons";
 import { introPages, appendices } from "@/content/extras";
 import projects from "@/content/projects.json";
 
-const BASE_URL = "https://softwareengineeringfoundations.lovable.app";
+import { project } from "@/config/community";
+
+const BASE_URL = project.siteUrl;
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
