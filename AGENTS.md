@@ -31,6 +31,14 @@ Software Engineering Foundations is an open, community-driven learning site. The
 - Supabase values come from `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` (local `.env`,
   GitHub repository variables in CI). Never commit `.env` or any secret / service-role key.
 
+## Analytics
+
+- GoatCounter (no cookies) via `src/lib/analytics.ts`; the endpoint is in `src/config/community.ts`.
+  Page views are sent from `__root.tsx` on each route change; course events use `trackEvent`
+  (`lesson-read-to-end/<slug>`, `lesson-finished/<slug>`, `lesson-rated/*`, `feedback-sent/*`,
+  `tutor-question`). Never send personal data or free text in events. `/admin` is never counted.
+  Describe any new tracking in the Privacy section of `/about`.
+
 ## Offline reading
 
 - `scripts/postbuild.mjs` generates the Workbox service worker (NetworkFirst for pages and images,

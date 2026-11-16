@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { MessageCircleQuestion, RotateCcw } from "lucide-react";
 import { getGrokKey } from "@/lib/tutorKey";
 import { GrokTutorTransport } from "@/lib/ai/tutor";
+import { trackEvent } from "@/lib/analytics";
 import {
   Conversation,
   ConversationContent,
@@ -68,6 +69,7 @@ export default function TutorChat({ slug, title }: { slug: string; title: string
       return;
     }
     setError(null);
+    trackEvent("tutor-question", "Lesson helper question");
     void sendMessage({ text });
   };
 

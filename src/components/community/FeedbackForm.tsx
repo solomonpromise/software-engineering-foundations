@@ -10,6 +10,7 @@ import {
   type FeedbackFieldErrors,
 } from "@/lib/community/feedback";
 import { feedbackReady, sendFeedback } from "@/lib/community/feedback-client";
+import { trackEvent } from "@/lib/analytics";
 import { ActionLink } from "./ActionLink";
 
 type Availability = "checking" | "ready" | "unavailable";
@@ -79,6 +80,7 @@ export function FeedbackForm({
       const result = await sendFeedback(values);
       if (result.ok) {
         setPhase("sent");
+        trackEvent(`feedback-sent/${values.category}`, "Community feedback sent");
         requestAnimationFrame(() => statusRef.current?.focus());
         return;
       }

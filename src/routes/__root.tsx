@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -13,6 +14,7 @@ import { useEffect, type ReactNode } from "react";
 import { appearanceBootScript } from "../lib/appearance";
 import appCss from "../styles.css?url";
 import { registerOfflineReading } from "../lib/pwa";
+import { trackPageview } from "../lib/analytics";
 
 function NotFoundComponent() {
   return (
@@ -124,6 +126,12 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   useEffect(() => { registerOfflineReading(); }, []);
+  const pathname = useRouterState({ select: (st) => st.location.pathname });
+  useEffect(() => {
+    // Wait a moment so the new page's <title> is in place before counting the view.
+    const t = setTimeout(() => trackPageview(pathname), 50);
+    return () => clearTimeout(t);
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>

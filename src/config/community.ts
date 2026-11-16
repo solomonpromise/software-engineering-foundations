@@ -27,6 +27,11 @@ export const github = {
   discussionsEnabled: true,
 } as const;
 
+/** Privacy-friendly visitor counts (no cookies). Set to null to switch analytics off. */
+export const analytics = {
+  goatcounter: "https://software-engineering-foundations.goatcounter.com/count" as string | null,
+};
+
 export const licenses = {
   content: {
     name: "CC BY-NC-SA 4.0",

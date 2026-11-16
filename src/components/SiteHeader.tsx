@@ -169,6 +169,7 @@ const footerGroups = [
     links: [
       { to: "/about", label: "About the project" },
       { to: "/about", hash: "principles", label: "Community principles" },
+      { to: "/about", hash: "privacy", label: "Privacy" },
       { to: "/about/maintainer", label: "Founding maintainer" },
     ],
   },

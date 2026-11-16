@@ -137,6 +137,32 @@ function About() {
           </div>
         </section>
 
+        <section id="privacy" aria-labelledby="privacy-title" className="mt-14 scroll-mt-24">
+          <h2 id="privacy-title" className="font-serif text-3xl">Privacy</h2>
+          <ul className="mt-4 max-w-2xl space-y-3 text-muted-foreground">
+            <li>
+              <span className="font-semibold text-foreground">No accounts.</span> Your progress, notes, bookmarks,
+              certificate name and tutor key are saved only in your own browser. Clearing your browser data removes them.
+            </li>
+            <li>
+              <span className="font-semibold text-foreground">Visitor counts without cookies.</span> We use{" "}
+              <a href="https://www.goatcounter.com" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-4">
+                GoatCounter
+              </a>{" "}
+              to count page views and a few anonymous course events, such as a lesson being read to the end. It sets
+              no cookies and doesn&rsquo;t identify you.
+            </li>
+            <li>
+              <span className="font-semibold text-foreground">Feedback.</span> Ratings and messages you send are stored
+              privately for the maintainers. Name and email are optional and used only to reply.
+            </li>
+            <li>
+              <span className="font-semibold text-foreground">Lesson helper.</span> Questions go straight from your browser
+              to xAI using your own key. They never pass through this site.
+            </li>
+          </ul>
+        </section>
+
         <section aria-labelledby="maintainer-title" className="mt-16 border-t border-border pt-10">
           <h2
             id="maintainer-title"

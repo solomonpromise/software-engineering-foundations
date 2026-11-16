@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 import { useNavigate } from "@tanstack/react-router";
 import { markDone, setLast, useProgress } from "@/lib/progress";
 import { findChapter } from "@/content/lessons";
@@ -91,11 +92,18 @@ function Lesson() {
   const ids = c.sections.map((_, i) => `s${i + 1}`);
 
   useEffect(() => { setLast(c.slug); }, [c.slug]);
+  // Counts once per visit when a reader scrolls to the end of the lesson (the project's north-star metric).
+  const readToEnd = useRef<string | null>(null);
   useEffect(() => {
-    const on = () => {
+    const on = (e?: Event) => {
       const h = document.documentElement;
       const pct = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
       setScroll(pct);
+      // Only real scrolling counts, not the position left over from the previous page.
+      if (e && pct >= 0.9 && readToEnd.current !== c.slug) {
+        readToEnd.current = c.slug;
+        trackEvent(`lesson-read-to-end/${c.slug}`, `Read to end: ${c.title}`);
+      }
       let a = 0;
       ids.forEach((id, i) => { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top < 160) a = i; });
       setActive(a);
@@ -199,7 +207,7 @@ function Lesson() {
             <>
               <p className="font-serif text-2xl">Done with this lesson?</p>
               <p className="text-sm text-muted-foreground">{passed ? "You've answered every question. Mark it finished to track your progress." : `Answer the questions above first: ${gotCount(verdicts)} of ${c.check.length} got it.`}</p>
-              <button disabled={!passed} onClick={() => { markDone(c.slug); }} className="disabled:cursor-not-allowed disabled:opacity-50 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground"><CheckCircle2 className="size-4" /> Mark as finished</button>
+              <button disabled={!passed} onClick={() => { markDone(c.slug); trackEvent(`lesson-finished/${c.slug}`, `Finished: ${c.title}`); }} className="disabled:cursor-not-allowed disabled:opacity-50 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground"><CheckCircle2 className="size-4" /> Mark as finished</button>
             </>
           )}
         </div>

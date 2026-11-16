@@ -1,6 +1,7 @@
 import { MessageSquareText, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { trackEvent } from "@/lib/analytics";
 
 const KEY = "sf:lesson-feedback:v1";
 
@@ -30,6 +31,7 @@ export function LessonFeedback({ slug, title }: { slug: string; title: string })
       localStorage.setItem(KEY, JSON.stringify({ ...previous, [slug]: helpful }));
     } catch { /* The feedback is saved even if browser storage is unavailable. */ }
     setSent(true);
+    trackEvent(`lesson-rated/${helpful ? "helpful" : "not-helpful"}`, helpful ? "Lesson rated helpful" : "Lesson rated not helpful");
   };
 
   if (!supabase) return null;
