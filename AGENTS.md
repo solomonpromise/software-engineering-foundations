@@ -18,14 +18,16 @@ Software Engineering Foundations is an open, community-driven learning site. The
 
 ## Data and privacy
 
-- There are no accounts and no sign-in. Everything a learner does (progress, notes, bookmarks,
+- Learners have no accounts and never sign in. Everything a learner does (progress, notes, bookmarks,
   practice answers, certificate name, tutor key and chats) stays in their own browser
-  (`src/lib/progress.ts`, `src/lib/tutorKey.ts`). Don't add features that need a login.
+  (`src/lib/progress.ts`, `src/lib/tutorKey.ts`). Don't add learner features that need a login.
 - The lesson tutor works only with the learner's own xAI key, kept in their browser and sent only to
   api.x.ai (`src/lib/ai/tutor.ts`). The project has no shared AI cost and never sees the key.
 - Supabase is used only to collect anonymous feedback (`lesson_feedback`, `community_feedback`).
-  The public key may insert but never read; there are no SELECT policies, and the maintainer reads
-  feedback in the Supabase dashboard. Schema lives in `docs/database/schema.sql`.
+  Anyone may insert; only accounts listed in `public.admins` (checked by `is_admin()`) may read or
+  delete, on the maintainer page `/admin` (`src/routes/admin.tsx`, `src/lib/admin.ts`). Admin
+  accounts are created in the Supabase dashboard with public sign-up turned off. Never add a SELECT
+  policy that doesn't require `is_admin()`. Schema lives in `docs/database/schema.sql`.
 - Supabase values come from `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` (local `.env`,
   GitHub repository variables in CI). Never commit `.env` or any secret / service-role key.
 

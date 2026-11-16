@@ -44,6 +44,9 @@ The feedback forms save anonymous messages to a Supabase database. To try them l
 `docs/database/schema.sql` in that project. Without a `.env`, everything else works and the forms
 stay switched off.
 
+Maintainers read feedback at `/admin` (not linked from the site). It signs in with a Supabase
+account that is listed in the `admins` table; see the last section of `docs/database/schema.sql`.
+
 ```bash
 npm test           # run the tests
 npm run lint       # check code style

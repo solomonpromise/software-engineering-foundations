@@ -3,9 +3,9 @@
 -- Run this once in your Supabase project: Dashboard → SQL Editor → New query → paste → Run.
 -- It is safe to run again.
 --
--- The site has no accounts. Visitors can ADD anonymous feedback but nobody can READ it through the
--- public key: there are deliberately no SELECT policies. You read feedback in the dashboard
--- (Table Editor), which uses admin access and bypasses these rules.
+-- Learners have no accounts. Visitors can ADD anonymous feedback but can never READ it. Only the
+-- maintainer accounts listed in public.admins can read or delete it, on the site's /admin page
+-- (see the last section of this file). The Supabase dashboard can always read everything.
 
 -- "Was this lesson helpful?" ratings at the end of each lesson
 CREATE TABLE IF NOT EXISTS public.lesson_feedback (
@@ -50,3 +50,58 @@ CREATE INDEX IF NOT EXISTS lesson_feedback_slug_created_idx
 ON public.lesson_feedback (lesson_slug, created_at DESC);
 CREATE INDEX IF NOT EXISTS community_feedback_created_idx
 ON public.community_feedback (created_at DESC);
+
+-- ---------------------------------------------------------------------------------------------
+-- Maintainer access for the /admin page
+--
+-- Only accounts listed in public.admins can read or delete feedback. To make yourself an admin:
+--   1. Authentication → Users → Add user → Create new user (your email + a strong password,
+--      tick "Auto Confirm User").
+--   2. Authentication → Sign In / Providers → turn OFF "Allow new users to sign up".
+--   3. Run this once in the SQL Editor, with your email:
+--        INSERT INTO public.admins (user_id)
+--        SELECT id FROM auth.users WHERE email = 'you@example.com'
+--        ON CONFLICT DO NOTHING;
+-- Your email stays in your database; it is never written into the public repository.
+-- ---------------------------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS public.admins (
+  user_id UUID PRIMARY KEY REFERENCES auth.users (id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+ALTER TABLE public.admins ENABLE ROW LEVEL SECURITY;
+-- Nobody reads or edits this table through the API; is_admin() checks it on their behalf.
+REVOKE ALL ON public.admins FROM anon, authenticated;
+
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS BOOLEAN
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT EXISTS (SELECT 1 FROM public.admins WHERE user_id = auth.uid());
+$$;
+
+-- Signed-in accounts may read and delete feedback, but the policies below only let admins do so.
+GRANT SELECT, DELETE ON public.lesson_feedback, public.community_feedback TO authenticated;
+
+DROP POLICY IF EXISTS "Admins can read lesson feedback" ON public.lesson_feedback;
+CREATE POLICY "Admins can read lesson feedback"
+ON public.lesson_feedback FOR SELECT TO authenticated
+USING (public.is_admin());
+
+DROP POLICY IF EXISTS "Admins can delete lesson feedback" ON public.lesson_feedback;
+CREATE POLICY "Admins can delete lesson feedback"
+ON public.lesson_feedback FOR DELETE TO authenticated
+USING (public.is_admin());
+
+DROP POLICY IF EXISTS "Admins can read community feedback" ON public.community_feedback;
+CREATE POLICY "Admins can read community feedback"
+ON public.community_feedback FOR SELECT TO authenticated
+USING (public.is_admin());
+
+DROP POLICY IF EXISTS "Admins can delete community feedback" ON public.community_feedback;
+CREATE POLICY "Admins can delete community feedback"
+ON public.community_feedback FOR DELETE TO authenticated
+USING (public.is_admin());

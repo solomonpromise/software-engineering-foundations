@@ -35,6 +35,7 @@ export default defineConfig({
       // Pages not reachable by following links from the home page.
       pages: [
         { path: "/sitemap.xml", prerender: { enabled: true, outputPath: "/sitemap.xml" } },
+        { path: "/admin", prerender: { enabled: true } },
       ],
       // A client-rendered shell, copied to 404.html so unknown addresses still load the app.
       spa: { enabled: true },
