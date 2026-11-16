@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
+import { analytics as analyticsConfig } from "@/config/community";
 import { chapters } from "@/content/lessons";
 import { project } from "@/config/community";
 import { feedbackCategories } from "@/lib/community/feedback";
@@ -23,6 +24,7 @@ import {
   downloadCsv,
   getSession,
   isAdmin,
+  loadAnalytics,
   loadFeedback,
   onSessionChange,
   signIn,
@@ -30,6 +32,8 @@ import {
   type CommunityRow,
   type FeedbackTable,
   type LessonRow,
+  type Analytics,
+  type AnalyticsResult,
 } from "@/lib/admin";
 
 export const Route = createFileRoute("/admin")({
@@ -206,7 +210,7 @@ function Inboxes() {
   const [data, setData] = useState<Data | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [tab, setTab] = useState<"community" | "lessons">("community");
+  const [tab, setTab] = useState<"community" | "lessons" | "analytics">("community");
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -251,27 +255,31 @@ function Inboxes() {
 
   const helpful = data.lessons.filter((r) => r.helpful).length;
   const comments = data.lessons.filter((r) => r.comment.trim()).length;
-  const tabs = [
+  const tabs: { id: typeof tab; label: string; count?: number }[] = [
     { id: "community", label: "Community messages", count: data.community.length },
     { id: "lessons", label: "Lesson ratings", count: data.lessons.length },
-  ] as const;
+    { id: "analytics", label: "Site analytics" },
+  ];
+  const feedbackTab = tab !== "analytics";
 
   return (
     <>
-      <div className="mt-8 grid gap-px overflow-hidden rounded-xl border border-border bg-border grid-cols-2 lg:grid-cols-4">
-        <Stat label="Community messages" value={String(data.community.length)} />
-        <Stat label="Lesson ratings" value={String(data.lessons.length)} />
-        <Stat
-          label="Rated helpful"
-          value={
-            data.lessons.length ? `${Math.round((helpful / data.lessons.length) * 100)}%` : "—"
-          }
-        />
-        <Stat label="Rating comments" value={String(comments)} />
-      </div>
+      {feedbackTab && (
+        <div className="mt-8 grid gap-px overflow-hidden rounded-xl border border-border bg-border grid-cols-2 lg:grid-cols-4">
+          <Stat label="Community messages" value={String(data.community.length)} />
+          <Stat label="Lesson ratings" value={String(data.lessons.length)} />
+          <Stat
+            label="Rated helpful"
+            value={
+              data.lessons.length ? `${Math.round((helpful / data.lessons.length) * 100)}%` : "—"
+            }
+          />
+          <Stat label="Rating comments" value={String(comments)} />
+        </div>
+      )}
 
       <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-b border-border">
-        <div role="tablist" aria-label="Feedback type" className="flex gap-1">
+        <div role="tablist" aria-label="Inbox section" className="flex flex-wrap gap-1">
           {tabs.map((t) => (
             <button
               key={t.id}
@@ -281,22 +289,27 @@ function Inboxes() {
               onClick={() => setTab(t.id)}
               className={`-mb-px border-b-2 px-4 py-3 text-sm font-semibold ${tab === t.id ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"}`}
             >
-              {t.label} <span className="font-normal text-muted-foreground">({t.count})</span>
+              {t.label}
+              {t.count !== undefined && (
+                <span className="font-normal text-muted-foreground"> ({t.count})</span>
+              )}
             </button>
           ))}
         </div>
-        <button
-          type="button"
-          onClick={() => void refresh()}
-          disabled={loading}
-          className="mb-2 inline-flex min-h-10 items-center gap-1.5 rounded-full border border-border px-4 text-sm hover:border-primary hover:text-primary disabled:opacity-60"
-        >
-          <RefreshCw
-            className={`size-4 ${loading ? "animate-spin motion-reduce:animate-none" : ""}`}
-            aria-hidden
-          />{" "}
-          Refresh
-        </button>
+        {feedbackTab && (
+          <button
+            type="button"
+            onClick={() => void refresh()}
+            disabled={loading}
+            className="mb-2 inline-flex min-h-10 items-center gap-1.5 rounded-full border border-border px-4 text-sm hover:border-primary hover:text-primary disabled:opacity-60"
+          >
+            <RefreshCw
+              className={`size-4 ${loading ? "animate-spin motion-reduce:animate-none" : ""}`}
+              aria-hidden
+            />{" "}
+            Refresh
+          </button>
+        )}
       </div>
       {error && (
         <p role="alert" className="mt-4 rounded-md bg-destructive/10 p-3 text-sm text-destructive">
@@ -305,7 +318,9 @@ function Inboxes() {
       )}
 
       <div role="tabpanel" className="mt-6">
-        {tab === "community" ? (
+        {tab === "analytics" ? (
+          <AnalyticsPanel />
+        ) : tab === "community" ? (
           <CommunityInbox
             rows={data.community}
             onDelete={(id) => void remove("community_feedback", id)}
@@ -639,5 +654,227 @@ function LessonInbox({ rows, onDelete }: { rows: LessonRow[]; onDelete: (id: str
         )}
       </section>
     </div>
+  );
+}
+
+const EVENT_LABELS: Record<string, string> = {
+  "lesson-read-to-end": "Lessons read to the end",
+  "lesson-finished": "Lessons marked finished",
+  "lesson-rated": "Lesson ratings",
+  "feedback-sent": "Community feedback sent",
+  "tutor-question": "Lesson-helper questions",
+};
+const eventType = (path: string) => path.split("/")[0] ?? path;
+const eventSlug = (path: string) => path.split("/")[1] ?? "";
+const sum = (xs: { count: number }[]) => xs.reduce((n, x) => n + x.count, 0);
+const fmt = (n: number) => n.toLocaleString();
+const dashboardUrl = analyticsConfig.goatcounter?.replace(/\/count$/, "") ?? null;
+
+const SETUP_HELP: Record<Exclude<AnalyticsResult, { ok: true }>["reason"], string> = {
+  "not-deployed":
+    'The analytics connection isn\'t set up yet. Deploy the "analytics" Edge Function in Supabase (see the README section "Analytics on /admin").',
+  forbidden:
+    "This account isn't allowed to view analytics. Check that it is listed in the admins table.",
+  "missing-key":
+    "The Edge Function is deployed but has no GoatCounter API key. Add the secret GOATCOUNTER_API_KEY in Supabase (Edge Functions → Secrets).",
+  unavailable: "GoatCounter couldn't be reached just now. Try again in a minute.",
+};
+
+function AnalyticsPanel() {
+  const [days, setDays] = useState<7 | 30 | 90>(30);
+  const [result, setResult] = useState<AnalyticsResult | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const load = useCallback(async (d: 7 | 30 | 90) => {
+    setLoading(true);
+    try {
+      setResult(await loadAnalytics(d));
+    } catch {
+      setResult({ ok: false, reason: "unavailable" });
+    }
+    setLoading(false);
+  }, []);
+  useEffect(() => {
+    void load(days);
+  }, [days, load]);
+
+  return (
+    <>
+      <Toolbar>
+        {([7, 30, 90] as const).map((d) => (
+          <Chip key={d} active={days === d} onClick={() => setDays(d)}>
+            Last {d} days
+          </Chip>
+        ))}
+        <button
+          type="button"
+          onClick={() => void load(days)}
+          disabled={loading}
+          className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-border px-3.5 text-sm hover:border-primary hover:text-primary disabled:opacity-60"
+        >
+          <RefreshCw
+            className={`size-4 ${loading ? "animate-spin motion-reduce:animate-none" : ""}`}
+            aria-hidden
+          />{" "}
+          Refresh
+        </button>
+        {dashboardUrl && (
+          <a
+            href={dashboardUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-auto text-sm font-semibold text-primary underline underline-offset-4"
+          >
+            Open GoatCounter
+          </a>
+        )}
+      </Toolbar>
+
+      {!result ? (
+        <p className="mt-6 flex items-center gap-2 text-muted-foreground" role="status">
+          <Loader2 className="size-4 animate-spin motion-reduce:animate-none" aria-hidden /> Loading
+          analytics…
+        </p>
+      ) : !result.ok ? (
+        <Notice>{SETUP_HELP[result.reason]}</Notice>
+      ) : (
+        <AnalyticsView data={result.data} />
+      )}
+    </>
+  );
+}
+
+function AnalyticsView({ data }: { data: Analytics }) {
+  const byType = new Map<string, number>();
+  for (const e of data.events)
+    byType.set(eventType(e.path), (byType.get(eventType(e.path)) ?? 0) + e.count);
+  const readToEnd = data.events.filter((e) => eventType(e.path) === "lesson-read-to-end");
+  const finished = data.events.filter((e) => eventType(e.path) === "lesson-finished");
+  const lessonRows = new Map<string, { slug: string; read: number; finished: number }>();
+  for (const e of [...readToEnd, ...finished]) {
+    const slug = eventSlug(e.path);
+    const row = lessonRows.get(slug) ?? { slug, read: 0, finished: 0 };
+    if (eventType(e.path) === "lesson-read-to-end") row.read += e.count;
+    else row.finished += e.count;
+    lessonRows.set(slug, row);
+  }
+  const lessons = [...lessonRows.values()].sort(
+    (a, b) => b.read - a.read || b.finished - a.finished,
+  );
+  const max = Math.max(1, ...data.daily.map((d) => d.count));
+  const range = `${new Date(data.start).toLocaleDateString()} – ${new Date(data.end).toLocaleDateString()}`;
+
+  return (
+    <div className="mt-6 space-y-10">
+      <div className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border lg:grid-cols-4">
+        <Stat label="Visits" value={fmt(data.total)} />
+        <Stat label="Lessons read to the end" value={fmt(sum(readToEnd))} />
+        <Stat label="Lessons marked finished" value={fmt(sum(finished))} />
+        <Stat label="Course events" value={fmt(data.totalEvents)} />
+      </div>
+
+      <section aria-labelledby="daily-visits">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 id="daily-visits" className="font-serif text-2xl">
+            Visits per day
+          </h2>
+          <p className="text-sm text-muted-foreground">{range}</p>
+        </div>
+        {data.daily.length === 0 ? (
+          <Empty>No visits in this period yet.</Empty>
+        ) : (
+          <div
+            className="mt-4 flex h-40 items-end gap-px rounded-xl border border-border bg-card p-3"
+            role="img"
+            aria-label={`Visits per day, ${range}. Busiest day: ${fmt(max)} visits.`}
+          >
+            {data.daily.map((d) => (
+              <div
+                key={d.day}
+                title={`${new Date(d.day).toLocaleDateString(undefined, { dateStyle: "medium" })}: ${fmt(d.count)} visits`}
+                className="flex-1 rounded-t-sm bg-brass/80 hover:bg-primary"
+                style={{ height: `${Math.max(2, (d.count / max) * 100)}%` }}
+              />
+            ))}
+          </div>
+        )}
+      </section>
+
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+        <RankedList
+          title="Top pages"
+          rows={data.pages
+            .slice(0, 12)
+            .map((p) => ({ name: p.title || p.path, detail: p.path, count: p.count }))}
+          empty="No page views yet."
+        />
+        <RankedList
+          title="Lessons read to the end"
+          rows={lessons.slice(0, 12).map((l) => ({
+            name: lessonTitle(l.slug),
+            detail: `${fmt(l.finished)} marked finished`,
+            count: l.read,
+          }))}
+          empty="No lesson has been read to the end yet."
+        />
+        <RankedList
+          title="Course activity"
+          rows={[...byType.entries()]
+            .map(([type, count]) => ({ name: EVENT_LABELS[type] ?? type, count }))
+            .sort((a, b) => b.count - a.count)}
+          empty="No course events yet."
+        />
+        <RankedList
+          title="Where visitors come from"
+          rows={data.referrers}
+          empty="No referrers recorded yet."
+        />
+        <RankedList title="Countries" rows={data.locations} empty="No locations recorded yet." />
+        <RankedList title="Screen sizes" rows={data.devices} empty="No devices recorded yet." />
+      </div>
+    </div>
+  );
+}
+
+function RankedList({
+  title,
+  rows,
+  empty,
+}: {
+  title: string;
+  rows: { name: string; detail?: string; count: number }[];
+  empty: string;
+}) {
+  const max = Math.max(1, ...rows.map((r) => r.count));
+  return (
+    <section className="min-w-0">
+      <h2 className="font-serif text-2xl">{title}</h2>
+      {rows.length === 0 ? (
+        <p className="mt-3 text-sm text-muted-foreground">{empty}</p>
+      ) : (
+        <ol className="mt-3 space-y-2">
+          {rows.map((r) => (
+            <li
+              key={r.name + (r.detail ?? "")}
+              className="rounded-lg border border-border bg-card p-3"
+            >
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="min-w-0 truncate text-sm font-semibold" title={r.name}>
+                  {r.name}
+                </span>
+                <span className="shrink-0 text-sm tabular-nums">{fmt(r.count)}</span>
+              </div>
+              {r.detail && <p className="truncate text-xs text-muted-foreground">{r.detail}</p>}
+              <span className="mt-2 block h-1.5 rounded-full bg-muted">
+                <span
+                  className="block h-full rounded-full bg-brass"
+                  style={{ width: `${(r.count / max) * 100}%` }}
+                />
+              </span>
+            </li>
+          ))}
+        </ol>
+      )}
+    </section>
   );
 }

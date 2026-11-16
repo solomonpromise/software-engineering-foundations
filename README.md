@@ -53,6 +53,22 @@ npm run lint       # check code style
 npm run build      # build the static site into dist/client
 ```
 
+## Analytics on /admin
+
+The site counts visits with [GoatCounter](https://www.goatcounter.com) (no cookies). The **Site
+analytics** tab on `/admin` shows the numbers without opening GoatCounter. Because the GoatCounter
+API key must stay secret, the page fetches them through a small Supabase Edge Function,
+`supabase/functions/analytics`, which only answers maintainers listed in the `admins` table.
+
+One-time setup:
+
+1. In GoatCounter: your username (top right) → **API** → create a key with **Read statistics**
+   permission only. Copy it; don't commit it or share it.
+2. In Supabase: **Edge Functions → Secrets** → add `GOATCOUNTER_API_KEY` with that key.
+3. In Supabase: **Edge Functions → Deploy a new function → Via Editor**, name it `analytics`, paste
+   the contents of `supabase/functions/analytics/index.ts`, and deploy. (Or, with the Supabase CLI:
+   `supabase functions deploy analytics --project-ref <your-project-ref>`.)
+
 ## How it's published
 
 The site is static and hosted on GitHub Pages. Every push to `main` runs

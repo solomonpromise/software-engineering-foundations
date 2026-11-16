@@ -38,6 +38,9 @@ Software Engineering Foundations is an open, community-driven learning site. The
   (`lesson-read-to-end/<slug>`, `lesson-finished/<slug>`, `lesson-rated/*`, `feedback-sent/*`,
   `tutor-question`). Never send personal data or free text in events. `/admin` is never counted.
   Describe any new tracking in the Privacy section of `/about`.
+- The `/admin` "Site analytics" tab reads GoatCounter through the Supabase Edge Function
+  `supabase/functions/analytics` (Deno), which holds the `GOATCOUNTER_API_KEY` secret and only
+  answers callers for whom `is_admin()` is true. Never put the GoatCounter API key in the site.
 
 ## Offline reading
 
