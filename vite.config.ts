@@ -26,7 +26,8 @@ export default defineConfig({
       prerender: {
         enabled: true,
         crawlLinks: true,
-        autoSubfolderIndex: true,
+        // curriculum.html, not curriculum/index.html: GitHub Pages then serves /curriculum without a redirect.
+        autoSubfolderIndex: false,
         failOnError: true,
         // Links like /contribute?category=… are the same page; prerendering them would overwrite it.
         filter: ({ path }) => !path.includes("?") && !path.includes("#"),
